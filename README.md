@@ -11,6 +11,8 @@ microframework.
 
 - Emily Lederman
 
+- Daniel Wang
+
 
 
 ## Prerequisites
