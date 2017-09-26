@@ -6,7 +6,11 @@ microframework.
 
 ## Team
 
+
 - Nathan Farrell
+
+- Emily Lederman
+
 
 
 ## Prerequisites
