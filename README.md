@@ -6,7 +6,7 @@ microframework.
 
 ## Team
 
-- Jane Doe
+- Kevin Paradis
 
 - John Doe
 
