@@ -8,7 +8,10 @@ microframework.
 
 - Kevin Paradis
 
-- John Doe
+- Nathan Farrell
+
+- Emily Lederman
+
 
 
 ## Prerequisites
