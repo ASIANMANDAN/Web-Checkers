@@ -6,9 +6,7 @@ microframework.
 
 ## Team
 
-- Jane Doe
-
-- John Doe
+- Emily Lederman
 
 
 ## Prerequisites
