@@ -6,9 +6,14 @@ microframework.
 
 ## Team
 
-- Jane Doe
+- Kevin Paradis
 
-- John Doe
+- Nathan Farrell
+
+- Emily Lederman
+
+- Daniel Wang
+
 
 
 ## Prerequisites
