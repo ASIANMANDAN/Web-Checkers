@@ -46,6 +46,7 @@ public class PlayerLobby {
 
                 this.playerLobby.put(username, newPlayer);
                 this.numOfUsers++;
+                LOG.fine(username + " was added to the lobby.");
 
                 return true;
             }
