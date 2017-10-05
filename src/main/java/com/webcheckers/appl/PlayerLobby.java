@@ -19,6 +19,8 @@ import java.util.logging.Logger;
  * @author Dan Wang, Emily Lederman, Kevin Paradis, Nathan Farrell
  */
 public class PlayerLobby {
+    public enum InputResult {ACCEPTED, INVALID, EMPTY, TAKEN}
+
     private static final Logger LOG = Logger.getLogger(PlayerLobby.class.getName());
 
     private Map<String, Player> playerLobby = new HashMap<>();
@@ -27,7 +29,7 @@ public class PlayerLobby {
 
     /**
      * When the user hits the signin button, that user is run through a check
-     * as to whether or not he/she's username is in the lobby/is valid input, if not then that
+     * as to whether or not he/she's username is in the lobby/is valid input/Empty, if not then that
      * user's Player Instance is created and added to the lobby.
      *
      * @param username Desired username for the new user
@@ -35,25 +37,32 @@ public class PlayerLobby {
      *
      * @author Dan Wang, Emily Lederman, Kevin Paradis, Nathan Farrell
      */
-    public boolean signIn(String username){
-        if(isValidUsername(username)){ //Checks if the username is valid input
-            LOG.fine(username+" is invalid! Cannot use \"s in a username.");
-            return false;
-        }
-        else {
-            if(userInLobby(username)){ // Checks if username is in lobby
-                Player newPlayer = new Player(username);
-
-                this.playerLobby.put(username, newPlayer);
-                this.numOfUsers++;
-
-                return true;
+    public InputResult signIn(String username){
+        InputResult result = InputResult.INVALID;
+        if(!username.isEmpty()){
+            if(isValidUsername(username)){ //Checks if the username is valid input
+                LOG.fine(username+" is invalid! Cannot use \"s in a username.");
+                return result;
             }
-            else{
-                LOG.fine(username+" already in lobby!");
-                return false;
+            else {
+                if(userInLobby(username)){ // Checks if username is in lobby
+                    Player newPlayer = new Player(username);
+
+                    this.playerLobby.put(username, newPlayer);
+                    this.numOfUsers++;
+
+                    result = InputResult.ACCEPTED;
+                }
+                else{
+                    LOG.fine(username+" already in lobby!");
+                    result = InputResult.TAKEN;
+                }
             }
         }
+        else{
+            result = InputResult.EMPTY;
+        }
+        return result;
 
     }
 
