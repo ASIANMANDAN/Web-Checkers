@@ -15,11 +15,11 @@
     
     <div class="body">
       <p>Choose a username so that friends and opponents can find you!
-      When you've finished, click the OK button to sign-in.</p>
+      When you're finished, click the Sign In button to sign-in.</p>
 
       <form action="./signin" method="POST">
       	<input name="username" />
-      	<button type="submit">Ok</button>
+      	<button type="submit">Sign In</button>
       </form>
     </div>
     

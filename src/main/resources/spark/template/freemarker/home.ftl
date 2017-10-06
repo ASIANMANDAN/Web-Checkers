@@ -16,6 +16,8 @@
     </div>
     
     <div class="body">
+	  <form action="./signin" method="GET">
+	    <button>Sign In</button>
       <p>Welcome to the wonderful world of online Checkers.</p>
     </div>
     
