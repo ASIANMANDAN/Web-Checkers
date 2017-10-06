@@ -14,8 +14,15 @@
     </div>
     
     <div class="body">
+
+      <#if message??>
+      <p>${message}</p>
+
+      <#else>
       <p>Choose a username so that friends and opponents can find you!
       When you're finished, click the Sign In button to sign-in.</p>
+      </#if>
+      
 
       <form action="./signin" method="POST">
       	<input name="username" />

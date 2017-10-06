@@ -17,10 +17,10 @@ import java.util.Objects;
  */
 public class GetSigninRoute implements Route{
 
-    private final TemplateEngine templateEngine;
-
     //FTL file which is responsible for rendering the page
     private static final String VIEW_NAME = "signin.ftl";
+
+    private final TemplateEngine templateEngine;
 
     /**
      * Create the Spark Route (UI controller) for the

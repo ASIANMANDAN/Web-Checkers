@@ -41,17 +41,17 @@ public class PlayerLobby {
     public InputResult signIn(String username){
         InputResult result = InputResult.INVALID;
         if(!username.isEmpty()){
-            if(isValidUsername(username)){ //Checks if the username is valid input
+            if(!isValidUsername(username)){ //Checks if the username is valid input
                 LOG.fine(username+" is invalid! Cannot use \"s in a username.");
                 return result;
             }
             else {
-                if(userInLobby(username)){ // Checks if username is in lobby
+                if(!nameTaken(username)){ // Checks if username is in lobby
                     Player newPlayer = new Player(username);
 
-                this.playerLobby.put(username, newPlayer);
-                this.numOfUsers++;
-                LOG.fine(username + " was added to the lobby.");
+                    this.playerLobby.put(username, newPlayer);
+                    this.numOfUsers++;
+                    LOG.fine(username + " was added to the lobby.");
 
                     this.playerLobby.put(username, newPlayer);
                     this.numOfUsers++;
@@ -102,7 +102,7 @@ public class PlayerLobby {
      *
      * @author Dan Wang, Emily Lederman, Kevin Paradis, Nathan Farrell
      */
-    public boolean userInLobby(String username){
+    public boolean nameTaken(String username){
         Set<String> usernames = this.playerLobby.keySet();
         return usernames.contains(username);
     }
@@ -113,7 +113,12 @@ public class PlayerLobby {
      * @return
      */
     public boolean isValidUsername(String username){
-        return !username.contains("\"");
+        if (username.contains("\"")) {
+            return false;
+        }
+        else {
+            return true;
+        }
     }
 
 }

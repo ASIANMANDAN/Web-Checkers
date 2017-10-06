@@ -19,9 +19,13 @@ import java.util.Objects;
  */
 public class PostSigninRoute implements Route{
 
-    private final TemplateEngine templateEngine;
+    //FTL file which is responsible for rendering the page
+    private static final String VIEW_NAME = "signin.ftl";
+    private static final String MESSAGE_ATTR = "message";
+    //private static final String MESSAGE_TYPE_ATTR = "messageType";
+    private static final String USERNAME_PARAM = "username";
 
-    private static final String USERNAME = "username";
+    private final TemplateEngine templateEngine;
 
     /**
      * Create the Spark Route (UI controller) for the
@@ -58,24 +62,24 @@ public class PostSigninRoute implements Route{
                 session.attribute(GetHomeRoute.PLAYERLOBBY_KEY);
 
         //Query server for username entered by client
-        final String username = request.queryParams(USERNAME);
+        final String username = request.queryParams(USERNAME_PARAM);
 
         ModelAndView mv;
         switch(playerLobby.signIn(username)) {
             case INVALID:
-                mv = error();
+                mv = error(vm);
                 break;
 
             case EMPTY:
-                mv = empty();
+                mv = empty(vm);
                 break;
 
             case TAKEN:
-                mv = taken();
+                mv = taken(vm);
                 break;
 
             case ACCEPTED:
-                mv = accepted();
+                mv = accepted(vm);
                 break;
 
             default:
@@ -85,5 +89,30 @@ public class PostSigninRoute implements Route{
         return templateEngine.render(mv);
     }
 
-    private ModelAndView error(final Map<String, Object> vm, final )
+    private ModelAndView error(final Map<String, Object> vm) {
+        String message = "The username you selected was invalid as it contains " +
+                "double quotation marks.";
+        vm.put(MESSAGE_ATTR, message);
+        vm.put("title", "Sign-in");
+        return new ModelAndView(vm, VIEW_NAME);
+    }
+
+    private ModelAndView empty(final Map<String, Object> vm) {
+        String message = "Your username cannot be blank.";
+        vm.put(MESSAGE_ATTR, message);
+        vm.put("title", "Sign-in");
+        return new ModelAndView(vm, VIEW_NAME);
+    }
+
+    private ModelAndView taken(final Map<String, Object> vm) {
+        String message = "The username you selected is already in use.";
+        vm.put(MESSAGE_ATTR, message);
+        vm.put("title", "Sign-in");
+        return new ModelAndView(vm, VIEW_NAME);
+    }
+
+    private ModelAndView accepted(final Map<String, Object> vm) {
+        vm.put("title", "Welcome!");
+        return new ModelAndView(vm, GetHomeRoute.VIEW_NAME);
+    }
 }
