@@ -1,6 +1,7 @@
 package com.webcheckers.appl;
 
 import com.webcheckers.model.Player;
+import com.webcheckers.ui.GetHomeRoute;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -26,6 +27,7 @@ public class PlayerLobby {
 
     private Map<String, Player> playerLobby = new HashMap<>();
     private int numOfUsers = 0;
+    private Player currentPlayer = null;
 
 
     /**
@@ -36,7 +38,6 @@ public class PlayerLobby {
      * @param username Desired username for the new user
      * @return bool as to whether sign in was successful
      *
-     * @author Dan Wang, Emily Lederman, Kevin Paradis, Nathan Farrell
      */
     public InputResult signIn(String username){
         InputResult result = InputResult.INVALID;
@@ -55,6 +56,7 @@ public class PlayerLobby {
 
                     this.playerLobby.put(username, newPlayer);
                     this.numOfUsers++;
+                    this.currentPlayer = newPlayer;
 
 
                     result = InputResult.ACCEPTED;
@@ -79,6 +81,15 @@ public class PlayerLobby {
     public void signOut(String username){
         this.playerLobby.remove(username);
         this.numOfUsers--;
+        this.currentPlayer = null;
+    }
+
+    /**
+     * Retrieve current player.
+     * @return current player.
+     */
+    public Player getCurrentPlayer() {
+        return currentPlayer;
     }
 
     /**
@@ -86,7 +97,6 @@ public class PlayerLobby {
      *
      * @return # of Users
      *
-     * @author Dan Wang, Emily Lederman, Kevin Paradis, Nathan Farrell
      */
     public int getNumOfUsers(){
         return this.numOfUsers;
@@ -97,7 +107,6 @@ public class PlayerLobby {
      *
      * @return playerLobby
      *
-     * @author Dan Wang, Emily Lederman, Kevin Paradis, Nathan Farrell
      */
     public Map<String, Player> getPlayerLobby(){
         return this.playerLobby;
@@ -109,7 +118,6 @@ public class PlayerLobby {
      * @param username username to check.
      * @return boolean of whether or not username is in the lobby.
      *
-     * @author Dan Wang, Emily Lederman, Kevin Paradis, Nathan Farrell
      */
     public boolean nameTaken(String username){
         Set<String> usernames = this.playerLobby.keySet();
@@ -117,9 +125,10 @@ public class PlayerLobby {
     }
 
     /**
-     * Checks to see if username is valid. Valid usernames are
+     * Checks to see if username is valid. Valid usernames are any string
+     * that don't contain double quotations. 
      * @param username
-     * @return
+     * @return boolean as to what is valid or not.
      */
     public boolean isValidUsername(String username){
         if (username.contains("\"")) {
