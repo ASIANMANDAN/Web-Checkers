@@ -73,6 +73,15 @@ public class PlayerLobby {
     }
 
     /**
+     * Removes user from the player lobby.
+     * @param username
+     */
+    public void signOut(String username){
+        this.playerLobby.remove(username);
+        this.numOfUsers--;
+    }
+
+    /**
      * Gets the number of users in the lobby.
      *
      * @return # of Users
