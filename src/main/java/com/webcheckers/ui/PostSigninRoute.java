@@ -79,6 +79,8 @@ public class PostSigninRoute implements Route{
                 break;
 
             case ACCEPTED:
+                //Return the user to the home page
+                response.redirect(WebServer.HOME_URL);
                 mv = accepted(vm);
                 break;
 
@@ -89,6 +91,12 @@ public class PostSigninRoute implements Route{
         return templateEngine.render(mv);
     }
 
+    /**
+     * Handles the view model in the case of an invalid username.
+     *
+     * @param vm ModelandView object which is rendered by the template
+     * @return a modified ModelandView object which expresses an invalid username
+     */
     private ModelAndView error(final Map<String, Object> vm) {
         String message = "The username you selected was invalid as it contains " +
                 "double quotation marks.";
@@ -97,6 +105,12 @@ public class PostSigninRoute implements Route{
         return new ModelAndView(vm, VIEW_NAME);
     }
 
+    /**
+     * Handles the view model in the case of an empty username.
+     *
+     * @param vm ModelandView object which is rendered by the template
+     * @return a modified ModelandView object which expresses an empty username
+     */
     private ModelAndView empty(final Map<String, Object> vm) {
         String message = "Your username cannot be blank.";
         vm.put(MESSAGE_ATTR, message);
@@ -104,6 +118,12 @@ public class PostSigninRoute implements Route{
         return new ModelAndView(vm, VIEW_NAME);
     }
 
+    /**
+     * Handles the view model in the case of an taken username.
+     *
+     * @param vm ModelandView object which is rendered by the template
+     * @return a modified ModelandView object which expresses a taken username
+     */
     private ModelAndView taken(final Map<String, Object> vm) {
         String message = "The username you selected is already in use.";
         vm.put(MESSAGE_ATTR, message);
@@ -111,6 +131,12 @@ public class PostSigninRoute implements Route{
         return new ModelAndView(vm, VIEW_NAME);
     }
 
+    /**
+     * Handles the view model in the case of an accepted username.
+     *
+     * @param vm ModelandView object which is rendered by the template
+     * @return a modified ModelandView object which expresses an accepted username
+     */
     private ModelAndView accepted(final Map<String, Object> vm) {
         vm.put("title", "Welcome!");
         return new ModelAndView(vm, GetHomeRoute.VIEW_NAME);
