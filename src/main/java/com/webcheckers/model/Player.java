@@ -1,17 +1,21 @@
 package com.webcheckers.model;
 
 /**
- * PLayer instance. Contains username for the isntance of that Player.
+ * PLayer instance. Contains username for the instance of that Player.
+ *
+ * @author Dan Wang
+ * @author Emily Lederman
+ * @author Kevin Paradis
+ * @author Nathan Farrell
  */
 public class Player {
 
     private final String username;
 
     /**
-     * Intstatiates Player with a username.
-     * @param newUserName new user name
+     * Instantiates Player with a username.
      *
-     * @author Dan Wang, Emily Lederman, Kevin Paradis, Nathan Farrell
+     * @param newUserName new user name
      */
     public Player(String newUserName){
         this.username = newUserName;
@@ -19,9 +23,8 @@ public class Player {
 
     /**
      * Gets username.
-     * @return username
      *
-     * @author Dan Wang, Emily Lederman, Kevin Paradis, Nathan Farrell
+     * @return name of user
      */
     public String getUsername(){
         return this.username;
