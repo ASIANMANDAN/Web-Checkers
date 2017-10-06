@@ -53,17 +53,13 @@ public class PlayerLobby {
             }
             else {
                 if(!nameTaken(username)){ // Checks if username is in lobby
-                    Player newPlayer = new Player(username);
 
+                    Player newPlayer = new Player(username);
                     this.playerLobby.put(username, newPlayer);
                     this.numOfUsers++;
                     LOG.fine(username + " was added to the lobby.");
 
-                    this.playerLobby.put(username, newPlayer);
-                    this.numOfUsers++;
                     this.currentPlayer = newPlayer;
-
-
                     result = InputResult.ACCEPTED;
                 }
                 else{ //Username has already been taken
@@ -101,19 +97,17 @@ public class PlayerLobby {
     /**
      * Gets the number of users in the lobby.
      *
-     * @return # of Users
-     *
-     * @return number of Players in lobby
+     * @return number of Players in lobby represented as a string
      */
-    public int getNumOfUsers(){
-        return this.numOfUsers;
+    public String getNumOfUsers(){
+        return Integer.toString(this.numOfUsers);
     }
 
     /**
      * Returns the Map that represents the lobby of players.
      *
-     * @return playerLobby
-     *
+     * @return playerLobby the username, player object map that represents
+     * the player lobby
      */
     public Map<String, Player> getPlayerLobby(){
         return this.playerLobby;
@@ -124,7 +118,6 @@ public class PlayerLobby {
      *
      * @param username username to check.
      * @return boolean of whether or not username is in the lobby.
-     *
      */
     private boolean nameTaken(String username){
         Set<String> usernames = this.playerLobby.keySet();
@@ -135,7 +128,7 @@ public class PlayerLobby {
      * Checks to see if username is valid. Valid usernames are any string
      * that don't contain double quotations.
      *
-     * @param username
+     * @param username username to verify
      * @return boolean as to what is valid or not.
      */
     private boolean isValidUsername(String username){

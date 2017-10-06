@@ -79,13 +79,15 @@ public class PostSigninRoute implements Route{
                 break;
 
             case ACCEPTED:
+                //Add number of players to vm to avoid errors
+                vm.put(GetHomeRoute.PLAYERS_ONLINE, playerLobby.getNumOfUsers());
                 //Return the user to the home page
                 response.redirect(WebServer.HOME_URL);
                 mv = accepted(vm);
                 break;
 
             default:
-                // All the GuessResult values are in case statements so we should never get here.
+                // All the InputResult values are in case statements so we should never get here.
                 throw new NoSuchElementException("Invalid result of guess received.");
         }
         return templateEngine.render(mv);

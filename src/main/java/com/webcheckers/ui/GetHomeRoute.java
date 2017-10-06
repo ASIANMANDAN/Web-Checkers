@@ -19,6 +19,8 @@ public class GetHomeRoute implements Route {
 
   //FTL file which is responsible for rendering the page
   static final String VIEW_NAME = "home.ftl";
+  static final String PLAYERS_ONLINE = "numPlayersOnline";
+
   //Key in the session attribute map for the list of players in the lobby.
   static final String PLAYERLOBBY_KEY = "playerLobby";
 
@@ -67,11 +69,12 @@ public class GetHomeRoute implements Route {
     //Start building the view-model
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
+    vm.put(PLAYERS_ONLINE, playerLobby.getNumOfUsers());
 
     //Add the player lobby object to session attribute map
     httpSession.attribute(PLAYERLOBBY_KEY, playerLobby);
 
-    return templateEngine.render(new ModelAndView(vm , VIEW_NAME));
+    return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
   }
 
 }
