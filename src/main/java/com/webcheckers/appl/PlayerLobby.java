@@ -18,6 +18,7 @@ import java.util.logging.Logger;
  *
  * @author Dan Wang, Emily Lederman, Kevin Paradis, Nathan Farrell
  */
+//todo verify JavaDocs
 public class PlayerLobby {
     public enum InputResult {ACCEPTED, INVALID, EMPTY, TAKEN}
 
@@ -103,12 +104,7 @@ public class PlayerLobby {
      */
     public boolean userInLobby(String username){
         Set<String> usernames = this.playerLobby.keySet();
-        if(usernames.contains(username)){
-            return true;
-        }
-        else{
-            return false;
-        }
+        return usernames.contains(username);
     }
 
     /**
@@ -117,12 +113,7 @@ public class PlayerLobby {
      * @return
      */
     public boolean isValidUsername(String username){
-        if(username.contains("\"")){
-            return false;
-        }
-        else{
-            return true;
-        }
+        return !username.contains("\"");
     }
 
 }

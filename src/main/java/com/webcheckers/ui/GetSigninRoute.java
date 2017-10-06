@@ -10,11 +10,17 @@ import java.util.Objects;
 /**
  * The UI controller to GET the sign-in page.
  *
- * @author Dan Wang, Emily Lederman, Kevin Paradis, Nathan Farrell
+ * @author Dan Wang
+ * @author Emily Lederman
+ * @author Kevin Paradis
+ * @author Nathan Farrell
  */
 public class GetSigninRoute implements Route{
 
     private final TemplateEngine templateEngine;
+
+    //FTL file which is responsible for rendering the page
+    private static final String VIEW_NAME = "signin.ftl";
 
     /**
      * Create the Spark Route (UI controller) for the
@@ -44,6 +50,6 @@ public class GetSigninRoute implements Route{
     public Object handle(Request request, Response response) {
         Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Player Sign-in");
-        return templateEngine.render(new ModelAndView(vm , "signin.ftl"));
+        return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }
 }

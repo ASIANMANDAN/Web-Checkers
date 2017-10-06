@@ -5,11 +5,8 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
-import spark.ModelAndView;
-import spark.Request;
-import spark.Response;
-import spark.Route;
-import spark.TemplateEngine;
+import com.webcheckers.appl.PlayerLobby;
+import spark.*;
 
 /**
  * The UI Controller to GET the Home page.
@@ -19,7 +16,13 @@ import spark.TemplateEngine;
 public class GetHomeRoute implements Route {
   private static final Logger LOG = Logger.getLogger(GetHomeRoute.class.getName());
 
+  //FTL file which is responsible for rendering the page
+  static final String VIEW_NAME = "home.ftl";
+  //Key in the session attribute map for the list of players in the lobby.
+  static final String PLAYERLOBBY_KEY = "playerLobby";
+
   private final TemplateEngine templateEngine;
+  private final PlayerLobby playerLobby;
 
   /**
    * Create the Spark Route (UI controller) for the
@@ -27,13 +30,18 @@ public class GetHomeRoute implements Route {
    *
    * @param templateEngine
    *   the HTML template rendering engine
+   *
+   * @param playerLobby
+   *   the application which shows a list of players that are signed in.
    */
-  public GetHomeRoute(final TemplateEngine templateEngine) {
+  public GetHomeRoute(final TemplateEngine templateEngine,
+                      final PlayerLobby playerLobby) {
     // validation
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
-    //
+
     this.templateEngine = templateEngine;
-    //
+    this.playerLobby = playerLobby;
+
     LOG.config("GetHomeRoute is initialized.");
   }
 
@@ -51,10 +59,18 @@ public class GetHomeRoute implements Route {
   @Override
   public Object handle(Request request, Response response) {
     LOG.finer("GetHomeRoute is invoked.");
-    //
+
+    //Retrieve the HTTP session
+    final Session httpSession = request.session();
+
+    //Start building the view-model
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
-    return templateEngine.render(new ModelAndView(vm , "home.ftl"));
+
+    //Add the player lobby object to session attribute map
+    httpSession.attribute(PLAYERLOBBY_KEY, playerLobby);
+
+    return templateEngine.render(new ModelAndView(vm , VIEW_NAME));
   }
 
 }
