@@ -23,6 +23,9 @@ public class GetHomeRoute implements Route {
 
   //Key in the session attribute map for the list of players in the lobby.
   static final String PLAYERLOBBY_KEY = "playerLobby";
+  //Key for the current player
+  static final String PLAYER_CURR = "currentPlayer";
+
 
   private final TemplateEngine templateEngine;
   private final PlayerLobby playerLobby;
@@ -70,6 +73,12 @@ public class GetHomeRoute implements Route {
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
     vm.put(PLAYERS_ONLINE, playerLobby.getNumOfUsers());
+    //provide the current player to the view-model
+    vm.put(PLAYER_CURR, playerLobby.getCurrentPlayer());
+    //provide the playerlist to the view-model
+    //TODO test/utilize
+    vm.put(PLAYERLOBBY_KEY, playerLobby.getPlayerLobby());
+
 
     //Add the player lobby object to session attribute map
     httpSession.attribute(PLAYERLOBBY_KEY, playerLobby);

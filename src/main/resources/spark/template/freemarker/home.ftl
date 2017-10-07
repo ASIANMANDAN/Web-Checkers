@@ -18,13 +18,14 @@
       <p>Welcome to the wonderful world of online Checkers.</p>
 
     <#if currentPlayer??>
+	  <p>Current player: ${currentPlayer.getUsername()}</p>
+	  
       <p>A list of players should go here!</p>
-
-    <#--
+	  
+	  
       <form action="./signout" method="GET">
       <button type="button">Sign Out</button>
       </form>
-    -->
 
     <#else>
       <p>Number of players online: ${numPlayersOnline}</p>
