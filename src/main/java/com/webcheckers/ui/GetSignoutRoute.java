@@ -21,10 +21,11 @@ public class GetSignoutRoute implements Route{
     //FTL file which is responsible for rendering the page
     private static final String VIEW_NAME = "home.ftl";
     //number of players in the lobby
-    static final String PLAYERS_ONLINE = "numPlayersOnline";
+    static final String PLAYERS_ONLINE_ATTR = "numPlayersOnline";
 
     private final TemplateEngine templateEngine;
     private final PlayerLobby playerLobby;
+
     /**
      * Create the Spark Route (UI controller) for the
      * {@code GET /} HTTP request.
@@ -50,7 +51,7 @@ public class GetSignoutRoute implements Route{
 
         vm.put("title", "Player Sign-out");
         //updates number of players
-        vm.put(PLAYERS_ONLINE, playerLobby.getNumOfUsers());
+        vm.put(PLAYERS_ONLINE_ATTR, playerLobby.getNumOfUsers());
         //signs out the current user
         playerLobby.signOut(playerLobby.getCurrentPlayer().getUsername());
         //Return the user to the home page
