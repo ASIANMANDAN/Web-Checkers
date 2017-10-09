@@ -12,6 +12,11 @@
     
     <div class="navigation">
       <a href="/">My Home</a>
+      <#if currentPlayer??>
+      <a href="/signout">Sign-out</a>
+      <#else>
+      <a href="/signin">Sign-in</a>
+      </#if>
     </div>
     
     <div class="body">
@@ -20,10 +25,14 @@
     <#if currentPlayer??>
 	  <p>Current player: ${currentPlayer.getUsername()}</p>
 	  
-      <p>Players online:</p>
+
       <#list allPlayers as player>
-        <p>${player}
+          <p>Players online:</p>
+          <#if player != currentPlayer.getUsername()>
+            <p>${player}
+          </#if>
       </#list>
+      
 	  
 	  
       <form action="./signout" method="GET">
