@@ -30,7 +30,6 @@ public class PlayerLobby {
     //Map which holds all Player Objects
     private Map<String, Player> playerLobby = new HashMap<>();
     private int numOfUsers = 0;
-    private Player currentPlayer = null;
 
     /**
      * When the user hits the signin button, that user is run through a check
@@ -57,7 +56,6 @@ public class PlayerLobby {
                     this.numOfUsers++;
                     LOG.fine(username + " was added to the lobby.");
 
-                    this.currentPlayer = newPlayer;
                     result = InputResult.ACCEPTED;
                 }
                 else{ //Username has already been taken
@@ -82,16 +80,7 @@ public class PlayerLobby {
     public void signOut(String username){
         this.playerLobby.remove(username);
         this.numOfUsers--;
-        this.currentPlayer = null;
         LOG.fine(username + " was removed from the lobby.");
-    }
-
-    /**
-     * Retrieve current player.
-     * @return current player.
-     */
-    public Player getCurrentPlayer() {
-        return currentPlayer;
     }
 
     /**

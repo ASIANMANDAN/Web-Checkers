@@ -1,6 +1,7 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.Player;
 import spark.*;
 
 import java.util.HashMap;
@@ -23,6 +24,9 @@ public class PostSigninRoute implements Route{
     private static final String VIEW_NAME = "signin.ftl";
     private static final String MESSAGE_ATTR = "message";
     private static final String USERNAME_PARAM = "username";
+
+    //Key in the session attribute map for the current user Player object
+    static final String CURR_PLAYER = "currentPlayer";
 
     private final TemplateEngine templateEngine;
 
@@ -55,10 +59,10 @@ public class PostSigninRoute implements Route{
         Map<String, Object> vm = new HashMap<>();
 
         // retrieve the PlayerLobby object
-        final Session session = request.session();
+        final Session httpSession = request.session();
         //Get the PlayerLobby object from attribute map
         final PlayerLobby playerLobby =
-                session.attribute(GetHomeRoute.PLAYERLOBBY_KEY);
+                httpSession.attribute(GetHomeRoute.PLAYERLOBBY_KEY);
 
         //Query server for username entered by client
         final String username = request.queryParams(USERNAME_PARAM);
@@ -80,6 +84,8 @@ public class PostSigninRoute implements Route{
             case ACCEPTED:
                 //Add number of players to vm to avoid errors
                 vm.put(GetHomeRoute.PLAYERS_ONLINE_ATTR, playerLobby.getNumOfUsers());
+                Player player = new Player((username));
+                httpSession.attribute(CURR_PLAYER, player);
                 //Return the user to the home page
                 response.redirect(WebServer.HOME_URL);
                 mv = accepted(vm);

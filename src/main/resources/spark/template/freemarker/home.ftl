@@ -20,7 +20,7 @@
     <#if currentPlayer??>
 	  <p>Current player: ${currentPlayer.getUsername()}</p>
 	  
-      <p>A list of players should go here!</p>
+      <p>Players online:</p>
       <#list allPlayers as player>
         <p>${player}
       </#list>
@@ -31,7 +31,7 @@
       </form>
 
     <#else>
-      <p>Number of players online: ${numPlayersOnline}</p>
+      <p>Players online: ${numPlayersOnline}</p>
 
       <form action="./signin" method="GET">
       <button>Sign In</button>
