@@ -64,8 +64,6 @@ public class PostSigninRoute implements Route{
         final PlayerLobby playerLobby =
                 httpSession.attribute(GetHomeRoute.PLAYERLOBBY_KEY);
 
-
-
         //Query server for username entered by client
         final String username = request.queryParams(USERNAME_PARAM);
 

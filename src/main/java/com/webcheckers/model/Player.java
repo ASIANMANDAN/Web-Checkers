@@ -41,6 +41,6 @@ public class Player {
         if (obj == this) return true;
         if (!(obj instanceof Player)) return false;
         final Player that = (Player) obj;
-        return this.username == that.getUsername();
+        return this.username.equals(that.getUsername());
     }
 }
