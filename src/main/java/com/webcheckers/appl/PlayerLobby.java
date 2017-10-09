@@ -1,10 +1,8 @@
 package com.webcheckers.appl;
 
 import com.webcheckers.model.Player;
-import com.webcheckers.ui.GetHomeRoute;
 
 import java.util.HashMap;
-import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -70,6 +68,7 @@ public class PlayerLobby {
         }
         else{ //Username was left blank
             result = InputResult.EMPTY;
+            LOG.fine("Username cannot be blank!");
         }
         return result;
 
@@ -136,6 +135,10 @@ public class PlayerLobby {
         return(!username.contains("\""));
     }
 
+    /**
+     * Gets a set containing the usernames of the users
+     * @return Set<String> of usernames
+     */
     public Set<String> getUserList(){
         return this.playerLobby.keySet();
     }
