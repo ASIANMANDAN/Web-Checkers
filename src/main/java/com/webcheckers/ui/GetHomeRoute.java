@@ -1,8 +1,6 @@
 package com.webcheckers.ui;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.Objects;
+import java.util.*;
 import java.util.logging.Logger;
 
 import com.webcheckers.appl.PlayerLobby;
@@ -18,11 +16,13 @@ public class GetHomeRoute implements Route {
 
   //FTL file which is responsible for rendering the page
   static final String VIEW_NAME = "home.ftl";
-  static final String PLAYERS_ONLINE = "numPlayersOnline";
+  static final String PLAYERS_ONLINE_ATTR = "numPlayersOnline";
+  static final String PLAYERS_LIST_ATTR = "allPlayers";
+
   //Key in the session attribute map for the list of players in the lobby.
   static final String PLAYERLOBBY_KEY = "playerLobby";
   //Key for the current player
-  static final String PLAYER_CURR = "currentPlayer";
+  private final String PLAYER_CURR = "currentPlayer";
 
 
   private final TemplateEngine templateEngine;
@@ -70,12 +70,11 @@ public class GetHomeRoute implements Route {
     //Start building the view-model
     Map<String, Object> vm = new HashMap<>();
     vm.put("title", "Welcome!");
-    vm.put(PLAYERS_ONLINE, playerLobby.getNumOfUsers());
+    vm.put(PLAYERS_ONLINE_ATTR, playerLobby.getNumOfUsers());
     //provide the current player to the view-model
     vm.put(PLAYER_CURR, playerLobby.getCurrentPlayer());
     //provide the playerlist to the view-model
-    //TODO test/utilize
-    vm.put(PLAYERLOBBY_KEY, playerLobby.getUserList());
+    vm.put(PLAYERS_LIST_ATTR, playerLobby.getUserList());
 
 
     //Add the player lobby object to session attribute map

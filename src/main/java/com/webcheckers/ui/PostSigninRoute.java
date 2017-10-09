@@ -22,7 +22,6 @@ public class PostSigninRoute implements Route{
     //FTL file which is responsible for rendering the page
     private static final String VIEW_NAME = "signin.ftl";
     private static final String MESSAGE_ATTR = "message";
-    //private static final String MESSAGE_TYPE_ATTR = "messageType";
     private static final String USERNAME_PARAM = "username";
 
     private final TemplateEngine templateEngine;
@@ -80,7 +79,7 @@ public class PostSigninRoute implements Route{
 
             case ACCEPTED:
                 //Add number of players to vm to avoid errors
-                vm.put(GetHomeRoute.PLAYERS_ONLINE, playerLobby.getNumOfUsers());
+                vm.put(GetHomeRoute.PLAYERS_ONLINE_ATTR, playerLobby.getNumOfUsers());
                 //Return the user to the home page
                 response.redirect(WebServer.HOME_URL);
                 mv = accepted(vm);

@@ -21,6 +21,9 @@
 	  <p>Current player: ${currentPlayer.getUsername()}</p>
 	  
       <p>A list of players should go here!</p>
+      <#list allPlayers as player>
+        <p>${player}
+      </#list>
 	  
 	  
       <form action="./signout" method="GET">
