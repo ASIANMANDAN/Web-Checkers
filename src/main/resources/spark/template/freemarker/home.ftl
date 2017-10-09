@@ -12,6 +12,11 @@
     
     <div class="navigation">
       <a href="/">My Home</a>
+      <#if currentPlayer??>
+      <a href="/signout">Sign-out</a>
+      <#else>
+      <a href="/signin">Sign-in</a>
+      </#if>
     </div>
     
     <div class="body">
