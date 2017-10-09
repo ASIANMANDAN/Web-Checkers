@@ -20,10 +20,14 @@
     <#if currentPlayer??>
 	  <p>Current player: ${currentPlayer.getUsername()}</p>
 	  
-      <p>Players online:</p>
+
       <#list allPlayers as player>
-        <p>${player}
+          <p>Players online:</p>
+          <#if player != currentPlayer.getUsername()>
+            <p>${player}
+          </#if>
       </#list>
+      
 	  
 	  
       <form action="./signout" method="GET">
