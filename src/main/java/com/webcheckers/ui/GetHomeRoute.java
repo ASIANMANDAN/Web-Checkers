@@ -18,6 +18,7 @@ public class GetHomeRoute implements Route {
   static final String VIEW_NAME = "home.ftl";
   static final String PLAYERS_ONLINE_ATTR = "numPlayersOnline";
   static final String PLAYERS_LIST_ATTR = "allPlayers";
+  static final String CURRENT_PLAYER_ATTR = "currentPlayer";
   private final String CURR_PLAYER_ATTR = "currentPlayer";
 
   //Key in the session attribute map for the list of players in the lobby.

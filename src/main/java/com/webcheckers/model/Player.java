@@ -30,4 +30,17 @@ public class Player {
         return this.username;
     }
 
+    /**
+     * .equals method for a Player object. Determines if a Player object is
+     * equal based off of a Player's username.
+     * @param obj other Player to check
+     * @return boolean for itf the two objects are equal
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof Player)) return false;
+        final Player that = (Player) obj;
+        return this.username == that.getUsername();
+    }
 }

@@ -1,6 +1,7 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.Player;
 import spark.*;
 
 import java.util.HashMap;
@@ -60,6 +61,8 @@ public class PostSigninRoute implements Route{
         final PlayerLobby playerLobby =
                 session.attribute(GetHomeRoute.PLAYERLOBBY_KEY);
 
+
+
         //Query server for username entered by client
         final String username = request.queryParams(USERNAME_PARAM);
 
@@ -80,6 +83,10 @@ public class PostSigninRoute implements Route{
             case ACCEPTED:
                 //Add number of players to vm to avoid errors
                 vm.put(GetHomeRoute.PLAYERS_ONLINE_ATTR, playerLobby.getNumOfUsers());
+
+                //Create currentPlayer Object and store it in http session
+                session.attribute(GetHomeRoute.CURRENT_PLAYER_ATTR, new Player(username));
+
                 //Return the user to the home page
                 response.redirect(WebServer.HOME_URL);
                 mv = accepted(vm);
