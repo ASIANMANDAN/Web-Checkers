@@ -64,6 +64,8 @@ public class PostSigninRoute implements Route{
         final PlayerLobby playerLobby =
                 httpSession.attribute(GetHomeRoute.PLAYERLOBBY_KEY);
 
+
+
         //Query server for username entered by client
         final String username = request.queryParams(USERNAME_PARAM);
 
@@ -86,6 +88,7 @@ public class PostSigninRoute implements Route{
                 vm.put(GetHomeRoute.PLAYERS_ONLINE_ATTR, playerLobby.getNumOfUsers());
                 Player player = new Player((username));
                 httpSession.attribute(CURR_PLAYER, player);
+                
                 //Return the user to the home page
                 response.redirect(WebServer.HOME_URL);
                 mv = accepted(vm);
