@@ -19,7 +19,9 @@ import java.util.Objects;
 public class GetSignoutRoute implements Route{
 
     //FTL file which is responsible for rendering the page
-    private static final String VIEW_NAME = "signout.ftl";
+    private static final String VIEW_NAME = "home.ftl";
+    //number of players in the lobby
+    static final String PLAYERS_ONLINE = "numPlayersOnline";
 
     private final TemplateEngine templateEngine;
     private final PlayerLobby playerLobby;
@@ -45,7 +47,15 @@ public class GetSignoutRoute implements Route{
     @Override
     public Object handle(Request request, Response response) throws Exception {
         Map<String, Object> vm = new HashMap<>();
+
         vm.put("title", "Player Sign-out");
+        //updates number of players
+        vm.put(PLAYERS_ONLINE, playerLobby.getNumOfUsers());
+        //signs out the current user
+        playerLobby.signOut(playerLobby.getCurrentPlayer().getUsername());
+        //Return the user to the home page
+        response.redirect(WebServer.HOME_URL);
+
         return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }
 }

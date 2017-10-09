@@ -20,7 +20,6 @@ public class GetHomeRoute implements Route {
   //FTL file which is responsible for rendering the page
   static final String VIEW_NAME = "home.ftl";
   static final String PLAYERS_ONLINE = "numPlayersOnline";
-
   //Key in the session attribute map for the list of players in the lobby.
   static final String PLAYERLOBBY_KEY = "playerLobby";
   //Key for the current player
@@ -77,7 +76,7 @@ public class GetHomeRoute implements Route {
     vm.put(PLAYER_CURR, playerLobby.getCurrentPlayer());
     //provide the playerlist to the view-model
     //TODO test/utilize
-    vm.put(PLAYERLOBBY_KEY, playerLobby.getPlayerLobby());
+    vm.put(PLAYERLOBBY_KEY, playerLobby.getUserList());
 
 
     //Add the player lobby object to session attribute map

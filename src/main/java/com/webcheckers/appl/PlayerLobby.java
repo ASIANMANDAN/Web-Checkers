@@ -4,6 +4,7 @@ import com.webcheckers.model.Player;
 import com.webcheckers.ui.GetHomeRoute;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.logging.Logger;
@@ -32,7 +33,6 @@ public class PlayerLobby {
     private Map<String, Player> playerLobby = new HashMap<>();
     private int numOfUsers = 0;
     private Player currentPlayer = null;
-
 
     /**
      * When the user hits the signin button, that user is run through a check
@@ -84,6 +84,7 @@ public class PlayerLobby {
         this.playerLobby.remove(username);
         this.numOfUsers--;
         this.currentPlayer = null;
+        LOG.fine(username + " was removed from the lobby.");
     }
 
     /**
@@ -132,12 +133,11 @@ public class PlayerLobby {
      * @return boolean as to what is valid or not.
      */
     private boolean isValidUsername(String username){
-        if (username.contains("\"")) {
-            return false;
-        }
-        else {
-            return true;
-        }
+        return(!username.contains("\""));
+    }
+
+    public Set<String> getUserList(){
+        return this.playerLobby.keySet();
     }
 
 }

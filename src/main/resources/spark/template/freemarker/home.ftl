@@ -24,7 +24,7 @@
 	  
 	  
       <form action="./signout" method="GET">
-      <button type="button">Sign Out</button>
+      <button>Sign Out</button>
       </form>
 
     <#else>
