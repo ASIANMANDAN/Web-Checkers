@@ -22,30 +22,27 @@
     <div class="body">
       <p>Welcome to the wonderful world of online Checkers.</p>
 
-    <#if currentPlayer??>
-	  <p>Current player: ${currentPlayer.getUsername()}</p>
+      <#if currentPlayer??>
+	      <p>Current player: ${currentPlayer.getUsername()}</p>
 	  
-
-      <#list allPlayers as player>
-          <p>Players online:</p>
+        <p>Players online:</p>
+        <#list allPlayers as player>
           <#if player != currentPlayer.getUsername()>
-            <p>${player}
+            <a href="/game">${player}</a>
           </#if>
-      </#list>
+        </#list>
       
-	  
-	  
-      <form action="./signout" method="GET">
-      <button>Sign Out</button>
-      </form>
+        <form action="./signout" method="GET">
+          <button>Sign Out</button>
+        </form>
 
-    <#else>
-      <p>Players online: ${numPlayersOnline}</p>
+      <#else>
+        <p>Players online: ${numPlayersOnline}</p>
 
-      <form action="./signin" method="GET">
-      <button>Sign In</button>
-      </form>
-    </#if>
+        <form action="./signin" method="GET">
+          <button>Sign In</button>
+        </form>
+      </#if>
 
     </div>
     
