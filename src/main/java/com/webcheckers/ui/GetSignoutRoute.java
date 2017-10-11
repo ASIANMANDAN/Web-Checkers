@@ -34,11 +34,8 @@ public class GetSignoutRoute implements Route{
      * Create the Spark Route (UI controller) for the
      * {@code GET /} HTTP request.
      *
-     * @param templateEngine
-     *   the HTML template rendering engine
-     *
-     * @param playerLobby
-     *   the application which shows a list of players that are signed in.
+     * @param templateEngine the HTML template rendering engine
+     * @param playerLobby the application which shows a list of players that are signed in.
      */
     public GetSignoutRoute(final TemplateEngine templateEngine,
                         final PlayerLobby playerLobby) {
@@ -53,13 +50,10 @@ public class GetSignoutRoute implements Route{
     /**
      * Render the WebCheckers Home page after the player has signed out.
      *
-     * @param request
-     *   the HTTP request
-     * @param response
-     *   the HTTP response
+     * @param request the HTTP request
+     * @param response the HTTP response
      *
-     * @return
-     *   the rendered HTML for the Home page
+     * @return the rendered HTML for the Home page
      */
     @Override
     public Object handle(Request request, Response response) throws Exception {

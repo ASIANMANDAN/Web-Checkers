@@ -23,20 +23,27 @@
       <p>Welcome to the wonderful world of online Checkers.</p>
 
       <#if currentPlayer??>
-	      <p>Current player: ${currentPlayer.getUsername()}</p>
+	    <p>Current player: ${currentPlayer.username}</p><br />
 	  
-        <p>Players online:</p>
-        <#list allPlayers as player>
-          <#if player != currentPlayer.getUsername()>
-            <a href="/game">${player}</a>
-          </#if>
-        </#list>
+        <p>In order to start a game, select an opponent below and press 
+        the play button.</p>
+
+        <form action="./game" method="GET">
+        	<#list allPlayers as player>
+          		<#if player != currentPlayer.username>
+            		<input type="radio" name="opponent" value=${player} /> ${player}
+          		</#if>
+        	</#list> <br />
+        	<button type="submit">Play!</button>
+        </form>
+        <br />	
       
         <form action="./signout" method="GET">
           <button>Sign Out</button>
         </form>
 
       <#else>
+
         <p>Players online: ${numPlayersOnline}</p>
 
         <form action="./signin" method="GET">

@@ -58,11 +58,19 @@ public class WebServer {
   /**
    * The URL pattern to request the Sign-in page.
    */
+
   public static final String SIGNIN_URL = "/signin";
   /**
    * The URL pattern to request the Sign-out page.
    */
+
   public static final String SIGNOUT_URL = "/signout";
+  /**
+   * The URL pattern to request the Game page.
+   */
+
+  public static final String GAME_URL = "/game";
+
   //
   // Attributes
   //
@@ -162,6 +170,9 @@ public class WebServer {
 
     //Route class for signing out
     get(SIGNOUT_URL, new GetSignoutRoute(templateEngine, playerLobby));
+
+    //Route for starting and playing a game
+    get(GAME_URL, new GetGameRoute(templateEngine));
 
     //
     LOG.config("WebServer is initialized.");

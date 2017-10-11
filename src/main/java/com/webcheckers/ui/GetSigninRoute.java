@@ -26,8 +26,7 @@ public class GetSigninRoute implements Route{
      * Create the Spark Route (UI controller) for the
      * {@code GET /} HTTP request.
      *
-     * @param templateEngine
-     *   the HTML template rendering engine
+     * @param templateEngine the HTML template rendering engine
      */
     public GetSigninRoute(final TemplateEngine templateEngine) {
         // validation
@@ -38,13 +37,10 @@ public class GetSigninRoute implements Route{
     /**
      * Render the WebCheckers Sign-in page.
      *
-     * @param request
-     *   the HTTP request
-     * @param response
-     *   the HTTP response
+     * @param request the HTTP request
+     * @param response the HTTP response
      *
-     * @return
-     *   the rendered HTML for the Sign-in page
+     * @return the rendered HTML for the Sign-in page
      */
     @Override
     public Object handle(Request request, Response response) {
