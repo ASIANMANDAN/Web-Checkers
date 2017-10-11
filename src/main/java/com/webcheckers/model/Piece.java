@@ -9,16 +9,23 @@ package com.webcheckers.model;
  * @author Nathan Farrell
  */
 public class Piece {
+    //Accepted piece colors
+    private enum Color {RED, WHITE}
+    //Piece types
+    private enum Type {SINGLE, KING}
 
-    private String color;
+    private Color color;
+
+    private Type type;
 
     /**
      * Creates either a red or white piece.
      *
      * @param color The color the piece is
      */
-    public Piece(String color){
+    public Piece(Color color, Type type){
         this.color = color;
+        this.type = type;
     }
 
     /**
@@ -26,13 +33,16 @@ public class Piece {
      *
      * @return The color of the piece
      */
-    public String getColor() {
+    public Color getColor() {
         return color;
     }
 
     /**
-     * To be implemented later
+     * Get the type of the piece
+     *
+     * @return piece type
      */
-    //TODO
-    public void move(){}
+    public Type getType(){
+        return type;
+    }
 }
