@@ -63,7 +63,7 @@ public class GetGameRoute implements Route{
         //Query server for selected opponent
         Player opponent = new Player(request.queryParams(OPPONENT_PARAM));
 
-        LOG.finer(currentPlayer.getUsername() + " has selected " +
+        LOG.fine(currentPlayer.getUsername() + " has selected " +
                 opponent.getUsername() + " as an opponent!");
 
         //Initialize board model which keeps track of state of game
@@ -83,7 +83,7 @@ public class GetGameRoute implements Route{
         vm.put(ACTIVE_ATTR, Board.ActiveColor.RED);
         vm.put(BOARD_ATTR, view);
 
-        LOG.finer("The game has started!");
+        LOG.fine("The game has started!");
         return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }
 }

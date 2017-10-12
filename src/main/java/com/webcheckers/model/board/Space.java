@@ -65,6 +65,14 @@ public class Space {
     }
 
     /**
+     *
+     * @return
+     */
+    public Piece getPiece() {
+        return this.piece;
+    }
+
+    /**
      * Gets the row which the space is in.
      *
      * @return the array number of the row where the space is
