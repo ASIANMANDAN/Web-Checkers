@@ -1,7 +1,5 @@
 package com.webcheckers.model;
 
-import java.util.Iterator;
-
 /**
  * Model tier class that represents the checkers board.
  *
@@ -10,13 +8,26 @@ import java.util.Iterator;
  * @author Kevin Paradis
  * @author Nathan Farrell
  */
-public class Board implements Iterable{
+public class Board {
     //TODO build up this class- create 2D array, initialize with pieces, etc.
 
     private Space[][] board;
 
     //Used to determine the size of the board
-    private static final int size = 8;
+    public static final int size = 8;
+
+//    Iterator<Space> spaceIterator = new Iterator<Space>() {
+//
+//        @Override
+//        public boolean hasNext() {
+//            return false;
+//        }
+//
+//        @Override
+//        public Space next() {
+//            return null;
+//        }
+//    };
 
     /**
      * Creates a board used for keeping track of the state
@@ -35,11 +46,11 @@ public class Board implements Iterable{
 
                 //Black spaces
                 if ((i%2 == 0 && j%2 == 1) || (i%2 == 1 && j%2 == 0)) {
-                    this.board[i][j] = new Space(j, Space.Color.BLACK);
+                    this.board[i][j] = new Space(i, j, Space.Color.BLACK);
                 }
                 //White spaces
                 else {
-                    this.board[i][j] = new Space(j, Space.Color.WHITE);
+                    this.board[i][j] = new Space(i, j, Space.Color.WHITE);
                 }
             }
         }
@@ -82,11 +93,5 @@ public class Board implements Iterable{
             }
         }
         return true;
-    }
-    
-
-    @Override
-    public Iterator iterator() {
-        return null;
     }
 }
