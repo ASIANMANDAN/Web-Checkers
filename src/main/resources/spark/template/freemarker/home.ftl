@@ -36,7 +36,7 @@
         	</#list> <br />
         	<button type="submit">Play!</button>
         </form>
-        <br />	
+        <br />
       
         <form action="./signout" method="GET">
           <button>Sign Out</button>

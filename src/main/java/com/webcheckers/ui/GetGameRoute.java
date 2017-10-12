@@ -13,6 +13,10 @@ public class GetGameRoute implements Route{
 
     //FTL file which is responsible for rendering the page
     static final String VIEW_NAME = "game.ftl";
+    static final String MODE_ATTR = "viewMode";
+    static final String RED_PLAYER_ATTR = "redPlayer";
+    static final String WHITE_PLAYER_ATTR = "whitePlayer";
+    static final String ACTIVE_ATTR = "activeColor";
     static final String OPPONENT_PARAM = "opponent";
 
     //Key in the session attribute map for the current user Player object
@@ -41,29 +45,28 @@ public class GetGameRoute implements Route{
      */
     @Override
     public Object handle(Request request, Response response) {
-        LOG.finer("A game has been started!"); //todo add names of users who started game
-
         final Session httpSession = request.session();
+        Player currentPlayer = httpSession.attribute(CURR_PLAYER);
 
         //Query server for selected opponent
         Player opponent = new Player(request.queryParams(OPPONENT_PARAM));
 
-        //For test purposes
-        LOG.finer(httpSession.attribute(CURR_PLAYER) + " chose " + opponent.getUsername() +
-                "as an opponent!");
+        LOG.finer(currentPlayer.getUsername() + " has selected " +
+                opponent.getUsername() + " as an opponent!");
 
         //Start building the view-model
         Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Game");
 
         //This is hardcoded in for now //todo add this enumeration
-        vm.put("viewMode", "PLAY");
-        vm.put("currentPlayer", httpSession.attribute(CURR_PLAYER));
-        vm.put("redPlayer", httpSession.attribute(CURR_PLAYER));
-        vm.put("whitePlayer", opponent);
+        vm.put(MODE_ATTR, "PLAY");
+        vm.put(CURR_PLAYER, httpSession.attribute(CURR_PLAYER));
+        vm.put(RED_PLAYER_ATTR, httpSession.attribute(CURR_PLAYER));
+        vm.put(WHITE_PLAYER_ATTR, opponent);
         //This is hardcoded in for now //todo add this enumeration
-        vm.put("activeColor", "RED");
+        vm.put(ACTIVE_ATTR, "RED");
 
+        LOG.finer("The game has started!");
         return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }
 }

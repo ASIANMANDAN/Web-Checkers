@@ -15,7 +15,6 @@ public class Piece {
     private enum Type {SINGLE, KING}
 
     private Color color;
-
     private Type type;
 
     /**
