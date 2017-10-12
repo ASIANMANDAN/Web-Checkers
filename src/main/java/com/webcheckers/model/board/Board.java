@@ -12,7 +12,7 @@ public class Board{
     private Space[][] board;
 
     //Used to determine the size of the board
-    private static final int size = 8;
+    public static final int size = 8;
 
     /**
      * Creates a board used for keeping track of the state
@@ -29,11 +29,11 @@ public class Board{
 
                 //Black spaces
                 if ((i%2 == 0 && j%2 == 1) || (i%2 == 1 && j%2 == 0)) {
-                    this.board[i][j] = new Space(j, Space.Color.BLACK);
+                    this.board[i][j] = new Space(i, j, Space.Color.BLACK);
                 }
                 //White spaces
                 else {
-                    this.board[i][j] = new Space(j, Space.Color.WHITE);
+                    this.board[i][j] = new Space(i, j, Space.Color.WHITE);
                 }
             }
         }
@@ -77,7 +77,6 @@ public class Board{
         }
         return true;
     }
-
     /**
      * Retrieves the 2d array of Spaces representing the game board.
      *

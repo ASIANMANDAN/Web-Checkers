@@ -13,25 +13,28 @@ import com.webcheckers.model.board.Piece;
 public class Space {
 
     //Enum to represent the possible colors of a space.
-    public enum Color {WHITE, BLACK};
+    public enum Color {WHITE, BLACK}
 
-    private int cellIdx;
+    private int row;
+    private int col;
     private Piece piece;
     private Color color;
 
     /**
      * Constructor for a space on a game board.
      *
-     * @param cellIdx what cell within a row the space is
+     * @param row the row where the space is being created
+     * @param col the column where the space is being created
      * @param color the color of that space
      * @throws Exception occurs if the given cellIdx is greater or less than
      * the bounds established by a standard game board
      */
-    public Space(int cellIdx, Color color) throws Exception {
-        if (cellIdx < 0 || cellIdx > 7) {
-            throw new Exception("cellIdx must be between 0 and 7.");
+    public Space(int row, int col, Color color) throws Exception {
+        if ((col < 0 || row >= Board.size) && (row < 0 || row >= Board.size)) {
+            throw new Exception("the  must be between 0 and the board SIZE.");
         } else {
-            this.cellIdx = cellIdx;
+            this.row = row;
+            this.col = col;
             this.color = color;
             this.piece = null;
         }
@@ -62,12 +65,21 @@ public class Space {
     }
 
     /**
-     * Gets the cell within a row that the space is in.
+     * Gets the row which the space is in.
      *
-     * @return the index number of the row where the space lies
+     * @return the array number of the row where the space is
      */
-    public int getCellIdx() {
-        return this.cellIdx;
+    public int getRow() {
+        return this.row;
+    }
+
+    /**
+     * Gets the column which the space is in.
+     *
+     * @return the array number of the column where the space is
+     */
+    public int getCol() {
+        return this.col;
     }
 
     /**
