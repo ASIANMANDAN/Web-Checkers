@@ -20,7 +20,7 @@
 
       <#else>
       <p>Choose a username so that friends and opponents can find you!
-      When you're finished, click the Sign In button to sign-in.</p>
+      When you're finished, click the Sign In button to start playing!</p>
       </#if>
       
 
