@@ -8,6 +8,14 @@ import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
 
+/**
+ * The UI controller to get the Game page.
+ *
+ * @author Dan Wang
+ * @author Emily Lederman
+ * @author Kevin Paradis
+ * @author Nathan Farrell
+ */
 public class GetGameRoute implements Route{
     private static final Logger LOG = Logger.getLogger(GetGameRoute.class.getName());
 
@@ -62,7 +70,7 @@ public class GetGameRoute implements Route{
         //Start building the view-model
         Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Game");
-        
+
         //This is hardcoded in for now //todo add this enumeration
         vm.put(MODE_ATTR, "PLAY");
         vm.put(CURR_PLAYER, httpSession.attribute(CURR_PLAYER));
