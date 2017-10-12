@@ -22,13 +22,13 @@ public class BoardView implements Iterable {
         this.board = new ArrayList<>();
         Space[][] currentGameBoard = gameBoard.getBoard();
 
-        for (int r= 0; r< size; r++){
+        for (int r = 0; r < size; r++){
             Row newRow = new Row(r);
-            for (int c = 0; c< size; c++){
+            for (int c = 0; c < size; c++){
                 Space gameSpace = currentGameBoard[r][c];
 
                 //Create copy to avoid overwrites in future
-                Space displaySpace = new Space(c, gameSpace.getColor());
+                Space displaySpace = new Space(r, c, gameSpace.getColor());
                 newRow.addSpace(c, displaySpace);
             }
             this.board.add(r, newRow);

@@ -8,7 +8,14 @@ package com.webcheckers.model.board;
  * @author Kevin Paradis
  * @author Nathan Farrell
  */
-public class Board{
+public class Board {
+
+    //The color of the player whose turn it currently is
+    public enum ActiveColor {RED, WHITE}
+
+    //The mode of the Game View
+    public enum ViewMode {PLAY, SPECTATE, REPLAY}
+
     private Space[][] board;
 
     //Used to determine the size of the board
@@ -77,6 +84,7 @@ public class Board{
         }
         return true;
     }
+
     /**
      * Retrieves the 2d array of Spaces representing the game board.
      *

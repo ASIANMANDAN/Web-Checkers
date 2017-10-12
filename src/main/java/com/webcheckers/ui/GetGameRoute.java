@@ -1,6 +1,8 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.model.Player;
+import com.webcheckers.model.board.Board;
+import com.webcheckers.ui.boardView.BoardView;
 import spark.*;
 
 import java.util.HashMap;
@@ -26,16 +28,13 @@ public class GetGameRoute implements Route{
     static final String WHITE_PLAYER_ATTR = "whitePlayer";
     static final String ACTIVE_ATTR = "activeColor";
     static final String OPPONENT_PARAM = "opponent";
+    static final String BOARD_ATTR = "board";
 
     //Key in the session attribute map for the current user Player object
     static final String CURR_PLAYER = "currentPlayer";
 
-    //key for session attribute map board
-    static final String BOARD = "board";
-    //
-    static final String PIECE = "piece";
-
     private final TemplateEngine templateEngine;
+
     /**
      * Create the Spark Route (UI controller) for the
      * {@code GET /} HTTP request.
@@ -57,7 +56,7 @@ public class GetGameRoute implements Route{
      * @return the rendered HTML for the Game page
      */
     @Override
-    public Object handle(Request request, Response response) {
+    public Object handle(Request request, Response response) throws Exception {
         final Session httpSession = request.session();
         Player currentPlayer = httpSession.attribute(CURR_PLAYER);
 
@@ -67,17 +66,22 @@ public class GetGameRoute implements Route{
         LOG.finer(currentPlayer.getUsername() + " has selected " +
                 opponent.getUsername() + " as an opponent!");
 
+        //Initialize board model which keeps track of state of game
+        Board board = new Board();
+        board.newGame();
+        BoardView view = new BoardView(board);
+
         //Start building the view-model
         Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Game");
 
-        //This is hardcoded in for now //todo add this enumeration
-        vm.put(MODE_ATTR, "PLAY");
-        vm.put(CURR_PLAYER, httpSession.attribute(CURR_PLAYER));
-        vm.put(RED_PLAYER_ATTR, httpSession.attribute(CURR_PLAYER));
+        //This is hardcoded in for now
+        vm.put(MODE_ATTR, Board.ViewMode.PLAY);
+        vm.put(CURR_PLAYER, currentPlayer);
+        vm.put(RED_PLAYER_ATTR, currentPlayer);
         vm.put(WHITE_PLAYER_ATTR, opponent);
-        //This is hardcoded in for now //todo add this enumeration
-        vm.put(ACTIVE_ATTR, "RED");
+        vm.put(ACTIVE_ATTR, Board.ActiveColor.RED);
+        vm.put(BOARD_ATTR, view);
 
         LOG.finer("The game has started!");
         return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
