@@ -22,6 +22,11 @@ public class GetGameRoute implements Route{
     //Key in the session attribute map for the current user Player object
     static final String CURR_PLAYER = "currentPlayer";
 
+    //key for session attribute map board
+    static final String BOARD = "board";
+    //
+    static final String PIECE = "piece";
+
     private final TemplateEngine templateEngine;
     /**
      * Create the Spark Route (UI controller) for the
@@ -57,7 +62,7 @@ public class GetGameRoute implements Route{
         //Start building the view-model
         Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Game");
-
+        
         //This is hardcoded in for now //todo add this enumeration
         vm.put(MODE_ATTR, "PLAY");
         vm.put(CURR_PLAYER, httpSession.attribute(CURR_PLAYER));
