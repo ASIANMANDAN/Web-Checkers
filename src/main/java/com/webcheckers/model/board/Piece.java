@@ -1,4 +1,4 @@
-package com.webcheckers.model;
+package com.webcheckers.model.board;
 
 /**
  * Model tier class that represents a basic checker piece on the checker board.

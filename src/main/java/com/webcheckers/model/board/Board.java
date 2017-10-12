@@ -1,6 +1,4 @@
-package com.webcheckers.model;
-
-import java.util.Iterator;
+package com.webcheckers.model.board;
 
 /**
  * Model tier class that represents the checkers board.
@@ -10,9 +8,7 @@ import java.util.Iterator;
  * @author Kevin Paradis
  * @author Nathan Farrell
  */
-public class Board implements Iterable{
-    //TODO build up this class- create 2D array, initialize with pieces, etc.
-
+public class Board{
     private Space[][] board;
 
     //Used to determine the size of the board
@@ -28,8 +24,6 @@ public class Board implements Iterable{
     public Board() throws Exception {
         this.board = new Space[size][size];
 
-        //Iterates through the board to populate array indices
-        //with spaces
         for (int i = 0; i < size; i++) {
             for (int j = 0; j < size; j++) {
 
@@ -83,10 +77,13 @@ public class Board implements Iterable{
         }
         return true;
     }
-    
 
-    @Override
-    public Iterator iterator() {
-        return null;
+    /**
+     * Retrieves the 2d array of Spaces representing the game board.
+     *
+     * @return 2d array of Spaces.
+     */
+    public Space[][] getBoard() {
+        return this.board;
     }
 }

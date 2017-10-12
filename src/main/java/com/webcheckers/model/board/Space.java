@@ -1,4 +1,6 @@
-package com.webcheckers.model;
+package com.webcheckers.model.board;
+
+import com.webcheckers.model.board.Piece;
 
 /**
  * Model tier class which represents a space on the board.
@@ -33,6 +35,15 @@ public class Space {
             this.color = color;
             this.piece = null;
         }
+    }
+
+    /**
+     * Retrieves the color of the space
+     *
+     * @return color of the space
+     */
+    public Color getColor() {
+        return this.color;
     }
 
     /**
