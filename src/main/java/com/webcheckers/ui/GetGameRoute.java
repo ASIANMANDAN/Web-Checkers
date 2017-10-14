@@ -1,6 +1,7 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.appl.CurrentGames;
+import com.webcheckers.appl.Game;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
 import com.webcheckers.ui.boardView.BoardView;
@@ -10,6 +11,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
+
+import static spark.Spark.halt;
 
 /**
  * The UI controller to get the Game page.
@@ -61,42 +64,80 @@ public class GetGameRoute implements Route{
     @Override
     public Object handle(Request request, Response response) throws Exception {
         final Session httpSession = request.session();
-        Player currentPlayer = httpSession.attribute(CURR_PLAYER);
 
         //Query server for selected opponent
+        //If the player did not choose an opponent, return them
+        if (request.queryParams(OPPONENT_PARAM) == null) {
+            response.redirect(WebServer.HOME_URL);
+            halt();
+            return null;
+        }
+
         Player opponent = new Player(request.queryParams(OPPONENT_PARAM));
+        Player currentPlayer = httpSession.attribute(CURR_PLAYER);
 
         //Checks that the selected opponent is not in a game already
         CurrentGames currentGames = httpSession.attribute(CURRENTGAMES_KEY);
-        if (currentGames.playerInGame(opponent.getUsername())) {
-            //todo add message to home about invalid user
-            response.redirect(WebServer.HOME_URL);
-        } else {
-            currentGames.addPlayer(currentPlayer.getUsername(),
-                    opponent.getUsername());
+
+        //Case for when a selected opponent is redirected to a game
+        if (currentGames.playingTogether(opponent.getUsername(),
+                        currentPlayer.getUsername())) {
+
+            //Start building the view-model
+            Map<String, Object> vm = new HashMap<>();
+            vm.put("title", "Game");
+
+            //This is hardcoded in for now
+            vm.put(MODE_ATTR, Board.ViewMode.PLAY);
+            vm.put(CURR_PLAYER, currentPlayer);
+            vm.put(RED_PLAYER_ATTR, opponent);
+            vm.put(WHITE_PLAYER_ATTR, currentPlayer);
+            vm.put(ACTIVE_ATTR, Board.ActiveColor.RED);
+            vm.put(BOARD_ATTR, currentGames.getView(currentPlayer.getUsername()));
+
+            LOG.fine(currentPlayer.getUsername() + " has joined!");
+            return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
         }
 
-        LOG.fine(currentPlayer.getUsername() + " has selected " +
-                opponent.getUsername() + " as an opponent!");
+        //Determine if the selected opponent is already in a game
+        if (currentGames.playerInGame(opponent.getUsername())) {
 
-        //Initialize board model which keeps track of state of game
-        Board board = new Board();
-        board.newGame();
-        BoardView view = new BoardView(board);
+            //todo add message to home about invalid user
+            response.redirect(WebServer.HOME_URL);
+            halt();
+            return null;
+        }
+        //Case for when a player initializes a game
+        else {
+            LOG.fine(currentPlayer.getUsername() + " has selected " +
+                    opponent.getUsername() + " as an opponent!");
 
-        //Start building the view-model
-        Map<String, Object> vm = new HashMap<>();
-        vm.put("title", "Game");
+            //Initialize board model which keeps track of state of game
+            Board board = new Board();
+            board.newGame();
 
-        //This is hardcoded in for now
-        vm.put(MODE_ATTR, Board.ViewMode.PLAY);
-        vm.put(CURR_PLAYER, currentPlayer);
-        vm.put(RED_PLAYER_ATTR, currentPlayer);
-        vm.put(WHITE_PLAYER_ATTR, opponent);
-        vm.put(ACTIVE_ATTR, Board.ActiveColor.RED);
-        vm.put(BOARD_ATTR, view);
+            //Add the game to list of ongoing games
+            Game game = new Game(currentPlayer.getUsername(),
+                    opponent.getUsername(), board);
+            currentGames.addGame(game);
 
-        LOG.fine("The game has started!");
-        return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
+            //A copy of the board model used for displaying the game
+            BoardView view = new BoardView(board, false);
+
+            //Start building the view-model
+            Map<String, Object> vm = new HashMap<>();
+            vm.put("title", "Game");
+
+            //This is hardcoded in for now
+            vm.put(MODE_ATTR, Board.ViewMode.PLAY);
+            vm.put(CURR_PLAYER, currentPlayer);
+            vm.put(RED_PLAYER_ATTR, currentPlayer);
+            vm.put(WHITE_PLAYER_ATTR, opponent);
+            vm.put(ACTIVE_ATTR, Board.ActiveColor.RED);
+            vm.put(BOARD_ATTR, view);
+
+            LOG.fine("Waiting for " + opponent.getUsername() + " to join.");
+            return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
+        }
     }
 }

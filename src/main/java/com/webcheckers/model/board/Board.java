@@ -47,8 +47,7 @@ public class Board {
     }
 
     /**
-     * Places all of the pieces on the board to represent a new game.
-     *
+     * Populates the board with pieces in the starting game formation.
      */
     public void newGame() {
         //Places white pieces at the top of the board
