@@ -3,7 +3,9 @@ package com.webcheckers.ui;
 import java.util.*;
 import java.util.logging.Logger;
 
+import com.webcheckers.appl.CurrentGames;
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.model.Player;
 import spark.*;
 
 /**
@@ -23,9 +25,12 @@ public class GetHomeRoute implements Route {
   static final String PLAYERLOBBY_KEY = "playerLobby";
   //Key in the session attribute map for the current user Player object
   static final String CURR_PLAYER = "currentPlayer";
+  //Key in the session attribute map for the hash of current players in a game
+  static final String CURRENTGAMES_KEY = "currentGames";
 
   private final TemplateEngine templateEngine;
   private final PlayerLobby playerLobby;
+  private final CurrentGames currentGames;
 
   /**
    * Create the Spark Route (UI controller) for the
@@ -35,12 +40,16 @@ public class GetHomeRoute implements Route {
    * @param playerLobby the application which shows a list of players that are signed in.
    */
   public GetHomeRoute(final TemplateEngine templateEngine,
-                      final PlayerLobby playerLobby) {
+                      final PlayerLobby playerLobby,
+                      final CurrentGames currentGames) {
     // validation
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
+    Objects.requireNonNull(playerLobby, "playerLobby must not be null");
+    Objects.requireNonNull(currentGames, "currentGames must not be null");
 
     this.templateEngine = templateEngine;
     this.playerLobby = playerLobby;
+    this.currentGames = currentGames;
 
     LOG.config("GetHomeRoute is initialized.");
   }
@@ -70,8 +79,18 @@ public class GetHomeRoute implements Route {
     vm.put(PLAYERS_LIST_ATTR, playerLobby.getUserList());
 
 
-    //Add the player lobby object to session attribute map
+    //Add the playerLobby object to session attribute map
     httpSession.attribute(PLAYERLOBBY_KEY, playerLobby);
+    //Add currentGames object to session attribute map
+    httpSession.attribute(CURRENTGAMES_KEY, currentGames);
+
+    //Checks if the current user has been selected upon each refresh
+    Player currentPlayer = httpSession.attribute(CURR_PLAYER);
+    if (currentPlayer != null) {
+        if (currentGames.playerInGame(currentPlayer.getUsername())) {
+            response.redirect(currentGames.createURL(currentPlayer.getUsername()));
+        }
+    }
 
     return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
   }

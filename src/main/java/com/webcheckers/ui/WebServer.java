@@ -7,6 +7,7 @@ import java.util.logging.Logger;
 
 import com.google.gson.Gson;
 
+import com.webcheckers.appl.CurrentGames;
 import com.webcheckers.appl.PlayerLobby;
 import spark.TemplateEngine;
 
@@ -78,6 +79,7 @@ public class WebServer {
   private final TemplateEngine templateEngine;
   private final Gson gson;
   private final PlayerLobby playerLobby;
+  private final CurrentGames currentGames;
 
   //
   // Constructor
@@ -98,7 +100,7 @@ public class WebServer {
    *    If any of the parameters are {@code null}.
    */
   public WebServer(final TemplateEngine templateEngine, final Gson gson,
-                   final PlayerLobby playerLobby) {
+                   final PlayerLobby playerLobby, final CurrentGames currentGames) {
     // validation
     Objects.requireNonNull(templateEngine, "templateEngine must not be null");
     Objects.requireNonNull(gson, "gson must not be null");
@@ -106,6 +108,7 @@ public class WebServer {
     this.templateEngine = templateEngine;
     this.gson = gson;
     this.playerLobby= playerLobby;
+    this.currentGames = currentGames;
   }
 
   //
@@ -160,7 +163,7 @@ public class WebServer {
     //// code clean; using small classes.
 
     // Shows the Checkers game Home page.
-    get(HOME_URL, new GetHomeRoute(templateEngine, playerLobby));
+    get(HOME_URL, new GetHomeRoute(templateEngine, playerLobby, currentGames));
 
     // Shows the Checkers game Sign-in page
     get(SIGNIN_URL, new GetSigninRoute(templateEngine));

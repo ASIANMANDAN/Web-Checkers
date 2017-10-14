@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.appl.CurrentGames;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
 import com.webcheckers.ui.boardView.BoardView;
@@ -32,6 +33,8 @@ public class GetGameRoute implements Route{
 
     //Key in the session attribute map for the current user Player object
     static final String CURR_PLAYER = "currentPlayer";
+    //Key in the session attribute map for the hash of current players in a game
+    static final String CURRENTGAMES_KEY = "currentGames";
 
     private final TemplateEngine templateEngine;
 
@@ -62,6 +65,16 @@ public class GetGameRoute implements Route{
 
         //Query server for selected opponent
         Player opponent = new Player(request.queryParams(OPPONENT_PARAM));
+
+        //Checks that the selected opponent is not in a game already
+        CurrentGames currentGames = httpSession.attribute(CURRENTGAMES_KEY);
+        if (currentGames.playerInGame(opponent.getUsername())) {
+            //todo add message to home about invalid user
+            response.redirect(WebServer.HOME_URL);
+        } else {
+            currentGames.addPlayer(currentPlayer.getUsername(),
+                    opponent.getUsername());
+        }
 
         LOG.fine(currentPlayer.getUsername() + " has selected " +
                 opponent.getUsername() + " as an opponent!");

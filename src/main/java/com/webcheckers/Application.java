@@ -6,6 +6,7 @@ import java.util.logging.LogManager;
 import java.util.logging.Logger;
 
 import com.google.gson.Gson;
+import com.webcheckers.appl.CurrentGames;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.ui.WebServer;
 
@@ -60,8 +61,11 @@ public final class Application {
     //Application which tracks the players which are signed in.
     final PlayerLobby playerLobby = new PlayerLobby();
 
+    final CurrentGames currentGames = new CurrentGames();
+
     // inject the game center and freemarker engine into web server
-    final WebServer webServer = new WebServer(templateEngine, gson, playerLobby);
+    final WebServer webServer = new WebServer(templateEngine, gson, playerLobby,
+            currentGames);
 
     // inject web server into application
     final Application app = new Application(webServer);

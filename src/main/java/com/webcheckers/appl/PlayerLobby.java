@@ -8,7 +8,7 @@ import java.util.Set;
 import java.util.logging.Logger;
 
 /**
- * PLayerLobby class is the application tier class that keeps
+ * PlayerLobby class is the application tier class that keeps
  * track of all of the users that are connected to the site.
  * Whether they are connected to a game already or not, the use
  * of the PlayerLobby class gives you the ability to see who's on
