@@ -32,6 +32,33 @@ public class Game {
     }
 
     /**
+     * Gets the name of the player who started the game.
+     *
+     * @return the name of the player
+     */
+    public String getPlayer1() {
+        return player1;
+    }
+
+    /**
+     * Gets the name of the player who joined the game.
+     *
+     * @return the name of the player
+     */
+    public String getPlayer2() {
+        return player2;
+    }
+
+    /**
+     * Gets the board model which tracks the game.
+     *
+     * @return the board model
+     */
+    public Board getBoard() {
+        return board;
+    }
+
+    /**
      * Determines if a given username is contained within the object.
      *
      * @param username name of player to check for

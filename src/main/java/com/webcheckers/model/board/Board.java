@@ -17,6 +17,7 @@ public class Board {
     public enum ViewMode {PLAY, SPECTATE, REPLAY}
 
     private Space[][] board;
+    public final ActiveColor currentTurn;
 
     //Used to determine the size of the board
     public static final int size = 8;
@@ -44,6 +45,8 @@ public class Board {
                 }
             }
         }
+
+        this.currentTurn = ActiveColor.RED;
     }
 
     /**

@@ -25,9 +25,13 @@
       <#if currentPlayer??>
 	    <p>Current player: ${currentPlayer.username}</p><br />
 	  
-        <p>To start a game, select an opponent below and press 
-        the play button.</p>
-
+        <#if message??>
+        	<p>${message}<p>
+        <#else>
+            <p>To start a game, select an opponent below and press 
+        	the play button.</p>
+    	</#if>
+    	
         <form action="./game" method="GET">
         	<#list allPlayers as player>
           		<#if player != currentPlayer.username>

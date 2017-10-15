@@ -1,7 +1,5 @@
 package com.webcheckers.model.board;
 
-import com.webcheckers.model.board.Piece;
-
 /**
  * Model tier class which represents a space on the board.
  *
@@ -65,8 +63,9 @@ public class Space {
     }
 
     /**
+     * Returns the piece that occupies the space.
      *
-     * @return
+     * @return the piece on the space
      */
     public Piece getPiece() {
         return this.piece;

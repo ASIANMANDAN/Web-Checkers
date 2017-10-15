@@ -1,7 +1,6 @@
 package com.webcheckers.ui.boardView;
 
 import com.webcheckers.model.board.Board;
-import com.webcheckers.model.board.Piece;
 import com.webcheckers.model.board.Space;
 
 import java.util.ArrayList;

@@ -95,8 +95,26 @@ public class CurrentGames {
      */
     public BoardView getView(String username) throws Exception {
         for (Game game : currentGames) {
+            if (game.player1.equals(username)) {
+                return new BoardView(game.board, false);
+            }
             if (game.player2.equals(username)) {
                 return new BoardView(game.board, true);
+            }
+        }
+        return null;
+    }
+
+    /**
+     * Returns the game that a given player is a part of.
+     *
+     * @param username the player whose game to find
+     * @return the game that player is a part of
+     */
+    public Game getGame(String username) {
+        for (Game game : currentGames) {
+            if (game.player1.equals(username) || game.player2.equals(username)) {
+                return game;
             }
         }
         return null;
