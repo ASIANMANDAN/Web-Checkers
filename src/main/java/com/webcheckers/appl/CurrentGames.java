@@ -72,6 +72,20 @@ public class CurrentGames {
     }
 
     /**
+     * Given a username, find that users game and remove it from
+     * the list of ongoing games.
+     *
+     * @param username name of user who is in a game
+     */
+    public void endGame(String username) {
+        for (Game game : currentGames) {
+            if (game.player1.equals(username) || game.player2.equals(username)) {
+                currentGames.remove(game);
+            }
+        }
+    }
+
+    /**
      * Determines if two players are playing a game with one another.
      *
      * @param p1 name of the player which started the game
