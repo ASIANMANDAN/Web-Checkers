@@ -9,6 +9,8 @@ import java.util.Map;
 import java.util.NoSuchElementException;
 import java.util.Objects;
 
+import static spark.Spark.halt;
+
 
 /**
  * The UI controller to POST username to Sign-in page.
@@ -78,15 +80,13 @@ public class PostSigninRoute implements Route{
                 break;
 
             case ACCEPTED:
-                //Add number of players to vm to avoid errors
-                vm.put(GetHomeRoute.PLAYERS_ONLINE_ATTR, playerLobby.getNumOfUsers());
-                Player player = new Player((username));
+                Player player = new Player(username);
                 httpSession.attribute(CURR_PLAYER, player);
 
                 //Return the user to the home page
                 response.redirect(WebServer.HOME_URL);
-                mv = accepted(vm);
-                break;
+                halt();
+                return null;
 
             default:
                 // All the InputResult values are in case statements so we should never get here.
@@ -133,16 +133,5 @@ public class PostSigninRoute implements Route{
         vm.put(MESSAGE_ATTR, message);
         vm.put("title", "Sign-in");
         return new ModelAndView(vm, VIEW_NAME);
-    }
-
-    /**
-     * Handles the view model in the case of an accepted username.
-     *
-     * @param vm ModelandView object which is rendered by the template
-     * @return a modified ModelandView object which expresses an accepted username
-     */
-    private ModelAndView accepted(final Map<String, Object> vm) {
-        vm.put("title", "Welcome!");
-        return new ModelAndView(vm, GetHomeRoute.VIEW_NAME);
     }
 }

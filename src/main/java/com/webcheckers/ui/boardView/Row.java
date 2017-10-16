@@ -21,21 +21,19 @@ public class Row implements Iterable {
     /**
      * Creates Row and assigns index.
      *
-     * @param index
-     * @throws Exception
+     * @param index index to assing to the row
      */
-    public Row(int index) throws Exception {
+    public Row(int index) {
         this.index = index;
     }
 
     /**
      * Adds a space to on index in the Row.
      *
-     * @param i index
      * @param newSpace New Space that is being assigned
      */
-    public void addSpace(int i, Space newSpace){
-        this.rowOfSpaces.add(i, newSpace);
+    public void addSpace(Space newSpace){
+        this.rowOfSpaces.add(newSpace);
     }
 
     /**
@@ -47,6 +45,11 @@ public class Row implements Iterable {
         return index;
     }
 
+    /**
+     * Iterates over the columns within a row.
+     *
+     * @return The Space in that column
+     */
     @Override
     public Iterator<Space> iterator() {
         return rowOfSpaces.iterator();

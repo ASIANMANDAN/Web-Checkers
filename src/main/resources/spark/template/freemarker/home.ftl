@@ -13,7 +13,7 @@
     <div class="navigation">
       <a href="/">My Home</a>
       <#if currentPlayer??>
-      <a href="/signout">Sign-out</a>
+      <a href="/signout">Sign out [${currentPlayer.username}]</a>
       <#else>
       <a href="/signin">Sign-in</a>
       </#if>
@@ -25,9 +25,13 @@
       <#if currentPlayer??>
 	    <p>Current player: ${currentPlayer.username}</p><br />
 	  
-        <p>In order to start a game, select an opponent below and press 
-        the play button.</p>
-
+        <#if message??>
+        	<p>${message}<p>
+        <#else>
+            <p>To start a game, select an opponent below and press 
+        	the play button.</p>
+    	</#if>
+    	
         <form action="./game" method="GET">
         	<#list allPlayers as player>
           		<#if player != currentPlayer.username>

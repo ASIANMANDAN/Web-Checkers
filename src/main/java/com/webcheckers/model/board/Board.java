@@ -17,6 +17,7 @@ public class Board {
     public enum ViewMode {PLAY, SPECTATE, REPLAY}
 
     private Space[][] board;
+    public final ActiveColor currentTurn;
 
     //Used to determine the size of the board
     public static final int size = 8;
@@ -44,15 +45,14 @@ public class Board {
                 }
             }
         }
+
+        this.currentTurn = ActiveColor.RED;
     }
 
     /**
-     * Places all of the pieces on the board to represent a new game.
-     *
-     * @return a boolean value of whether or not the board was setup
-     * properly
+     * Populates the board with pieces in the starting game formation.
      */
-    public boolean newGame() {
+    public void newGame() {
         //Places white pieces at the top of the board
         for (int i = 0; i < 3; i++) {
             for (int j = 0; j < size; j++) {
@@ -61,9 +61,6 @@ public class Board {
                 if (space.isValid()) {
                     space.setPiece(new Piece(Piece.Color.WHITE,
                             Piece.Type.SINGLE));
-                }
-                else {
-                    return false;
                 }
             }
         }
@@ -77,12 +74,8 @@ public class Board {
                     space.setPiece(new Piece(Piece.Color.RED,
                             Piece.Type.SINGLE));
                 }
-                else {
-                    return false;
-                }
             }
         }
-        return true;
     }
 
     /**

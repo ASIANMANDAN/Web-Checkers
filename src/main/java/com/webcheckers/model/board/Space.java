@@ -1,7 +1,5 @@
 package com.webcheckers.model.board;
 
-import com.webcheckers.model.board.Piece;
-
 /**
  * Model tier class which represents a space on the board.
  *
@@ -26,7 +24,7 @@ public class Space {
      * @param row the row where the space is being created
      * @param col the column where the space is being created
      * @param color the color of that space
-     * @throws Exception occurs if the given cellIdx is greater or less than
+     * @throws Exception occurs if the given column is greater or less than
      * the bounds established by a standard game board
      */
     public Space(int row, int col, Color color) throws Exception {
@@ -62,6 +60,15 @@ public class Space {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Returns the piece that occupies the space.
+     *
+     * @return the piece on the space
+     */
+    public Piece getPiece() {
+        return this.piece;
     }
 
     /**
