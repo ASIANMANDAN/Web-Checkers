@@ -66,6 +66,7 @@ public class GetGameRoute implements Route{
         LOG.finer(currentPlayer.getUsername() + " has selected " +
                 opponent.getUsername() + " as an opponent!");
 
+
         //Initialize board model which keeps track of state of game
         Board board = new Board();
         board.newGame();
