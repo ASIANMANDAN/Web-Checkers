@@ -1,7 +1,5 @@
 package com.webcheckers.appl;
 
-import com.webcheckers.ui.boardView.BoardView;
-
 import java.util.ArrayList;
 
 /**
@@ -83,40 +81,6 @@ public class CurrentGames {
                 currentGames.remove(game);
             }
         }
-    }
-
-    /**
-     * Determines if two players are playing a game with one another.
-     *
-     * @param p1 name of the player which started the game
-     * @param p2 name of the player who gets redirected to the game
-     * @return whether or not the two players are in the same game
-     */
-    public boolean playingTogether(String p1, String p2) {
-        for (Game game : currentGames) {
-            if (game.player1.equals(p1) && game.player2.equals(p2)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Gets the BoardView associated with a specific game.
-     *
-     * @param username the name of the player the BoardView is associated with
-     * @return the BoardView for that player
-     */
-    public BoardView getView(String username) throws Exception {
-        for (Game game : currentGames) {
-            if (game.player1.equals(username)) {
-                return new BoardView(game.board, false);
-            }
-            if (game.player2.equals(username)) {
-                return new BoardView(game.board, true);
-            }
-        }
-        return null;
     }
 
     /**

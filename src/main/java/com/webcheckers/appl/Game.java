@@ -1,6 +1,7 @@
 package com.webcheckers.appl;
 
 import com.webcheckers.model.board.Board;
+import com.webcheckers.ui.boardView.BoardView;
 
 /**
  * Application tier class which contains all needed information
@@ -38,6 +39,58 @@ public class Game {
      */
     public String getPlayer1() {
         return player1;
+    }
+
+    /**
+     * Given a player in the game, find that players opponent.
+     *
+     * @param username the user whose opponent is to be found
+     * @return the name of the given users opponent
+     */
+    public String getOtherPlayer(String username) {
+        if (this.player1.equals(username)) {
+            return player2;
+        }
+
+        if (this.player2.equals(username)) {
+            return player1;
+        }
+        return null;
+    }
+
+    /**
+     * Returns an integer based off of whether a given player
+     * is the one who first created the game or if they joined
+     * afterwards.
+     *
+     * @param username the players index to find
+     * @return an integer representing the order in which
+     *         the given player joined the game
+     */
+    public int getPlayerIndex(String username) {
+        if (this.player1.equals(username)) {
+            return 1;
+        }
+        if (this.player2.equals(username)) {
+            return 2;
+        }
+        return 0;
+    }
+
+    /**
+     * Creates the BoardView associated with a specific game and player.
+     *
+     * @param username the name of the player the BoardView is associated with
+     * @return the BoardView for that player
+     */
+    public BoardView createView(String username) throws Exception {
+        if (this.player1.equals(username)) {
+            return new BoardView(this.board, false);
+        }
+        if (this.player2.equals(username)) {
+            return new BoardView(this.board, true);
+        }
+        return null;
     }
 
     /**
