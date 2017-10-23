@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 import com.webcheckers.appl.CurrentGames;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.ui.boardView.AjaxRoutes.PostCheckTurnRoute;
+import com.webcheckers.ui.boardView.AjaxRoutes.PostResignRoute;
 import spark.TemplateEngine;
 
 
@@ -78,12 +79,16 @@ public class WebServer {
    */
   public static final String CHECKTURN_URL = "/checkTurn";
 
+  /**
+   * The URL pattern to Resign from the Game page.
+   */
+  public static final String RESIGN_URL = "/resignGame";
+
   //
   // Attributes
   //
 
   private final TemplateEngine templateEngine;
-  private final Gson gson;
   private final PlayerLobby playerLobby;
   private final CurrentGames currentGames;
 
@@ -112,7 +117,6 @@ public class WebServer {
     Objects.requireNonNull(gson, "gson must not be null");
     //
     this.templateEngine = templateEngine;
-    this.gson = gson;
     this.playerLobby= playerLobby;
     this.currentGames = currentGames;
   }
@@ -185,6 +189,9 @@ public class WebServer {
 
     //Route for checking if it is a players turn
     post(CHECKTURN_URL, new PostCheckTurnRoute());
+
+    //Ajax route for implementing the Resign Button on the gameView
+    post(RESIGN_URL, new PostResignRoute());
 
     //
     LOG.config("WebServer is initialized.");

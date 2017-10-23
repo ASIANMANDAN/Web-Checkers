@@ -12,6 +12,7 @@ import java.util.Objects;
 import java.util.logging.Logger;
 
 import static spark.Spark.halt;
+import static spark.Spark.post;
 
 /**
  * The UI controller to get the Game page.
@@ -49,6 +50,7 @@ public class GetGameRoute implements Route{
      * @param templateEngine the HTML template rendering engine
      */
     public GetGameRoute(final TemplateEngine templateEngine) {
+
         // validation
         Objects.requireNonNull(templateEngine, "templateEngine must not be null");
         this.templateEngine = templateEngine;

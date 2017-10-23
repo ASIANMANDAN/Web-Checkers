@@ -15,7 +15,7 @@ public class Message {
         return text;
     }
 
-    public Type getType() {
+    public Type getType(){
         return type;
     }
 }
