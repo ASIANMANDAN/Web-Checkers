@@ -1,6 +1,5 @@
 package com.webcheckers.ui;
 
-import com.webcheckers.appl.CurrentGames;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
 import spark.*;
@@ -27,8 +26,6 @@ public class GetSignoutRoute implements Route{
 
     //Key in the session attribute map for the current user Player object
     static final String CURR_PLAYER = "currentPlayer";
-    //Key in the session attribute map for the hash of current players in a game
-    static final String CURRENTGAMES_KEY = "currentGames";
 
     private final TemplateEngine templateEngine;
     private final PlayerLobby playerLobby;
@@ -65,15 +62,12 @@ public class GetSignoutRoute implements Route{
         Player player = httpSession.attribute(CURR_PLAYER);
         httpSession.removeAttribute(CURR_PLAYER);
 
-//        CurrentGames currentGames = httpSession.attribute(CURRENTGAMES_KEY);
-//        currentGames.endGame(player.getUsername());
-
         Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Player Sign-out");
         //updates number of players
         vm.put(PLAYERS_ONLINE_ATTR, playerLobby.getNumOfUsers());
         //signs out the current user
-        playerLobby.signOut(player.getUsername());
+        playerLobby.signOut(player);
         //Remove current player from session
         httpSession.removeAttribute(CURR_PLAYER);
         //Return the user to the home page

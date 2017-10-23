@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8"></meta>
-    <meta http-equiv="refresh" content="10">
+    <meta http-equiv="refresh" content="5">
     <title>${title} | Web Checkers</title>
     <link rel="stylesheet" type="text/css" href="/css/style.css">
 </head>
@@ -35,7 +35,7 @@
         <form action="./game" method="GET">
         	<#list allPlayers as player>
           		<#if player != currentPlayer.username>
-            		<input type="radio" name="opponent" value=${player} /> ${player}
+            		<input type="radio" name="opponent" value=${player} /> ${player} <br />
           		</#if>
         	</#list> <br />
         	<button type="submit">Play!</button>

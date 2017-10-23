@@ -75,12 +75,12 @@ public class PlayerLobby {
     /**
      * Removes user from the player lobby.
      *
-     * @param username name of user to remove
+     * @param player player to remove
      */
-    public void signOut(String username){
-        this.playerLobby.remove(username);
+    public void signOut(Player player){
+        this.playerLobby.remove(player.getUsername());
         this.numOfUsers--;
-        LOG.fine(username + " was removed from the lobby.");
+        LOG.fine(player.getUsername() + " was removed from the lobby.");
     }
 
     /**

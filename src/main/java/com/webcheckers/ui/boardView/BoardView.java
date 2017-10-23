@@ -1,5 +1,7 @@
 package com.webcheckers.ui.boardView;
 
+import com.webcheckers.appl.CurrentGames;
+import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
 import com.webcheckers.model.board.Space;
 
@@ -23,19 +25,18 @@ public class BoardView implements Iterable {
      * Creates a BoardView using a Board model which satisfies the conditions
      * needed in Game.ftl to display the board and pieces.
      *
-     * @param gameBoard the Board model to base the BoardView off of
-     * @param reverse true if the view is to be reversed, red on top, false
-     *                to create a view with red on bottom
+     * @param player the player whose view is to be created
+     * @param currentGames a list of current games to get the board model from
      * @throws Exception occurs in the Space class if the column index
      *                   used to create the space is greater than the
      */
-    public BoardView(Board gameBoard, boolean reverse) throws Exception {
+    public BoardView(Player player, CurrentGames currentGames) throws Exception {
 
-        //Construct the board that the red player will see
-        if (!reverse) {
+        //Constructs view for the red player
+        if (currentGames.getRedPlayer(player).equals(player)) {
             this.board = new ArrayList<>();
             //Represents the model board
-            Space[][] currentGameBoard = gameBoard.getBoard();
+            Space[][] currentGameBoard = currentGames.getBoard(player);
 
             for (int row = 0; row < size; row++) {
                 Row newRow = new Row(row);
@@ -52,11 +53,11 @@ public class BoardView implements Iterable {
             }
         }
 
-        //Construct the board that the white player will see
-        else {
+        //Constructs view for the white player
+        else if (currentGames.getWhitePlayer(player).equals(player)){
             this.board = new ArrayList<>();
             //Represents the model board
-            Space[][] currentGameBoard = gameBoard.getBoard();
+            Space[][] currentGameBoard = currentGames.getBoard(player);
 
             //Create the opponents view
             for (int row = size-1; row >= 0; row--){

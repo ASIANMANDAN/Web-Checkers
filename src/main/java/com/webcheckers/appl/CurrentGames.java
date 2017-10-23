@@ -1,6 +1,8 @@
 package com.webcheckers.appl;
 
-import com.webcheckers.ui.boardView.BoardView;
+import com.webcheckers.model.Player;
+import com.webcheckers.model.board.Board;
+import com.webcheckers.model.board.Space;
 
 import java.util.ArrayList;
 
@@ -22,13 +24,13 @@ public class CurrentGames {
     /**
      * Determines if a player is already in a game.
      *
-     * @param username the name of the player to check
+     * @param player the player to check
      * @return whether that player is in a game already or not
      */
-    public boolean playerInGame(String username) {
+    public boolean playerInGame(Player player) {
         //Iterate through each game in the collection
         for (Game game : currentGames) {
-            if (game.playerInGame(username)) {
+            if (game.playerInGame(player)) {
                 return true;
             }
         }
@@ -36,98 +38,77 @@ public class CurrentGames {
     }
 
     /**
-     * Adds a Game object to list of all ongoing games
+     * Creates a Game object and adds it to the list of
+     * all ongoing games.
      *
-     * @param game the game object to add
+     * @param red the player to be assigned red
+     * @param white the player to be assigned white
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
      */
-    public void addGame(Game game) {
-        currentGames.add(game);
+    public void addGame(Player red, Player white) throws Exception {
+        currentGames.add(new Game(red, white));
     }
 
     /**
      * creates a URL to which the currentPlayer will be redirected to.
      *
-     * @param currentPlayer the name of the Player which is used to find
-     *                      the game they're associated with
+     * @param player the player which is used to find
+     *        the game they're associated with
      * @return the URL to be redirected to
      */
-    public String createURL(String currentPlayer) {
-        String opponent = getOpponent(currentPlayer);
+    public String createURL(Player player) {
+        String opponent = getOpponent(player).getUsername();
         return "/game?opponent=" + opponent;
     }
 
     /**
-     * Gets the player who started the game in a Game object.
+     * Given a player in a game, return that players opponent.
      *
-     * @param username the name of the user who was redirected to the game page
-     * @return the name of the player who initiated the match
+     * @param player the player whose opponent to find
+     * @return the opponent of the given player
      */
-    private String getOpponent(String username) {
-        for (Game game : currentGames) {
-            if (game.player2.equals(username)) {
-                return game.player1;
-            }
-        }
-        return null;
+    private Player getOpponent(Player player) {
+        Game game = getGame(player);
+        return game.getOpponent(player);
+    }
+
+    public Player getRedPlayer(Player player) {
+        return getGame(player).getRedPlayer();
+    }
+
+    public Player getWhitePlayer(Player player) {
+        return getGame(player).getWhitePlayer();
+    }
+
+    public Board.ActiveColor getActiveColor(Player player) {
+        return getGame(player).getBoard().currentTurn;
+    }
+
+    public Space[][] getBoard(Player player) {
+        return getGame(player).getBoard().getBoard();
     }
 
     /**
-     * Given a username, find that users game and remove it from
+     * Given a player, find that users game and remove it from
      * the list of ongoing games.
      *
-     * @param username name of user who is in a game
+     * @param player name of any user in that game
      */
-    public void endGame(String username) {
-        for (Game game : currentGames) {
-            if (game.player1.equals(username) || game.player2.equals(username)) {
-                currentGames.remove(game);
-            }
-        }
-    }
-
-    /**
-     * Determines if two players are playing a game with one another.
-     *
-     * @param p1 name of the player which started the game
-     * @param p2 name of the player who gets redirected to the game
-     * @return whether or not the two players are in the same game
-     */
-    public boolean playingTogether(String p1, String p2) {
-        for (Game game : currentGames) {
-            if (game.player1.equals(p1) && game.player2.equals(p2)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Gets the BoardView associated with a specific game.
-     *
-     * @param username the name of the player the BoardView is associated with
-     * @return the BoardView for that player
-     */
-    public BoardView getView(String username) throws Exception {
-        for (Game game : currentGames) {
-            if (game.player1.equals(username)) {
-                return new BoardView(game.board, false);
-            }
-            if (game.player2.equals(username)) {
-                return new BoardView(game.board, true);
-            }
-        }
-        return null;
+    public void endGame(Player player) {
+        currentGames.remove(getGame(player));
     }
 
     /**
      * Returns the game that a given player is a part of.
      *
-     * @param username the player whose game to find
+     * @param player the player whose game to find
      * @return the game that player is a part of
      */
-    public Game getGame(String username) {
+    private Game getGame(Player player) {
         for (Game game : currentGames) {
-            if (game.player1.equals(username) || game.player2.equals(username)) {
+            if (game.red.equals(player) || game.white.equals(player)) {
                 return game;
             }
         }
