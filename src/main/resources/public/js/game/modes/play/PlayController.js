@@ -137,27 +137,28 @@ define(function(require){
    * updated Game view from the server.
    */
   PlayController.prototype.resignGame = function resignGame() {
-    // query the server if it's my turn
-    jQuery.post('/resignGame', '')
-    // HTTP success handler
-    .done(handleResponse.bind(this))
-    // HTTP error handler
-    .fail(AjaxUtils.handleErrorResponse)
-    // always display a message that the Ajax call has completed.
-    .always(() => console.debug('ResignGame response complete.'));
-    
-    // 
-    function handleResponse(message) {
-      if (message.type === 'info') {
-        // tell the browser to route the player to the Home page
-        window.location = '/';
-      }
-      // handle error message
-      else {
+      // query the server if it's my turn
+      jQuery.post('/resignGame', '')
+      // HTTP success handler
+      .done(handleResponse.bind(this))
+      // HTTP error handler
+      .fail(AjaxUtils.handleErrorResponse)
+      // always display a message that the Ajax call has completed.
+      .always(() => console.debug('ResignGame response complete.'));
+
+      //
+      function handleResponse(message) {
+        if (message.type === 'info') {
+          // tell the browser to route the player to the Home page
+          window.location = '/';
+        }
+        // handle error message
+        else {
         // FIXME: unrecoverable right now
-        alert('Resignation action failed: ' + message.text);
+          alert('Resignation action failed: ' + message.text);
+        }
       }
-    }
+
   }
 
   PlayController.prototype.isTurnActive = function isTurnActive() {
