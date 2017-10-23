@@ -26,8 +26,9 @@ public class Board {
      * Creates a board used for keeping track of the state
      * of the game.
      *
-     * @throws Exception occurs if the given cellIdx is greater or less than
-     * the bounds established by a standard game board
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
      */
     public Board() throws Exception {
         this.board = new Space[size][size];

@@ -1,7 +1,7 @@
 package com.webcheckers.appl;
 
+import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
-import com.webcheckers.ui.boardView.BoardView;
 
 /**
  * Application tier class which contains all needed information
@@ -14,92 +14,59 @@ import com.webcheckers.ui.boardView.BoardView;
  */
 public class Game {
 
-    final String player1;
-    final String player2;
+    final Player red;
+    final Player white;
     final Board board;
 
     /**
      * Constructor for a Game object.
      *
-     * @param p1 name of the player who initiated the game, i.e. who selected
+     * @param red the player who initiated the game, i.e. who selected
      *           an opponent and hit play
-     * @param p2 name of the player who was chosen and gets redirected from home
-     * @param board board model to base UI BoardView on
+     * @param white the player who was chosen and gets redirected from home
      */
-    public Game(String p1, String p2, Board board) {
-        this.player1 = p1;
-        this.player2 = p2;
-        this.board = board;
+    public Game(Player red, Player white) throws Exception {
+        this.red = red;
+        this.white = white;
+
+        //Create a new board and set it up for gameplay
+        this.board = new Board();
+        this.board.newGame();
     }
 
     /**
-     * Gets the name of the player who started the game.
+     * Gets the red player.
      *
-     * @return the name of the player
+     * @return the player object
      */
-    public String getPlayer1() {
-        return player1;
+    public Player getRedPlayer() {
+        return red;
+    }
+
+    /**
+     * Gets the white player.
+     *
+     * @return the player object
+     */
+    public Player getWhitePlayer() {
+        return white;
     }
 
     /**
      * Given a player in the game, find that players opponent.
      *
-     * @param username the user whose opponent is to be found
+     * @param player the player whose opponent is to be found
      * @return the name of the given users opponent
      */
-    public String getOtherPlayer(String username) {
-        if (this.player1.equals(username)) {
-            return player2;
+    public Player getOpponent(Player player) {
+        if (this.red.equals(player)) {
+            return white;
         }
 
-        if (this.player2.equals(username)) {
-            return player1;
+        if (this.white.equals(player)) {
+            return red;
         }
         return null;
-    }
-
-    /**
-     * Returns an integer based off of whether a given player
-     * is the one who first created the game or if they joined
-     * afterwards.
-     *
-     * @param username the players index to find
-     * @return an integer representing the order in which
-     *         the given player joined the game
-     */
-    public int getPlayerIndex(String username) {
-        if (this.player1.equals(username)) {
-            return 1;
-        }
-        if (this.player2.equals(username)) {
-            return 2;
-        }
-        return 0;
-    }
-
-    /**
-     * Creates the BoardView associated with a specific game and player.
-     *
-     * @param username the name of the player the BoardView is associated with
-     * @return the BoardView for that player
-     */
-    public BoardView createView(String username) throws Exception {
-        if (this.player1.equals(username)) {
-            return new BoardView(this.board, false);
-        }
-        if (this.player2.equals(username)) {
-            return new BoardView(this.board, true);
-        }
-        return null;
-    }
-
-    /**
-     * Gets the name of the player who joined the game.
-     *
-     * @return the name of the player
-     */
-    public String getPlayer2() {
-        return player2;
     }
 
     /**
@@ -107,17 +74,17 @@ public class Game {
      *
      * @return the board model
      */
-    public Board getBoard() {
+    protected Board getBoard() {
         return board;
     }
 
     /**
-     * Determines if a given username is contained within the object.
+     * Determines if a given player is in this game.
      *
-     * @param username name of player to check for
+     * @param player the player to check for
      * @return whether the player is in a game or not
      */
-    boolean playerInGame(String username) {
-        return this.player1.equals(username) || this.player2.equals(username);
+    public boolean playerInGame(Player player) {
+        return this.red.equals(player) || this.white.equals(player);
     }
 }

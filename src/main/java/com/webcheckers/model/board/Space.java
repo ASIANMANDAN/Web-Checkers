@@ -52,14 +52,11 @@ public class Space {
      * on the board.
      *
      * @param piece the Piece object to place
-     * @return a boolean value, whether or not the piece was placed
      */
-    public boolean setPiece(Piece piece) {
+    public void setPiece(Piece piece) {
         if (this.isValid()) {
             this.piece = piece;
-            return true;
         }
-        return false;
     }
 
     /**

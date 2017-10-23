@@ -1,7 +1,6 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.appl.CurrentGames;
-import com.webcheckers.appl.Game;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
 import com.webcheckers.ui.boardView.BoardView;
@@ -69,6 +68,25 @@ public class GetGameRoute implements Route{
         Player currentPlayer = httpSession.attribute(CURR_PLAYER);
         CurrentGames currentGames = httpSession.attribute(CURRENTGAMES_KEY);
 
+        //Case for when a selected opponent is redirected to a game
+        //or any player in game hits refresh
+        if (currentGames.playerInGame(currentPlayer)) {
+
+            //Start building the view-model
+            Map<String, Object> vm = new HashMap<>();
+            vm.put("title", "Game");
+
+            //This is hardcoded in for now
+            vm.put(MODE_ATTR, Board.ViewMode.PLAY);
+            vm.put(CURR_PLAYER, currentPlayer);
+            vm.put(RED_PLAYER_ATTR, currentGames.getRedPlayer(currentPlayer));
+            vm.put(WHITE_PLAYER_ATTR, currentGames.getWhitePlayer(currentPlayer));
+            vm.put(ACTIVE_ATTR, currentGames.getActiveColor(currentPlayer));
+            vm.put(BOARD_ATTR, new BoardView(currentPlayer, currentGames));
+
+            return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
+        }
+
         //Query server for selected opponent
         //If the player did not choose an opponent, or they are not in
         //a game with one, return them to home with an error message
@@ -81,48 +99,11 @@ public class GetGameRoute implements Route{
             return null;
         }
 
-        //Case for when a selected opponent is redirected to a game
-        //or they refresh the page
-        if (currentGames.playerInGame(currentPlayer.getUsername())) {
-
-            //Getting the game that player belongs to
-            Game game = currentGames.getGame(currentPlayer.getUsername());
-            String oppName = game.getOtherPlayer(currentPlayer.getUsername());
-            Player opponent = new Player(oppName);
-
-            //Start building the view-model
-            Map<String, Object> vm = new HashMap<>();
-            vm.put("title", "Game");
-
-            //This is hardcoded in for now
-            vm.put(MODE_ATTR, Board.ViewMode.PLAY);
-            vm.put(CURR_PLAYER, currentPlayer);
-
-            //Case for when the player who started the game refreshes
-            if (game.getPlayerIndex(currentPlayer.getUsername()) == 1) {
-                vm.put(RED_PLAYER_ATTR, currentPlayer);
-                vm.put(WHITE_PLAYER_ATTR, opponent);
-            }
-
-            //Case for when the player who gets redirected to game joins or refreshes
-            else if (game.getPlayerIndex(currentPlayer.getUsername()) == 2) {
-                vm.put(RED_PLAYER_ATTR, opponent);
-                vm.put(WHITE_PLAYER_ATTR, currentPlayer);
-            }
-
-            vm.put(ACTIVE_ATTR, game.getBoard().currentTurn);
-            vm.put(BOARD_ATTR, game.createView(currentPlayer.getUsername()));
-
-            LOG.fine(currentPlayer.getUsername() + " has joined!");
-            return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
-        }
-
-
         Player opponent = new Player(request.queryParams(OPPONENT_PARAM));
 
         //Determine if the selected opponent is already in a game
         //If they are, return the player to home with error message
-        if (currentGames.playerInGame(opponent.getUsername())) {
+        if (currentGames.playerInGame(opponent)) {
 
             String msg = opponent.getUsername() + " is already in a game." +
                     " Please select another player.";
@@ -137,14 +118,8 @@ public class GetGameRoute implements Route{
             LOG.fine(currentPlayer.getUsername() + " has selected " +
                     opponent.getUsername() + " as an opponent!");
 
-            //Initialize board model which keeps track of state of game
-            Board board = new Board();
-            board.newGame();
-
-            //Add the game to list of ongoing games
-            Game game = new Game(currentPlayer.getUsername(),
-                    opponent.getUsername(), board);
-            currentGames.addGame(game);
+            //Construct a new game and add it to the list of ongoing games
+            currentGames.addGame(currentPlayer, opponent);
 
             //Start building the view-model
             Map<String, Object> vm = new HashMap<>();
@@ -153,12 +128,11 @@ public class GetGameRoute implements Route{
             //This is hardcoded in for now
             vm.put(MODE_ATTR, Board.ViewMode.PLAY);
             vm.put(CURR_PLAYER, currentPlayer);
-            vm.put(RED_PLAYER_ATTR, currentPlayer);
-            vm.put(WHITE_PLAYER_ATTR, opponent);
-            vm.put(ACTIVE_ATTR, game.getBoard().currentTurn);
-            vm.put(BOARD_ATTR, game.createView(currentPlayer.getUsername()));
+            vm.put(RED_PLAYER_ATTR, currentGames.getRedPlayer(currentPlayer));
+            vm.put(WHITE_PLAYER_ATTR, currentGames.getWhitePlayer(currentPlayer));
+            vm.put(ACTIVE_ATTR, currentGames.getActiveColor(currentPlayer));
+            vm.put(BOARD_ATTR, new BoardView(currentPlayer, currentGames));
 
-            LOG.fine("Waiting for " + opponent.getUsername() + " to join.");
             return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
         }
     }
