@@ -9,6 +9,7 @@ import com.google.gson.Gson;
 
 import com.webcheckers.appl.CurrentGames;
 import com.webcheckers.appl.PlayerLobby;
+import com.webcheckers.ui.boardView.AjaxRoutes.PostCheckTurnRoute;
 import spark.TemplateEngine;
 
 
@@ -66,11 +67,16 @@ public class WebServer {
    */
 
   public static final String SIGNOUT_URL = "/signout";
+
   /**
    * The URL pattern to request the Game page.
    */
-
   public static final String GAME_URL = "/game";
+
+  /**
+   * The URL pattern to change whose turn it is in-game.
+   */
+  public static final String CHECKTURN_URL = "/checkTurn";
 
   //
   // Attributes
@@ -176,6 +182,9 @@ public class WebServer {
 
     //Route for starting and playing a game
     get(GAME_URL, new GetGameRoute(templateEngine));
+
+    //Route for checking if it is a players turn
+    post(CHECKTURN_URL, new PostCheckTurnRoute());
 
     //
     LOG.config("WebServer is initialized.");

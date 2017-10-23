@@ -69,7 +69,7 @@ public class CurrentGames {
      * @param player the player whose opponent to find
      * @return the opponent of the given player
      */
-    private Player getOpponent(Player player) {
+    public Player getOpponent(Player player) {
         Game game = getGame(player);
         return game.getOpponent(player);
     }
@@ -88,6 +88,10 @@ public class CurrentGames {
 
     public Space[][] getBoard(Player player) {
         return getGame(player).getBoard().getBoard();
+    }
+
+    public Board.ActiveColor getTurn(Player player) {
+        return getGame(player).getBoard().currentTurn;
     }
 
     /**
