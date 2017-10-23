@@ -82,7 +82,6 @@ public class WebServer {
   //
 
   private final TemplateEngine templateEngine;
-  private final Gson gson;
   private final PlayerLobby playerLobby;
   private final CurrentGames currentGames;
 
@@ -111,7 +110,6 @@ public class WebServer {
     Objects.requireNonNull(gson, "gson must not be null");
     //
     this.templateEngine = templateEngine;
-    this.gson = gson;
     this.playerLobby= playerLobby;
     this.currentGames = currentGames;
   }
