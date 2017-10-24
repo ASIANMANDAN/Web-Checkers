@@ -74,24 +74,54 @@ public class CurrentGames {
         return game.getOpponent(player);
     }
 
+    /**
+     * Return the player who was assigned to red.
+     *
+     * @param player any player whose in the game
+     * @return the red player
+     */
     public Player getRedPlayer(Player player) {
         return getGame(player).getRedPlayer();
     }
 
+    /**
+     * Return the player who was assigned to white.
+     *
+     * @param player any player whose in the game
+     * @return the white player
+     */
     public Player getWhitePlayer(Player player) {
         return getGame(player).getWhitePlayer();
     }
 
-    public Board.ActiveColor getActiveColor(Player player) {
-        return getGame(player).getBoard().currentTurn;
-    }
-
+    /**
+     * Gets the board associated with a certain game.
+     *
+     * @param player any player whose in the game
+     * @return the board used in that game
+     */
     public Space[][] getBoard(Player player) {
         return getGame(player).getBoard().getBoard();
     }
 
+    /**
+     * Return the color whose turn it currently is.
+     *
+     * @param player any player whose in the game
+     * @return the currently active color
+     */
     public Board.ActiveColor getTurn(Player player) {
         return getGame(player).getBoard().currentTurn;
+    }
+
+    /**
+     * Sets a given player to null in the Game object.
+     * This represents a player who has resigned.
+     *
+     * @param player the player to be removed
+     */
+    public void removePlayer(Player player) {
+        getGame(player).removePlayer(player);
     }
 
     /**
@@ -112,7 +142,7 @@ public class CurrentGames {
      */
     private Game getGame(Player player) {
         for (Game game : currentGames) {
-            if (game.red.equals(player) || game.white.equals(player)) {
+            if (player.equals(game.red) || player.equals(game.white)) {
                 return game;
             }
         }

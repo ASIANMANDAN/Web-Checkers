@@ -10,6 +10,14 @@ import spark.Response;
 import spark.Route;
 import spark.Session;
 
+/**
+ *  The Ajax route responsible for determining if it is a players turn.
+ *
+ * @author Dan Wang
+ * @author Emily Lederman
+ * @author Kevin Paradis
+ * @author Nathan Farrell
+ */
 public class PostCheckTurnRoute implements Route{
     private final Gson gson = new Gson();
 
@@ -18,6 +26,14 @@ public class PostCheckTurnRoute implements Route{
     //Key in the session attribute map for the hash of current players in a game
     static final String CURRENTGAMES_KEY = "currentGames";
 
+    /**
+     * Sends information to server noting if it is a players turn.
+     *
+     * @param request the HTTP request
+     * @param response the HTTP response
+     *
+     * @return GSON object which will be read by server
+     */
     @Override
     public Object handle(Request request, Response response) {
         Session httpSession = request.session();
@@ -31,15 +47,16 @@ public class PostCheckTurnRoute implements Route{
         Player white = currentGames.getWhitePlayer(currentPlayer);
         Board.ActiveColor activeColor = currentGames.getTurn(currentPlayer);
 
+        //Case for when opponent resigns
         if (currentGames.getOpponent(currentPlayer) == null) {
             message = new Message("true", Message.Type.info);
         }
 
-        else if (red.equals(currentPlayer) && activeColor == Board.ActiveColor.RED) {
+        else if (currentPlayer.equals(red) && activeColor == Board.ActiveColor.RED) {
             message = new Message("true", Message.Type.info);
         }
 
-        else if (white.equals(currentPlayer) && activeColor == Board.ActiveColor.WHITE) {
+        else if (currentPlayer.equals(white) && activeColor == Board.ActiveColor.WHITE) {
             message = new Message("true", Message.Type.info);
         }
 
