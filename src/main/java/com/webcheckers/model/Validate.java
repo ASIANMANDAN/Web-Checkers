@@ -7,4 +7,5 @@ package com.webcheckers.model;
  * description:
  */
 public class Validate {
+
 }
