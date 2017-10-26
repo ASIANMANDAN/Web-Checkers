@@ -41,7 +41,7 @@ public class PostValidateMove implements Route{
             return gson.toJson(new Message("Invalid move", Message.Type.error));
         }
 
-        return gson.toJson(new Message("Player Resigned. Redirecting to home page", Message.Type.info));
+        return gson.toJson(new Message("Move ", Message.Type.info));
     }
 }
 
