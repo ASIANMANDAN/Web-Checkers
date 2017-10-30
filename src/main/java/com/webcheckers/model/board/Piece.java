@@ -44,4 +44,18 @@ public class Piece {
     public Type getType(){
         return type;
     }
+
+    /**
+     * Equals method for determining if two pieces are the same.
+     *
+     * @param obj the other piece to compare
+     * @return whether or not the two pieces are equal
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof Piece)) return false;
+        final Piece that = (Piece) obj;
+        return this.color.equals(that.color) && this.type.equals(that.type);
+    }
 }
