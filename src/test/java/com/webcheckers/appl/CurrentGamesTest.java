@@ -148,19 +148,37 @@ public class CurrentGamesTest {
      * Test that the correct turn is returned from the Board object.
      */
     @Test
-    public void test_getTurn() {
+    public void test_getTurn_0() {
         assertEquals(Board.ActiveColor.RED, CuT.getTurn(red));
         assertNotEquals(Board.ActiveColor.WHITE, CuT.getTurn(red));
+    }
+
+    /**
+     * Test that no turn is returned for a player not in a game.
+     */
+    @Test
+    public void test_getTurn_1() {
+        assertNull(CuT.getTurn(notInGame));
     }
 
     /**
      * Test that players can be removed from the correct Game object.
      */
     @Test
-    public void test_removePlayer() {
+    public void test_removePlayer_0() {
         CuT.removePlayer(red);
         assertNull(CuT.getOpponent(white));
         assertNull(CuT.getRedPlayer(red));
+    }
+
+    /**
+     * Test that players can be removed from the correct Game object.
+     */
+    @Test
+    public void test_removePlayer_1() {
+        CuT.removePlayer(white);
+        assertNull(CuT.getOpponent(red));
+        assertNull(CuT.getWhitePlayer(white));
     }
 
     /**

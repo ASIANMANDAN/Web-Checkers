@@ -3,6 +3,7 @@ package com.webcheckers.ui;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.webcheckers.appl.CurrentGames;
@@ -177,5 +178,29 @@ public class GetHomeRouteTest {
         assertEquals(player, vm.get(GetHomeRoute.CURR_PLAYER));
         assertEquals(null, vm.get(GetHomeRoute.PLAYERS_LIST_ATTR));
         assertEquals(message, vm.get(GetHomeRoute.MESSAGE_ATTR));
+    }
+
+    @Test
+    public void test_inGame() {
+        //Mock two players, one of which will be used as current player
+        Player player1 = mock(Player.class);
+        Player player2 = mock(Player.class);
+        when(session.attribute(GetHomeRoute.CURR_PLAYER)).thenReturn(player1);
+        when(player2.getUsername()).thenReturn("opponent");
+
+        try {
+            currentGames.addGame(player1, player2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        final Response response = mock(Response.class);
+
+        // Invoke the test
+        CuT.handle(request, response);
+
+        // Analyze the results:
+        //   * redirect to the Game view
+        verify(response).redirect(WebServer.GAME_URL + "?opponent=opponent");
     }
 }
