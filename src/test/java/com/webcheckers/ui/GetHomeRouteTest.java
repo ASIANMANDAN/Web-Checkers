@@ -3,17 +3,16 @@ package com.webcheckers.ui;
 import static org.junit.Assert.*;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
 import com.webcheckers.appl.CurrentGames;
-import com.webcheckers.appl.Game;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
 import org.junit.Before;
 import org.junit.Test;
 import spark.*;
 
+import java.util.HashSet;
 import java.util.Map;
 
 /**
@@ -87,7 +86,7 @@ public class GetHomeRouteTest {
      * Test the view for when a player has been signed in.
      */
     @Test
-    public void test_signedIn() {
+    public void test_signedIn_0() {
         Player player = mock(Player.class);
         when(session.attribute(GetHomeRoute.CURR_PLAYER)).thenReturn(player);
         final Response response = mock(Response.class);
@@ -110,6 +109,41 @@ public class GetHomeRouteTest {
         assertEquals("0", vm.get(GetHomeRoute.PLAYERS_ONLINE_ATTR));
         assertEquals(player, vm.get(GetHomeRoute.CURR_PLAYER));
         assertEquals(null, vm.get(GetHomeRoute.PLAYERS_LIST_ATTR));
+        assertEquals(null, vm.get(GetHomeRoute.MESSAGE_ATTR));
+    }
+
+    /**
+     * Test the view for when a player is signed in and another player is online.
+     */
+    @Test
+    public void test_signedIn_1() {
+        Player player = mock(Player.class);
+        when(session.attribute(GetHomeRoute.CURR_PLAYER)).thenReturn(player);
+        final Response response = mock(Response.class);
+
+        final MyModelAndView myModelView = new MyModelAndView();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(MyModelAndView.makeAnswer(myModelView));
+
+        final HashSet<String> playersOnline = new HashSet<>();
+        playersOnline.add("OtherPlayer");
+        when(playerLobby.getNumOfUsers()).thenReturn("1");
+        when(playerLobby.getUserList()).thenReturn(playersOnline);
+
+        // Invoke the test
+        CuT.handle(request, response);
+
+        // Analyze the results:
+        //   * model is a non-null Map
+        final Object model = myModelView.model;
+        assertNotNull(model);
+        assertTrue(model instanceof Map);
+        //   * model contains all necessary View-Model data
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> vm = (Map<String, Object>) model;
+        assertEquals("Welcome!", vm.get("title"));
+        assertEquals("1", vm.get(GetHomeRoute.PLAYERS_ONLINE_ATTR));
+        assertEquals(player, vm.get(GetHomeRoute.CURR_PLAYER));
+        assertEquals(playersOnline, vm.get(GetHomeRoute.PLAYERS_LIST_ATTR));
         assertEquals(null, vm.get(GetHomeRoute.MESSAGE_ATTR));
     }
 
