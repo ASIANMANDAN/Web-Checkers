@@ -97,15 +97,23 @@ public class Space {
     }
 
     /**
+<<<<<<< HEAD
      * Overrided equals method. Compares with color, row index, and col index.
      * @param obj Space
      * @return bool
+=======
+     * Equals method for determining if two spaces are the same.
+     *
+     * @param obj the other space to compare
+     * @return whether or not the spaces are equivalent
+>>>>>>> 25b6c23629e3891143311fca3eeb0dfef23a726c
      */
     @Override
     public boolean equals(Object obj) {
         if (obj == this) return true;
         if (!(obj instanceof Space)) return false;
         final Space that = (Space) obj;
+        
         if (that.getCol() == this.getCol() && that.getRow() == this.getRow()){
             if (this.getColor() == that.getColor()){
                 return true;

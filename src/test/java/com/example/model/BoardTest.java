@@ -67,7 +67,7 @@ public class BoardTest {
         CuT.newGame();
         int size = Board.size;
         Space[][] cutBoard = CuT.getBoard();
-        
+
         for(int row= 0; row< 3; row++){
             for (int col= 0; col< )
         }
