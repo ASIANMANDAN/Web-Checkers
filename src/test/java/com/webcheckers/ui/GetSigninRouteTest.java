@@ -18,7 +18,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * The unit test suite for the {@Link GetSigninRoute} component.
+ * The unit test suite for the {@link GetSigninRoute} component.
  *
  * @author Dan Wang
  */

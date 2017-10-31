@@ -20,19 +20,14 @@ public class SpaceTest {
     private static final Space.Color color = Space.Color.BLACK;
     private static Space CuT;
 
-    static {
-        try {
-            CuT = new Space(inRange, inRange, color);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
-
     //mock object
     private Piece piece;
 
     @Before
-    public void testSetup(){piece = mock(Piece.class);}
+    public void testSetup() throws Exception {
+        CuT = new Space(inRange, inRange, color);
+        piece = mock(Piece.class);
+    }
 
     /**
      * Test that the constructor will not work with a column or row above 7.
@@ -66,7 +61,8 @@ public class SpaceTest {
     @Test
     public void test_set_piece() {
         CuT.setPiece(piece);
-        assertTrue(piece.equals(CuT.getPiece()));
+        assertTrue(CuT.getPiece().equals(piece));
+        assertEquals(piece, CuT.getPiece());
     }
 
     /**
@@ -76,7 +72,7 @@ public class SpaceTest {
     public void test_get_piece() {
         CuT.setPiece(piece);
         Piece p1 = CuT.getPiece();
-        assertTrue(piece.equals(p1));
+        assertTrue(p1.equals(piece));
     }
 
     /**

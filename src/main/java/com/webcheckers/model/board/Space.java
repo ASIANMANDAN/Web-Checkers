@@ -95,4 +95,23 @@ public class Space {
     public boolean isValid() {
         return this.color == Color.BLACK && this.piece == null;
     }
+
+    /**
+     * Overrided equals method. Compares with color, row index, and col index.
+     * @param obj Space
+     * @return bool
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof Space)) return false;
+        final Space that = (Space) obj;
+
+        if (that.getCol() == this.getCol() && that.getRow() == this.getRow()){
+            if (this.getColor() == that.getColor()){
+                return true;
+            }
+        }
+        return false;
+    }
 }
