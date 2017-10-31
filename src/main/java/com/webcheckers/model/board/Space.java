@@ -95,4 +95,19 @@ public class Space {
     public boolean isValid() {
         return this.color == Color.BLACK && this.piece == null;
     }
+
+    /**
+     * Equals method for determining if two spaces are the same.
+     *
+     * @param obj the other space to compare
+     * @return whether or not the spaces are equivalent
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) return true;
+        if (!(obj instanceof Space)) return false;
+        final Space that = (Space) obj;
+        return this.color.equals(that.color) && this.piece.equals(that.piece) &&
+                this.row == that.row && this.col == that.col;
+    }
 }
