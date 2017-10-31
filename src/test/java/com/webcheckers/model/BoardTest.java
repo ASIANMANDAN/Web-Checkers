@@ -1,4 +1,4 @@
-package com.example.model;
+package com.webcheckers.model;
 
 import static org.junit.Assert.*;
 
@@ -63,25 +63,24 @@ public class BoardTest {
      * @throws Exception
      */
     @Test
-    public void test_newGame() throws Exception{
+    public void test_newGame() throws Exception {
         Board CuT = new Board();
         CuT.newGame();
         int size = Board.size;
         Space[][] cutBoard = CuT.getBoard();
 
         //Check White Pieces
-        for(int row= 0; row< 3; row++){
-            for (int col= 0; col< size; col++ ){
-                if (row == 0 || row == 2){
-                    if(col == 1 || col == 3 || col == 5 || col == 7){
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < size; col++) {
+                if (row == 0 || row == 2) {
+                    if (col == 1 || col == 3 || col == 5 || col == 7) {
                         Piece comparePiece = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
                         Space currentSpace = cutBoard[row][col];
                         Piece currentPiece = currentSpace.getPiece();
                         assertEquals(comparePiece, currentPiece);
                     }
-                }
-                else{
-                    if(col == 0 || col == 2 || col == 4 || col == 6){
+                } else {
+                    if (col == 0 || col == 2 || col == 4 || col == 6) {
                         Piece comparePiece = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
                         Space currentSpace = cutBoard[row][col];
                         Piece currentPiece = currentSpace.getPiece();
@@ -92,18 +91,17 @@ public class BoardTest {
         }
 
         //Check Red Pieces
-        for(int row= 5; row< size; row++){
-            for (int col= 0; col< size; col++ ){
-                if (row == 5 || row == 7){
-                    if(col == 0 || col == 2 || col == 4 || col == 6){
+        for (int row = 5; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                if (row == 5 || row == 7) {
+                    if (col == 0 || col == 2 || col == 4 || col == 6) {
                         Piece comparePiece = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
                         Space currentSpace = cutBoard[row][col];
                         Piece currentPiece = currentSpace.getPiece();
                         assertEquals(comparePiece, currentPiece);
                     }
-                }
-                else{
-                    if(col == 1 || col == 3 || col == 5 || col == 7){
+                } else {
+                    if (col == 1 || col == 3 || col == 5 || col == 7) {
                         Piece comparePiece = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
                         Space currentSpace = cutBoard[row][col];
                         Piece currentPiece = currentSpace.getPiece();
@@ -114,6 +112,4 @@ public class BoardTest {
         }
 
     }
-
-
 }
