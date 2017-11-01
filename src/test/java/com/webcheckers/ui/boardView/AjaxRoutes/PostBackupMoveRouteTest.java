@@ -8,6 +8,14 @@ import spark.Response;
 
 import static org.mockito.Mockito.mock;
 
+/**
+ * The unit test suite for the {@link PostBackupMoveRoute} component.
+ *
+ * @author Dan Wang
+ * @author Emily Lederman
+ * @author Kevin Paradis
+ * @author Nathan Farrell
+ */
 public class PostBackupMoveRouteTest {
 
     private PostBackupMoveRoute CuT;
@@ -22,6 +30,10 @@ public class PostBackupMoveRouteTest {
         CuT = new PostBackupMoveRoute();
     }
 
+    /**
+     * Test that the Message returned by the route states that the move
+     * has been undone and is of type info.
+     */
     @Test
     public void test_message() {
         final Response response = mock(Response.class);

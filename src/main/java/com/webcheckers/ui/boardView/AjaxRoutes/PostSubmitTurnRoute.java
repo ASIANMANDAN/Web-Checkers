@@ -38,7 +38,7 @@ public class PostSubmitTurnRoute implements Route {
      * @return GSON object which will be read by server
      */
     @Override
-    public Object handle(Request request, Response response) throws Exception {
+    public Object handle(Request request, Response response) {
         Session httpSession = request.session();
         CurrentGames currentGames = httpSession.attribute(CURRENTGAMES_KEY);
         Move move = httpSession.attribute(MOVE_KEY);
