@@ -9,7 +9,12 @@ import org.junit.Test;
 
 
 /**
- * Created by nate on 10/30/17.
+ *  Test for the board model.
+ *
+ * @author Dan Wang
+ * @author Emily Lederman
+ * @author Kevin Paradis
+ * @author Nathan Farrell
  */
 public class BoardTest {
 

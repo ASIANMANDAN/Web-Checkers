@@ -46,6 +46,14 @@ public class Row implements Iterable {
     }
 
     /**
+     * Returns Row of Spaces.
+     * @return Row of spaces.
+     */
+    public ArrayList<Space> getRowOfSpaces() {
+        return rowOfSpaces;
+    }
+
+    /**
      * Iterates over the columns within a row.
      *
      * @return The Space in that column
