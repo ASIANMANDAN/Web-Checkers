@@ -178,12 +178,20 @@ public class CurrentGames {
         currentGames.remove(getGame(player));
     }
 
+    /**
+     * Determine if a given move is valid given the current
+     * board configuration.
+     *
+     * @param player the player who made the move
+     * @param move the proposed move to make
+     * @return a message stating either that a move is valid or why
+     *         one isn't
+     */
     public String validateMove(Player player, Move move) {
         Game game = getGame(player);
         Space[][] board = this.getBoard(player);
 
-        String msg = validator.isValid(move, board);
-        return msg;
+        return validator.isValid(move, board);
     }
 
     /**
