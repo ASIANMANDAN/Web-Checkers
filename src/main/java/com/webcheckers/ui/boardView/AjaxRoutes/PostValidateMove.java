@@ -15,28 +15,26 @@ public class PostValidateMove implements Route{
 
     //Key in the session attribute map for the current user Player object
     static final String CURR_PLAYER = "currentPlayer";
-
     //Key in the session attribute map for the hash of current players in a game
     static final String CURRENTGAMES_KEY = "currentGames";
-
+    //Key in the session attribute map for the most recent move
     static final String MOVE_KEY = "move";
 
     @Override
     public Object handle(Request request, Response response) {
         Session httpSession = request.session();
+        CurrentGames currentGames = httpSession.attribute(CURRENTGAMES_KEY);
+        Player currentPlayer = httpSession.attribute(CURR_PLAYER);
+
         Move move = gson.fromJson(request.body(), Move.class);
         httpSession.attribute(MOVE_KEY, move);
 
-        CurrentGames games = httpSession.attribute(CURRENTGAMES_KEY);
-        Player currPlayer = httpSession.attribute(CURR_PLAYER);
+        String message = currentGames.validateMove(currentPlayer, move);
 
-        String msg = games.validateMove(currPlayer, move);
-
-        if (msg == null) {
-            return gson.toJson(new Message("true", Message.Type.info));
+        if (message == null) {
+            return gson.toJson(new Message("Move is valid", Message.Type.info));
         } else {
-            return gson.toJson(new Message( msg , Message.Type.error));
+            return gson.toJson(new Message(message, Message.Type.error));
         }
-
     }
 }
