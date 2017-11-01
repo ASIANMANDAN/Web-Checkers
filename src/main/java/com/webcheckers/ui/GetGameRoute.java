@@ -40,6 +40,8 @@ public class GetGameRoute implements Route{
     static final String CURRENTGAMES_KEY = "currentGames";
     //Key in the session attribute map for a String to be shown in case of error
     static final String MESSAGE_KEY = "message";
+    //Key in the session attribute map for the current players opponent
+    static final String OPPONENT_KEY = "opponent";
 
     private final TemplateEngine templateEngine;
 
@@ -74,6 +76,25 @@ public class GetGameRoute implements Route{
         //or any player in game hits refresh
         if (currentGames.playerInGame(currentPlayer)) {
 
+            //Case for when an opponent resigns
+            if (currentGames.getOpponent(currentPlayer) == null) {
+                Player opponent = httpSession.attribute(OPPONENT_KEY);
+                String msg = opponent.getUsername() + " has resigned from the game.";
+                LOG.fine("The match between " + opponent.getUsername() + " and " +
+                        currentPlayer.getUsername() + " has ended.");
+
+                //Remove the game from the currentGames list and redirect player
+                currentGames.endGame(currentPlayer);
+                httpSession.removeAttribute(OPPONENT_KEY);
+                httpSession.attribute(MESSAGE_KEY, msg);
+                response.redirect(WebServer.HOME_URL);
+                halt();
+                return null;
+            }
+
+            Player opponent = currentGames.getOpponent(currentPlayer);
+            httpSession.attribute(OPPONENT_KEY, opponent);
+
             //Start building the view-model
             Map<String, Object> vm = new HashMap<>();
             vm.put("title", "Game");
@@ -83,7 +104,7 @@ public class GetGameRoute implements Route{
             vm.put(CURR_PLAYER, currentPlayer);
             vm.put(RED_PLAYER_ATTR, currentGames.getRedPlayer(currentPlayer));
             vm.put(WHITE_PLAYER_ATTR, currentGames.getWhitePlayer(currentPlayer));
-            vm.put(ACTIVE_ATTR, currentGames.getActiveColor(currentPlayer));
+            vm.put(ACTIVE_ATTR, currentGames.getTurn(currentPlayer));
             vm.put(BOARD_ATTR, new BoardView(currentPlayer, currentGames));
 
             return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
@@ -122,6 +143,7 @@ public class GetGameRoute implements Route{
 
             //Construct a new game and add it to the list of ongoing games
             currentGames.addGame(currentPlayer, opponent);
+            httpSession.attribute(OPPONENT_KEY, opponent);
 
             //Start building the view-model
             Map<String, Object> vm = new HashMap<>();
@@ -132,7 +154,7 @@ public class GetGameRoute implements Route{
             vm.put(CURR_PLAYER, currentPlayer);
             vm.put(RED_PLAYER_ATTR, currentGames.getRedPlayer(currentPlayer));
             vm.put(WHITE_PLAYER_ATTR, currentGames.getWhitePlayer(currentPlayer));
-            vm.put(ACTIVE_ATTR, currentGames.getActiveColor(currentPlayer));
+            vm.put(ACTIVE_ATTR, currentGames.getTurn(currentPlayer));
             vm.put(BOARD_ATTR, new BoardView(currentPlayer, currentGames));
 
             return templateEngine.render(new ModelAndView(vm, VIEW_NAME));

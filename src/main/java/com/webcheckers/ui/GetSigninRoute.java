@@ -18,7 +18,7 @@ import java.util.Objects;
 public class GetSigninRoute implements Route{
 
     //FTL file which is responsible for rendering the page
-    private static final String VIEW_NAME = "signin.ftl";
+    static final String VIEW_NAME = "signin.ftl";
 
     private final TemplateEngine templateEngine;
 

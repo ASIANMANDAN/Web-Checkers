@@ -24,7 +24,7 @@ public class PostSigninRoute implements Route{
 
     //FTL file which is responsible for rendering the page
     private static final String VIEW_NAME = "signin.ftl";
-    private static final String MESSAGE_ATTR = "message";
+    static final String MESSAGE_ATTR = "message";
     private static final String USERNAME_PARAM = "username";
 
     //Key in the session attribute map for the current user Player object

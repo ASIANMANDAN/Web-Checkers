@@ -19,7 +19,23 @@ import java.util.ArrayList;
 public class CurrentGames {
 
     //Holds a list of all active games
-    private static ArrayList<Game> currentGames = new ArrayList<>();
+    private static ArrayList<Game> currentGames;
+
+    /**
+     * Default constructor, creates an empty list of games.
+     */
+    public CurrentGames() {
+        currentGames = new ArrayList<>();
+    }
+
+    /**
+     * Allows a pre-defined list of games to be constructed.
+     *
+     * @param cg list of Game objects
+     */
+    public CurrentGames(ArrayList<Game> cg) {
+        currentGames = cg;
+    }
 
     /**
      * Determines if a player is already in a game.
@@ -69,25 +85,81 @@ public class CurrentGames {
      * @param player the player whose opponent to find
      * @return the opponent of the given player
      */
-    private Player getOpponent(Player player) {
+    public Player getOpponent(Player player) {
         Game game = getGame(player);
-        return game.getOpponent(player);
+        if (game != null) {
+            return game.getOpponent(player);
+        }
+        return null;
     }
 
+    /**
+     * Return the player who was assigned to red.
+     *
+     * @param player any player whose in the game
+     * @return the red player
+     */
     public Player getRedPlayer(Player player) {
-        return getGame(player).getRedPlayer();
+        Game game = getGame(player);
+        if (game != null) {
+            return game.getRedPlayer();
+        }
+        return null;
     }
 
+    /**
+     * Return the player who was assigned to white.
+     *
+     * @param player any player whose in the game
+     * @return the white player
+     */
     public Player getWhitePlayer(Player player) {
-        return getGame(player).getWhitePlayer();
+        Game game = getGame(player);
+        if (game != null) {
+            return game.getWhitePlayer();
+        }
+        return null;
     }
 
-    public Board.ActiveColor getActiveColor(Player player) {
-        return getGame(player).getBoard().currentTurn;
-    }
-
+    /**
+     * Gets the board associated with a certain game.
+     *
+     * @param player any player whose in the game
+     * @return the board used in that game
+     */
     public Space[][] getBoard(Player player) {
-        return getGame(player).getBoard().getBoard();
+        Game game = getGame(player);
+        if (game != null) {
+            return game.getBoard().getBoard();
+        }
+        return null;
+    }
+
+    /**
+     * Return the color whose turn it currently is.
+     *
+     * @param player any player whose in the game
+     * @return the currently active color
+     */
+    public Board.ActiveColor getTurn(Player player) {
+        Game game = getGame(player);
+        if (game != null) {
+            return game.getBoard().currentTurn;
+        }
+        return null;
+    }
+
+    /**
+     * Sets a given player to null in the Game object.
+     * This represents a player who has resigned.
+     *
+     * @param player the player to be removed
+     */
+    public void removePlayer(Player player) {
+        Game game = getGame(player);
+        if (game != null) {
+            game.removePlayer(player);
+        }
     }
 
     /**
@@ -108,7 +180,7 @@ public class CurrentGames {
      */
     private Game getGame(Player player) {
         for (Game game : currentGames) {
-            if (game.red.equals(player) || game.white.equals(player)) {
+            if (player.equals(game.red) || player.equals(game.white)) {
                 return game;
             }
         }

@@ -14,8 +14,8 @@ import com.webcheckers.model.board.Board;
  */
 public class Game {
 
-    final Player red;
-    final Player white;
+    Player red;
+    Player white;
     final Board board;
 
     /**
@@ -59,14 +59,30 @@ public class Game {
      * @return the name of the given users opponent
      */
     public Player getOpponent(Player player) {
-        if (this.red.equals(player)) {
-            return white;
+        if (player.equals(this.red)) {
+            return this.white;
         }
 
-        if (this.white.equals(player)) {
-            return red;
+        if (player.equals(this.white)) {
+            return this.red;
         }
         return null;
+    }
+
+    /**
+     * Sets a given player to null in the Game object.
+     * This represents a player who has resigned.
+     *
+     * @param player the player to be removed
+     */
+    public void removePlayer(Player player) {
+        if (player.equals(this.red)) {
+            this.red = null;
+        }
+
+        if (player.equals(this.white)) {
+            this.white = null;
+        }
     }
 
     /**
@@ -85,6 +101,6 @@ public class Game {
      * @return whether the player is in a game or not
      */
     public boolean playerInGame(Player player) {
-        return this.red.equals(player) || this.white.equals(player);
+        return player.equals(this.red) || player.equals(this.white);
     }
 }
