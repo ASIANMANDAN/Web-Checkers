@@ -11,7 +11,7 @@ import com.webcheckers.appl.CurrentGames;
 import com.webcheckers.model.Player;
 import com.webcheckers.ui.WebServer;
 import com.webcheckers.ui.boardView.Message;
-import com.webcheckers.ui.boardView.Move;
+//import com.webcheckers.ui.boardView.Move;
 import spark.*;
 
 import java.util.logging.Logger;
@@ -34,12 +34,12 @@ public class PostValidateMove implements Route{
 
         Player currPlayer = session.attribute(CURR_PLAYER);
         CurrentGames currGame = session.attribute(CURRENTGAMES_KEY);
-        Move moveMade = session.attribute(MOVE);
+        //Move moveMade = session.attribute(MOVE);
 
 
-        if(moveMade.getEnd().getRow() >= moveMade.getStart().getRow()) {
-            return gson.toJson(new Message("Invalid move", Message.Type.error));
-        }
+        //if(moveMade.getEnd().getRow() >= moveMade.getStart().getRow()) {
+        //    return gson.toJson(new Message("Invalid move", Message.Type.error));
+        //}
 
         return gson.toJson(new Message("Move ", Message.Type.info));
     }
