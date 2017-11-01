@@ -27,6 +27,6 @@ public class PostBackupMoveRoute implements Route {
      */
     @Override
     public Object handle(Request request, Response response) {
-        return gson.toJson(new Message("true",Message.Type.info));
+        return gson.toJson(new Message("Move Undone",Message.Type.info));
     }
 }
