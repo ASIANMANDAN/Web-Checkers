@@ -1,46 +1,34 @@
 package com.webcheckers.model;
 
-import org.junit.Before;
 import org.junit.Test;
-
-import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertFalse;
-import static org.junit.Assert.assertTrue;
+import static org.junit.Assert.*;
+import com.webcheckers.model.Player;
 
 /**
- * The unit test suite for the {@link Player} component.
- *
- * @author Dan Wang
+ * file: checkers-app
+ * language: java
+ * author: erl3193@rit.edu Emily Lederman
+ * description:
  */
 public class PlayerTest {
 
-    private static final String username = "username";
+    String userName = "user";
 
-    private static Player CuT;
-
-    @Before
-    public void testSetup(){
-        CuT = new Player(username);
-    }
-
-    /**
-     * Test the {@link Player#getUsername()} method.
-     */
     @Test
-    public void test_get_username(){
-        assertEquals(username, CuT.getUsername());
+    public void test_newPlayer(){
+        new Player(userName);
     }
 
-    /**
-     * Test the {@link Player#equals(Object)} method.
-     */
+    @Test
+    public void test_getUN(){
+        Player pl = new Player(userName);
+        assertEquals(userName, pl.getUsername());
+    }
+
     @Test
     public void test_equals(){
-        Player CuT2 = new Player(username);
-        Player CuT3 = new Player("Dan");
-        //Test two players with the same username are equal.
-        assertTrue(CuT.equals(CuT2));
-        //Test two players with different usernames are not equal.
-        assertFalse(CuT.equals(CuT3));
+        Player p1 = new Player(userName);
+        Player p2 = new Player(userName);
+        assertTrue(p1.equals(p2));
     }
 }
