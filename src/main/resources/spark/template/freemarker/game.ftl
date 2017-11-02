@@ -22,6 +22,7 @@
     <div class="navigation">
     <#if currentPlayer??>
       <a href="/">My Home</a>
+      <a href="/signout">Sign out [${currentPlayer.username}]</a>
     <#else>
       <a href="/signin">Sign-in</a>
     </#if>
