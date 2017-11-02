@@ -16,7 +16,7 @@ public class Space {
     private int row;
     private int col;
     private Piece piece;
-    private Color color;
+    private final Color color;
 
     /**
      * Constructor for a space on a game board.
@@ -57,6 +57,13 @@ public class Space {
         if (this.isValid()) {
             this.piece = piece;
         }
+    }
+
+    /**
+     * Remove a piece from a given Space.
+     */
+    void removePiece() {
+        this.piece = null;
     }
 
     /**

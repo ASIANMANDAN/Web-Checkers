@@ -180,6 +180,9 @@ public class GetHomeRouteTest {
         assertEquals(message, vm.get(GetHomeRoute.MESSAGE_ATTR));
     }
 
+    /**
+     * Test that a player in a game is redirected to the game page.
+     */
     @Test
     public void test_inGame() {
         //Mock two players, one of which will be used as current player

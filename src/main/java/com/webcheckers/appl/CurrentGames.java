@@ -3,6 +3,7 @@ package com.webcheckers.appl;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
 import com.webcheckers.model.board.Space;
+import com.webcheckers.ui.boardView.Move;
 
 import java.util.ArrayList;
 
@@ -137,7 +138,7 @@ public class CurrentGames {
     public Space[][] getBoard(Player player) {
         Game game = getGame(player);
         if (game != null) {
-            return game.getBoard().getBoard();
+            return game.getBoard();
         }
         return null;
     }
@@ -151,7 +152,7 @@ public class CurrentGames {
     public Board.ActiveColor getTurn(Player player) {
         Game game = getGame(player);
         if (game != null) {
-            return game.getBoard().currentTurn;
+            return game.getTurn();
         }
         return null;
     }
@@ -177,6 +178,22 @@ public class CurrentGames {
      */
     public void endGame(Player player) {
         currentGames.remove(getGame(player));
+    }
+
+    /**
+     * Moves a Piece from one Space to another.
+     *
+     * @param player the player who made the move
+     * @param move the move to make
+     * @return whether or not the move was successfully made.
+     */
+    public boolean makeMove(Player player, Move move) {
+        Game game = getGame(player);
+        if (game != null) {
+            game.makeMove(move);
+            return true;
+        }
+        return false;
     }
 
     /**
