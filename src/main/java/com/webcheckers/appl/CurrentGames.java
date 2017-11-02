@@ -75,8 +75,15 @@ public class CurrentGames {
      * @return the URL to be redirected to
      */
     public String createURL(Player player) {
-        String opponent = getOpponent(player).getUsername();
-        return "/game?opponent=" + opponent;
+        Player opponent = getOpponent(player);
+
+        //Case for when opponent signs-out or quits before player is in game
+        if (opponent == null) {
+            removePlayer(player);
+            return "/";
+        }
+
+        return "/game?opponent=" + opponent.getUsername();
     }
 
     /**
