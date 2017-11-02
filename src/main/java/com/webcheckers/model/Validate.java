@@ -7,6 +7,8 @@ package com.webcheckers.model;
  * description:
  */
 
+import com.webcheckers.model.board.Board;
+import com.webcheckers.model.board.Piece;
 import com.webcheckers.model.board.Space;
 import com.webcheckers.ui.boardView.Move;
 import com.webcheckers.ui.boardView.Position;
@@ -25,8 +27,11 @@ public class Validate {
     public String isValid(Move move, Space[][] board) {
         String message = null;
 
-        boolean isAdjacent = isAdjacent(move);
-        if (!isAdjacent){
+        if (isJumpPresent(move, board)) {
+            message = "A jump is currently present and must be taken.";
+        }
+
+        if (!isAdjacent(move)){
             message =  "There are no jumps present. Therefore you must move to a space that is " +
                     "adjacent to the piece you wish to move.";
         }
@@ -128,6 +133,159 @@ public class Validate {
             }
         }else{
             return false;
+        }
+
+    }
+
+    private boolean isJumpPresent(Move move, Space[][] board) {
+
+        int row = move.getStart().getRow();
+        int col = move.getStart().getCell();
+
+        Piece.Color color = board[row][col].getPiece().getColor();
+
+        for (int i=0; i < Board.size; i++) {
+            for (int j=0; j < Board.size; j++) {
+
+                Space space = board[i][j];
+
+                //Indicates that the Space contains one of the players pieces
+                if (space.getPiece().getColor() == color) {
+
+                    //Indicates an opponent is adjacent to a piece
+                    if (opponentAdjacent(space, board)) {
+
+                        if (canJump(space, board)) {
+                            return true;
+                        }
+                    }
+                }
+
+            }
+        }
+        return false;
+    }
+
+    private boolean opponentAdjacent(Space space, Space[][] board) {
+
+        int row = space.getRow();
+        int col = space.getCol();
+        Piece.Color color = space.getPiece().getColor();
+        Piece.Type type = space.getPiece().getType();
+
+        //Case when piece is RED and is SINGLE, only check in front of it
+        if (color == Piece.Color.RED && type == Piece.Type.SINGLE) {
+
+            //Check both sides of the given space
+            if (col > 0 && col < Board.size - 1) {
+
+                Space left = board[row + 1][col - 1];
+                Space right = board[row + 1][col + 1];
+
+                if ((left.getPiece().getColor() == Piece.Color.WHITE ||
+                        right.getPiece().getColor() == Piece.Color.WHITE)) {
+                    return true;
+                }
+            }
+
+            //Check just the left side
+            if (col == Board.size) {
+                Space right = board[row + 1][col + 1];
+                if (right.getPiece().getColor() == Piece.Color.WHITE) {
+                    return true;
+                }
+            }
+
+            //Check just the right side
+            if (col == 0) {
+                Space left = board[row + 1][col - 1];
+                if (left.getPiece().getColor() == Piece.Color.WHITE) {
+                    return true;
+                }
+            }
+        }
+
+        //Case when piece is WHITE and is SINGLE, only check in front of it
+        if (color == Piece.Color.WHITE && type == Piece.Type.SINGLE) {
+
+            //Check both sides of the given space
+            if (col > 0 && col < Board.size - 1) {
+
+                Space left = board[row - 1][col - 1];
+                Space right = board[row - 1][col + 1];
+
+                if ((left.getPiece().getColor() == Piece.Color.RED ||
+                        right.getPiece().getColor() == Piece.Color.RED)) {
+                    return true;
+                }
+            }
+
+            //Check just the left side
+            if (col == Board.size) {
+                Space right = board[row + 1][col + 1];
+                if (right.getPiece().getColor() == Piece.Color.RED) {
+                    return true;
+                }
+            }
+
+            //Check just the right side
+            if (col == 0) {
+                Space left = board[row + 1][col - 1];
+                if (left.getPiece().getColor() == Piece.Color.RED) {
+                    return true;
+                }
+            }
+        }
+        return false;
+    }
+
+    private boolean canJump(Space space, Space[][] board) {
+
+        int row = space.getRow();
+        int col = space.getCol();
+        Piece.Color color = space.getPiece().getColor();
+        Piece.Type type = space.getPiece().getType();
+
+        if (color == Piece.Color.RED) {
+
+            //Ensure the piece would not go out of bounds if it jumped
+            if (row - 2 >= 0) {
+
+                //Check just the left side
+                if ((col - 2) >= 0) {
+                    if (board[row - 2][col - 2].getPiece() == null) {
+                        return true;
+                    }
+                }
+
+                //Check right
+                if ((col + 2) <= Board.size - 1) {
+                    if (board[row - 2][col + 2].getPiece() == null) {
+                        return true;
+                    }
+                }
+            }
+        }
+
+        if (color == Piece.Color.WHITE) {
+
+            //Ensure the piece would not go out of bounds if it jumped
+            if (row + 2 <= Board.size - 1) {
+
+                //Check just the left side
+                if ((col - 2) >= 0) {
+                    if (board[row + 2][col - 2].getPiece() == null) {
+                        return true;
+                    }
+                }
+
+                //Check right
+                if ((col + 2) <= Board.size - 1) {
+                    if (board[row + 2][col + 2].getPiece() == null) {
+                        return true;
+                    }
+                }
+            }
         }
 
     }
