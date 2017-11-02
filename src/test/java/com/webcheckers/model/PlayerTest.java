@@ -37,7 +37,7 @@ public class PlayerTest {
      */
     @Test
     public void test_samePlayerObject(){
-        Player player = new Player("playerName");
+        Player player = new Player(userName);
         assertTrue(player.equals(player));
 
     }
@@ -47,8 +47,8 @@ public class PlayerTest {
      */
     @Test
     public void test_diffObject(){
-        Player player = new Player("playerName");
-        String playerString = "playerString";
+        Player player = new Player(userName);
+        String playerString = userName;
 
         assertFalse(player.equals(playerString));
     }
