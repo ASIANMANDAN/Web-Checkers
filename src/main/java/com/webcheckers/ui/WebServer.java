@@ -9,8 +9,7 @@ import com.google.gson.Gson;
 
 import com.webcheckers.appl.CurrentGames;
 import com.webcheckers.appl.PlayerLobby;
-import com.webcheckers.ui.boardView.AjaxRoutes.PostCheckTurnRoute;
-import com.webcheckers.ui.boardView.AjaxRoutes.PostResignRoute;
+import com.webcheckers.ui.boardView.AjaxRoutes.*;
 import spark.TemplateEngine;
 
 
@@ -83,6 +82,17 @@ public class WebServer {
    * The URL pattern to Resign from the Game page.
    */
   public static final String RESIGN_URL = "/resignGame";
+
+  /**
+   * The URL pattern to undo a players last validated move
+   */
+  public static final String BACKUP_URL = "/backupMove";
+
+  /**
+   * The URL pattern to submit a players move
+   */
+  public static final String SUBMIT_URL = "/submitTurn";
+  public static final String VALIDATE_URL = "/validateMove";
 
   //
   // Attributes
@@ -192,6 +202,14 @@ public class WebServer {
 
     //Ajax route for implementing the Resign Button on the gameView
     post(RESIGN_URL, new PostResignRoute());
+
+    //Route for undoing a players last validated move
+    //post(BACKUP_URL, new PostBackupMoveRoute());
+
+    post(VALIDATE_URL, new PostValidateMove());
+
+    //Route which allows a player to submit their turn
+    //post(SUBMIT_URL, new PostSubmitTurnRoute());
 
     //
     LOG.config("WebServer is initialized.");
