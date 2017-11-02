@@ -49,13 +49,20 @@ public class GetSigninRouteTest {
      */
     @Test
     public void normal_sign_in(){
+        //Setup normal sign in scenario
         final Response response = mock(Response.class);
         final MyModelAndView myModelView = new MyModelAndView();
         when(engine.render(any(ModelAndView.class))).thenAnswer(MyModelAndView.makeAnswer(myModelView));
+
+        //Invoke test
         CuT.handle(request, response);
+
+        //Check that the model is a non-null Map.
         final Object model = myModelView.model;
         assertNotNull(model);
         assertTrue(model instanceof Map);
+
+        //Make sure correct information is displayed.
         final Map<String, Object> vm = (Map<String, Object>) model;
         assertEquals("Player Sign-in", vm.get("title"));
         assertEquals(GetSigninRoute.VIEW_NAME, myModelView.viewName);

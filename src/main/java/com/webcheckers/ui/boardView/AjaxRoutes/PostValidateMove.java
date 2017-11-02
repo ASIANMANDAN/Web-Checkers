@@ -10,7 +10,8 @@ import spark.Response;
 import spark.Route;
 import spark.Session;
 
-public class PostValidateMove implements Route{
+public class PostValidateMove implements Route {
+
     private final Gson gson = new Gson();
 
     //Key in the session attribute map for the current user Player object

@@ -204,12 +204,13 @@ public class WebServer {
     post(RESIGN_URL, new PostResignRoute());
 
     //Route for undoing a players last validated move
-    //post(BACKUP_URL, new PostBackupMoveRoute());
+    post(BACKUP_URL, new PostBackupMoveRoute());
 
+    //Route for validating a players move
     post(VALIDATE_URL, new PostValidateMove());
 
     //Route which allows a player to submit their turn
-    //post(SUBMIT_URL, new PostSubmitTurnRoute());
+    post(SUBMIT_URL, new PostSubmitTurnRoute());
 
     //
     LOG.config("WebServer is initialized.");

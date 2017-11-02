@@ -2,6 +2,8 @@ package com.webcheckers.appl;
 
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
+import com.webcheckers.model.board.Space;
+import com.webcheckers.ui.boardView.Move;
 
 /**
  * Application tier class which contains all needed information
@@ -16,7 +18,7 @@ public class Game {
 
     Player red;
     Player white;
-    final Board board;
+    Board board;
 
     /**
      * Constructor for a Game object.
@@ -86,12 +88,25 @@ public class Game {
     }
 
     /**
+     * Move a Piece from one Space to another on the Board model.
+     *
+     * @param move the move to make
+     */
+    protected void makeMove(Move move) {
+        this.board.makeMove(move);
+    }
+
+    /**
      * Gets the board model which tracks the game.
      *
      * @return the board model
      */
-    protected Board getBoard() {
-        return board;
+    protected Space[][] getBoard() {
+        return board.getBoard();
+    }
+
+    protected Board.ActiveColor getTurn() {
+        return board.currentTurn;
     }
 
     /**
