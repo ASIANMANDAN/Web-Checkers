@@ -77,6 +77,14 @@ public class BoardView implements Iterable {
     }
 
     /**
+     * Retruns the iterable boardView.
+     * @return the iterable version of the board model.
+     */
+    public ArrayList<Row> getBoard(){
+        return board;
+    }
+
+    /**
      * Iterates over the rows of the board.
      *
      * @return the current row to be used in the row iterator
@@ -85,4 +93,6 @@ public class BoardView implements Iterable {
     public Iterator<Row> iterator() {
         return board.iterator();
     }
+
+
 }
