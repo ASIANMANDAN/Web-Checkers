@@ -43,4 +43,26 @@ public class PlayerTest {
         //Test two players with different usernames are not equal.
         assertFalse(CuT.equals(CuT3));
     }
+
+    /**
+     * Test the {@link Player#equals(Object)} method with the same Player object.
+     */
+    @Test
+    public void test_samePlayerObject(){
+        Player player = new Player("playerName");
+        assertTrue(player.equals(player));
+
+    }
+
+    /**
+     * Test the {@link Player#equals(Object)} method with a different object.
+     */
+    @Test
+    public void test_diffObject(){
+        Player player = new Player("playerName");
+        String playerString = "playerString";
+
+        assertFalse(player.equals(playerString));
+    }
+
 }
