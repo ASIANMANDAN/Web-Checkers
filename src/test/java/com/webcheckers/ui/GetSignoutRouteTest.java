@@ -14,8 +14,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.mock;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 /**
  * file: checkers-app
@@ -33,20 +32,24 @@ public class GetSignoutRouteTest {
     private Session session;
     private TemplateEngine engine;
     private PlayerLobby playerLobby;
-
+    private CurrentGames currGames;
+    private Player player;
     /**
      * Setup new mock objects for each test.
      */
     @Before
     public void setup() {
+        currGames = mock(CurrentGames.class);
         request = mock(Request.class);
         session = mock(Session.class);
+        player = mock(Player.class);
         playerLobby = mock(PlayerLobby.class);
         when(request.session()).thenReturn(session);
+        when(session.attribute(GetSignoutRoute.CURRENTGAMES_KEY)).thenReturn(currGames);
+        when(session.attribute(GetSignoutRoute.CURR_PLAYER)).thenReturn(player);
+        when(currGames.playerInGame(player)).thenReturn(true);
+        //when(currGames.playerInGame(player)).t(currGames.removePlayer(player));
         engine = mock(TemplateEngine.class);
-        //when(playerLobby.getNumOfUsers()).thenReturn("2");
-        //when(playerLobby.getUserList()).thenReturn(null);
-
         // create a unique CuT for each test
         CuT = new GetSignoutRoute(engine, playerLobby);
     }
@@ -59,7 +62,7 @@ public class GetSignoutRouteTest {
         final Response response = mock(Response.class);
         final MyModelAndView myModelView = new MyModelAndView();
         when(engine.render(any(ModelAndView.class))).thenAnswer(MyModelAndView.makeAnswer(myModelView));
-
+        //session.removeAttribute(currGames.getCurrPlayer(player).getUsername());
         // Invoke the test
         CuT.handle(request, response);
 
