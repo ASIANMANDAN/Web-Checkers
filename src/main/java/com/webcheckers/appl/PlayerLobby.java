@@ -120,7 +120,7 @@ public class PlayerLobby {
      * @param username username to verify
      * @return boolean as to what is valid or not.
      */
-    private boolean isValidUsername(String username){
+    boolean isValidUsername(String username){
         return(!username.contains("\""));
     }
 
