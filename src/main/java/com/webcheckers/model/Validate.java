@@ -1,18 +1,20 @@
 package com.webcheckers.model;
 
-/**
- * file: checkers-app
- * language: java
- * author: erl3193@rit.edu Emily Lederman
- * description:
- */
-
 import com.webcheckers.model.board.Board;
 import com.webcheckers.model.board.Piece;
 import com.webcheckers.model.board.Space;
 import com.webcheckers.ui.boardView.Move;
 import com.webcheckers.ui.boardView.Position;
 
+/**
+ * A class used to determine if a proposed Move complies with the
+ * laws of American Checkers.
+ *
+ * @author Dan Wang
+ * @author Emily Lederman
+ * @author Kevin Paradis
+ * @author Nathan Farrell
+ */
 public class Validate {
 
     /**
@@ -27,11 +29,18 @@ public class Validate {
     public String isValid(Move move, Space[][] board) {
         String message = null;
 
-        if (isJumpPresent(move, board)) {
+        //Stops the player from jumping when one isn't available
+        if (!isJumpPresent(move, board) && didJump(move, board)) {
+            message = "There was no jump present. Therefore you can't jump.";
+        }
+
+        //Forces the player to take an available jump
+        if (isJumpPresent(move, board) && !didJump(move, board)) {
             message = "A jump is currently present and must be taken.";
         }
 
-        if (!isAdjacent(move)){
+        //todo determine if this check is the same as check #1
+        if (!isAdjacent(move) && !isJumpPresent(move, board)){
             message =  "There are no jumps present. Therefore you must move to a space that is " +
                     "adjacent to the piece you wish to move.";
         }
@@ -137,6 +146,51 @@ public class Validate {
 
     }
 
+    /**
+     * Determine if the given Move was a jump.
+     *
+     * @param move the proposed move to make
+     * @param board the current game Board
+     * @return whether or not the Move mad was a jump or not
+     */
+    private boolean didJump(Move move, Space[][] board) {
+        Position start = move.getStart();
+        Position end = move.getEnd();
+
+        int row = start.getRow();
+        int col = start.getCell();
+        Space startSpace = board[row][col];
+
+        //Piece moving "upwards"
+        if (start.getRow() > end.getRow()) {
+            int distance = start.getRow() - end.getRow();
+
+            if (distance == 2 && opponentAdjacent(startSpace, board)) {
+                return isDiagonal(move, board);
+            }
+        }
+
+        //Piece moving "downwards"
+        if (start.getRow() < end.getRow()) {
+            int distance = end.getRow() - start.getRow();
+
+            if (distance == 2 && opponentAdjacent(startSpace, board)) {
+                return isDiagonal(move, board);
+            }
+        }
+
+        return false;
+    }
+
+    /**
+     * Determine if a jump is present for any one of the players pieces
+     * on a Board
+     *
+     * @param move a Move used for determining the color of the player
+     * @param board the game Board
+     * @return whether or not one of the players pieces has a jump
+     *         that can be made
+     */
     private boolean isJumpPresent(Move move, Space[][] board) {
 
         int row = move.getStart().getRow();
@@ -150,7 +204,7 @@ public class Validate {
                 Space space = board[i][j];
 
                 //Indicates that the Space contains one of the players pieces
-                if (space.getPiece().getColor() == color) {
+                if (space.getPiece() != null && space.getPiece().getColor() == color) {
 
                     //Indicates an opponent is adjacent to a piece
                     if (opponentAdjacent(space, board)) {
@@ -166,6 +220,13 @@ public class Validate {
         return false;
     }
 
+    /**
+     * Determine if an opponents piece is adjacent to a given Board Space.
+     *
+     * @param space the Space on the Board
+     * @param board the game Board
+     * @return whether or not an opponents piece is adjacent to the given Space
+     */
     private boolean opponentAdjacent(Space space, Space[][] board) {
 
         int row = space.getRow();
@@ -177,29 +238,29 @@ public class Validate {
         if (color == Piece.Color.RED && type == Piece.Type.SINGLE) {
 
             //Check both sides of the given space
-            if (col > 0 && col < Board.size - 1) {
+            if (col > 0 && col < Board.size - 1 && row > 0) {
 
-                Space left = board[row + 1][col - 1];
-                Space right = board[row + 1][col + 1];
+                Space left = board[row - 1][col - 1];
+                Space right = board[row - 1][col + 1];
 
-                if ((left.getPiece().getColor() == Piece.Color.WHITE ||
-                        right.getPiece().getColor() == Piece.Color.WHITE)) {
+                if ((left.getPiece() != null && left.getPiece().getColor() == Piece.Color.WHITE) ||
+                        (right.getPiece() != null && right.getPiece().getColor() == Piece.Color.WHITE)) {
                     return true;
                 }
             }
 
             //Check just the left side
             if (col == Board.size) {
-                Space right = board[row + 1][col + 1];
-                if (right.getPiece().getColor() == Piece.Color.WHITE) {
+                Space left = board[row - 1][col - 1];
+                if (left.getPiece() != null && left.getPiece().getColor() == Piece.Color.WHITE) {
                     return true;
                 }
             }
 
             //Check just the right side
             if (col == 0) {
-                Space left = board[row + 1][col - 1];
-                if (left.getPiece().getColor() == Piece.Color.WHITE) {
+                Space right = board[row - 1][col + 1];
+                if (right.getPiece() != null && right.getPiece().getColor() == Piece.Color.WHITE) {
                     return true;
                 }
             }
@@ -209,29 +270,29 @@ public class Validate {
         if (color == Piece.Color.WHITE && type == Piece.Type.SINGLE) {
 
             //Check both sides of the given space
-            if (col > 0 && col < Board.size - 1) {
+            if (col > 0 && col < Board.size - 1 && row < Board.size - 1) {
 
-                Space left = board[row - 1][col - 1];
-                Space right = board[row - 1][col + 1];
+                Space left = board[row + 1][col - 1];
+                Space right = board[row + 1][col + 1];
 
-                if ((left.getPiece().getColor() == Piece.Color.RED ||
-                        right.getPiece().getColor() == Piece.Color.RED)) {
+                if ((left.getPiece() != null && left.getPiece().getColor() == Piece.Color.RED) ||
+                        (right.getPiece() != null && right.getPiece().getColor() == Piece.Color.RED)) {
                     return true;
                 }
             }
 
             //Check just the left side
             if (col == Board.size) {
-                Space right = board[row + 1][col + 1];
-                if (right.getPiece().getColor() == Piece.Color.RED) {
+                Space left = board[row + 1][col - 1];
+                if (left.getPiece() != null && left.getPiece().getColor() == Piece.Color.RED) {
                     return true;
                 }
             }
 
             //Check just the right side
             if (col == 0) {
-                Space left = board[row + 1][col - 1];
-                if (left.getPiece().getColor() == Piece.Color.RED) {
+                Space right = board[row + 1][col + 1];
+                if (right.getPiece() != null && right.getPiece().getColor() == Piece.Color.RED) {
                     return true;
                 }
             }
@@ -239,12 +300,18 @@ public class Validate {
         return false;
     }
 
+    /**
+     * Determines if a jump is possible from a given Board Space.
+     *
+     * @param space the Space on the Board to check
+     * @param board the game Board
+     * @return whether or not a jump is possible
+     */
     private boolean canJump(Space space, Space[][] board) {
 
         int row = space.getRow();
         int col = space.getCol();
         Piece.Color color = space.getPiece().getColor();
-        Piece.Type type = space.getPiece().getType();
 
         if (color == Piece.Color.RED) {
 
@@ -289,6 +356,4 @@ public class Validate {
         }
         return false;
     }
-
-
 }
