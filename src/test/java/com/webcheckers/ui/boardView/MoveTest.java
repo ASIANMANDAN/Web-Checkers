@@ -1,4 +1,4 @@
-package com.webcheckers.ui.boardView.AjaxRoutes;
+package com.webcheckers.ui.boardView;
 
 import com.webcheckers.ui.boardView.Move;
 import com.webcheckers.ui.boardView.Position;

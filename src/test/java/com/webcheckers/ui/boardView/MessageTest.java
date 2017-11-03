@@ -1,4 +1,4 @@
-package com.webcheckers.ui.boardView.AjaxRoutes;
+package com.webcheckers.ui.boardView;
 
 import static org.junit.Assert.*;
 
