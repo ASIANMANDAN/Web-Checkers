@@ -237,6 +237,7 @@ public class Validate {
         //Case when piece is RED and is SINGLE, only check in front of it
         if (color == Piece.Color.RED && type == Piece.Type.SINGLE) {
 
+            //todo remove and clean up as it shouldn't matter if two opponents are adjacent
             //Check both sides of the given space
             if (col > 0 && col < Board.size - 1 && row > 0) {
 
@@ -320,14 +321,24 @@ public class Validate {
 
                 //Check just the left side
                 if ((col - 2) >= 0) {
-                    if (board[row - 2][col - 2].getPiece() == null) {
+
+                    //Find the Piece in between the start and end Position
+                    Piece middle = board[row - 1][col - 1].getPiece();
+
+                    if (board[row - 2][col - 2].getPiece() == null &&
+                            middle != null && middle.getColor() == Piece.Color.WHITE) {
                         return true;
                     }
                 }
 
                 //Check right
                 if ((col + 2) <= Board.size - 1) {
-                    if (board[row - 2][col + 2].getPiece() == null) {
+
+                    //Find the Piece in between the start and end Position
+                    Piece middle = board[row - 1][col + 1].getPiece();
+
+                    if (board[row - 2][col + 2].getPiece() == null &&
+                            middle != null && middle.getColor() == Piece.Color.WHITE) {
                         return true;
                     }
                 }
@@ -341,14 +352,24 @@ public class Validate {
 
                 //Check just the left side
                 if ((col - 2) >= 0) {
-                    if (board[row + 2][col - 2].getPiece() == null) {
+
+                    //Find the Piece in between the start and end Position
+                    Piece middle = board[row + 1][col - 1].getPiece();
+
+                    if (board[row + 2][col - 2].getPiece() == null &&
+                            middle != null && middle.getColor() == Piece.Color.RED) {
                         return true;
                     }
                 }
 
                 //Check right
                 if ((col + 2) <= Board.size - 1) {
-                    if (board[row + 2][col + 2].getPiece() == null) {
+
+                    //Find the Piece in between the start and end Position
+                    Piece middle = board[row + 1][col + 1].getPiece();
+
+                    if (board[row + 2][col + 2].getPiece() == null &&
+                            middle != null && middle.getColor() == Piece.Color.RED) {
                         return true;
                     }
                 }
