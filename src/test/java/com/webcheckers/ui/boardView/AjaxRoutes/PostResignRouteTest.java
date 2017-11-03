@@ -1,8 +1,7 @@
-package com.webcheckers.ui.BoardView.AjaxRoutes;
+package com.webcheckers.ui.boardView.AjaxRoutes;
 
 import com.webcheckers.appl.CurrentGames;
 import com.webcheckers.model.Player;
-import com.webcheckers.ui.boardView.AjaxRoutes.PostResignRoute;
 import org.junit.Before;
 import org.junit.Test;
 import spark.Request;

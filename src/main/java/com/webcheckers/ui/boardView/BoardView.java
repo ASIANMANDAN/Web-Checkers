@@ -22,7 +22,7 @@ public class BoardView implements Iterable {
     private static final int size = Board.size;
 
     /**
-     * Creates a BoardView using a Board model which satisfies the conditions
+     * Creates a boardView using a Board model which satisfies the conditions
      * needed in Game.ftl to display the board and pieces.
      *
      * @param player the player whose view is to be created
