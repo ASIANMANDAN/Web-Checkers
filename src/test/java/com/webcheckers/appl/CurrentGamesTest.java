@@ -114,15 +114,6 @@ public class CurrentGamesTest {
     }
 
     /**
-     * Test that the correct URL is generated for a given player
-     */
-    @Test
-    public void test_createURL() {
-        String URL = "/game?opponent=player";
-        assertEquals(URL, CuT.createURL(white));
-    }
-
-    /**
      * Test that Game returns the right red Player.
      */
     @Test

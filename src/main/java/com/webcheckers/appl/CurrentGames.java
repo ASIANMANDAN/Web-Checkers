@@ -69,25 +69,6 @@ public class CurrentGames {
     }
 
     /**
-     * creates a URL to which the currentPlayer will be redirected to.
-     *
-     * @param player the player which is used to find
-     *        the game they're associated with
-     * @return the URL to be redirected to
-     */
-    public String createURL(Player player) {
-        Player opponent = getOpponent(player);
-
-        //Case for when opponent signs-out or quits before player is in game
-        if (opponent == null) {
-            removePlayer(player);
-            return "/";
-        }
-
-        return "/game?opponent=" + opponent.getUsername();
-    }
-
-    /**
      * Given a player in a game, return that players opponent.
      *
      * @param player the player whose opponent to find
