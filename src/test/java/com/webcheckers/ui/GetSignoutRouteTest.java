@@ -47,8 +47,7 @@ public class GetSignoutRouteTest {
         when(request.session()).thenReturn(session);
         when(session.attribute(GetSignoutRoute.CURRENTGAMES_KEY)).thenReturn(currGames);
         when(session.attribute(GetSignoutRoute.CURR_PLAYER)).thenReturn(player);
-        when(currGames.playerInGame(player)).thenReturn(true);
-        //when(currGames.playerInGame(player)).t(currGames.removePlayer(player));
+        when(currGames.playerInGame(player)).thenReturn(false);
         engine = mock(TemplateEngine.class);
         // create a unique CuT for each test
         CuT = new GetSignoutRoute(engine, playerLobby);
