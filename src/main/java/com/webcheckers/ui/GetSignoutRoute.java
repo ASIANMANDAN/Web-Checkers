@@ -73,7 +73,7 @@ public class GetSignoutRoute implements Route{
 
         //Remove the player from a game if they are in one
         if (currentGames.playerInGame(currentPlayer)) {
-            //currentGames.removePlayer(currentPlayer);
+            currentGames.removePlayer(currentPlayer);
         }
 
         //signs out the current user
