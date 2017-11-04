@@ -41,4 +41,11 @@ public class MessageTest {
     public void test_getType() {
         assertEquals(type, CuT.getType());
     }
+
+    @Test
+    public void test_enum(){
+        assertEquals(Message.Type.info, Message.Type.valueOf("info"));
+        assertEquals(Message.Type.error, Message.Type.valueOf("error"));
+
+    }
 }

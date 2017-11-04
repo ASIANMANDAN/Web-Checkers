@@ -156,4 +156,12 @@ public class PlayerLobbyTest {
         assertEquals(1, CuT.getPlayerLobby().size());
         assertTrue(CuT.getPlayerLobby().containsKey(name));
     }
+
+    @Test
+    public void test_enum(){
+        assertEquals(PlayerLobby.InputResult.ACCEPTED, PlayerLobby.InputResult.valueOf("ACCEPTED"));
+        assertEquals(PlayerLobby.InputResult.INVALID, PlayerLobby.InputResult.valueOf("INVALID"));
+        assertEquals(PlayerLobby.InputResult.EMPTY, PlayerLobby.InputResult.valueOf("EMPTY"));
+        assertEquals(PlayerLobby.InputResult.TAKEN, PlayerLobby.InputResult.valueOf("TAKEN"));
+    }
 }
