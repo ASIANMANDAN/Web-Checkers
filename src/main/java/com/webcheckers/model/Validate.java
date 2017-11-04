@@ -251,7 +251,7 @@ public class Validate {
             }
 
             //Check just the left side
-            if (col == Board.size) {
+            if (col == Board.size - 1) {
                 Space left = board[row - 1][col - 1];
                 if (left.getPiece() != null && left.getPiece().getColor() == Piece.Color.WHITE) {
                     return true;
@@ -283,7 +283,7 @@ public class Validate {
             }
 
             //Check just the left side
-            if (col == Board.size) {
+            if (col == Board.size - 1) {
                 Space left = board[row + 1][col - 1];
                 if (left.getPiece() != null && left.getPiece().getColor() == Piece.Color.RED) {
                     return true;
