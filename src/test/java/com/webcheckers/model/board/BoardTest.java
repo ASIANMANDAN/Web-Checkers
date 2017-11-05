@@ -4,14 +4,10 @@ import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
-import com.webcheckers.model.board.Board;
-import com.webcheckers.model.board.Piece;
-import com.webcheckers.model.board.Space;
 import com.webcheckers.ui.boardView.Move;
 import com.webcheckers.ui.boardView.Position;
 import org.junit.Before;
 import org.junit.Test;
-
 
 /**
  *  Test for the board model.
@@ -40,18 +36,35 @@ public class BoardTest {
     }
 
     /**
-     * Tests the constructor with no args
-     * @throws Exception
+     * Test the default constructor.
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
      */
     @Test
-    public void ctor_noArg() throws Exception { new Board(); }
-
-    @Test
-    public void ctor_withArg() throws Exception { new Board(arrayBoard, Board.ActiveColor.RED); }
+    public void test_ctor_noArg() throws Exception {
+        new Board();
+    }
 
     /**
-     * Tests the currentColor was initialized correctly/
-     * @throws Exception
+     * Test the constructor with arguments.
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
+     */
+    @Test
+    public void test_ctor_withArg() throws Exception {
+        new Board(arrayBoard, Board.ActiveColor.RED);
+    }
+
+    /**
+     * Tests the currentColor was initialized correctly.
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
      */
     @Test
     public void test_currColor() throws Exception{
@@ -61,7 +74,10 @@ public class BoardTest {
 
     /**
      * Tests to see if there is a valid empty board.
-     * @throws Exception
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
      */
     @Test
     public void test_emptyBoard() throws Exception{
@@ -88,7 +104,10 @@ public class BoardTest {
     /**
      * Tests the newGame function to make sure the right pieces are in the right
      * places.
-     * @throws Exception
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
      */
     @Test
     public void test_newGame() throws Exception {
@@ -141,6 +160,14 @@ public class BoardTest {
 
     }
 
+    /**
+     * Test that the makeMove method moves the given Piece to the correct
+     * position on the Board.
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
+     */
     @Test
     public void test_makeMove() throws Exception{
         Board redTurnBoard = new Board(arrayBoard, Board.ActiveColor.RED);
@@ -149,12 +176,18 @@ public class BoardTest {
         whiteTurnBoard.makeMove(move);
     }
 
+    /**
+     * Test the enum values of ActiveColor.
+     */
     @Test
     public void test_turnEnum(){
         assertEquals(Board.ActiveColor.RED, Board.ActiveColor.valueOf("RED"));
         assertEquals(Board.ActiveColor.WHITE, Board.ActiveColor.valueOf("WHITE"));
     }
 
+    /**
+     * Test the enum values of ViewMode.
+     */
     @Test
     public void test_viewEnum(){
         assertEquals(Board.ViewMode.PLAY, Board.ViewMode.valueOf("PLAY"));

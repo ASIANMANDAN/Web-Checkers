@@ -9,9 +9,12 @@ import static org.mockito.Mockito.mock;
 import static org.junit.Assert.*;
 
 /**
- * The unit test suite for the {@Link Space} component.
+ * The unit test suite for the {@link Space} component.
  *
  * @author Dan Wang
+ * @author Emily Lederman
+ * @author Kevin Paradis
+ * @author Nathan Farrell
  */
 public class SpaceTest {
 
@@ -31,10 +34,15 @@ public class SpaceTest {
     }
 
     /**
-     * Test that the constructor will not work with a column or row above 7.
+     * Test that the constructor will not work with a column or row
+     * grater than the legal board size.
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
      */
     @Test
-    public void ctor_tooBig() throws Exception {
+    public void test_ctor_tooBig() throws Exception {
         try{
             new Space(tooBig, tooBig, color);
         }catch (Exception e){
@@ -57,9 +65,13 @@ public class SpaceTest {
 
     /**
      * Test that the constructor will not work with a row or column less than 0.
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
      */
     @Test
-    public void ctor_tooSmall() throws Exception {
+    public void test_ctor_tooSmall() throws Exception {
         try{
             new Space(tooSmall, tooSmall, color);
         }catch (Exception e){
@@ -80,13 +92,28 @@ public class SpaceTest {
     }
 
     /**
-     * Test that the constructor will work with a row and space within the range 0 - 7.
+     * Test that the constructor will work with a row and space within the
+     * legal range.
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
      */
     @Test
-    public void ctor_inRange() throws Exception { new Space(inRange, inRange, color); }
+    public void test_ctor_inRange() throws Exception {
+        new Space(inRange, inRange, color);
+    }
 
+    /**
+     * Test that the constructor will not work when given a row that
+     * is out of the legal range.
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
+     */
     @Test
-    public void ctor_outRange() throws Exception {
+    public void test_ctor_outRange() throws Exception {
         try{
             new Space(tooSmall, tooBig, color);
         }catch (Exception e){
@@ -103,7 +130,7 @@ public class SpaceTest {
     }
 
     /**
-     * Test the {@Link Space#getColor()} method.
+     * Test the {@link Space#getColor()} method.
      */
     @Test
     public void test_get_color() {
@@ -111,7 +138,7 @@ public class SpaceTest {
     }
 
     /**
-     * Test the {@Link Space#setPiece} method.
+     * Test the {@link Space#setPiece} method.
      */
     @Test
     public void test_set_piece() {
@@ -121,7 +148,7 @@ public class SpaceTest {
     }
 
     /**
-     * Test the {@Link Space#getPiece} method.
+     * Test the {@link Space#getPiece} method.
      */
     @Test
     public void test_get_piece() {
@@ -131,7 +158,7 @@ public class SpaceTest {
     }
 
     /**
-     * Test the {@Link Space#getRow} method.
+     * Test the {@link Space#getRow} method.
      */
     @Test
     public void test_get_row() {
@@ -139,7 +166,7 @@ public class SpaceTest {
     }
 
     /**
-     * Test the {@Link Space#getCol} method.
+     * Test the {@link Space#getCol} method.
      */
     @Test
     public void test_get_col() {
@@ -147,7 +174,7 @@ public class SpaceTest {
     }
 
     /**
-     * Test the {@Link Space#isValid} method.
+     * Test the {@link Space#isValid} method.
      */
     @Test
     public void test_is_valid() throws Exception {
@@ -164,8 +191,15 @@ public class SpaceTest {
         assertFalse(CuT2.isValid());
     }
 
+    /**
+     * Test that the equals method correctly distinguishes between Spaces.
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
+     */
     @Test
-    public void test_equals() throws Exception{
+    public void test_equals() throws Exception {
         Space compareSameSpace = new Space(inRange, inRange, color);
         Space compareDiffSpace1 = new Space(3, 6, Space.Color.BLACK);
         Space compareDiffSpace2 = new Space(4, 6, Space.Color.BLACK);
@@ -192,6 +226,9 @@ public class SpaceTest {
 
     }
 
+    /**
+     * Test the enum values for Color.
+     */
     @Test
     public void test_enum(){
         assertEquals(Space.Color.BLACK, Space.Color.valueOf("BLACK"));

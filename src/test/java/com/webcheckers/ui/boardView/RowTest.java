@@ -10,7 +10,12 @@ import java.util.Iterator;
 import static org.junit.Assert.*;
 
 /**
- * Created by nate on 11/2/17.
+ * The unit test suite for the {@link Row} component.
+ *
+ * @author Dan Wang
+ * @author Emily Lederman
+ * @author Kevin Paradis
+ * @author Nathan Farrell
  */
 public class RowTest {
     private static int index = 0;
@@ -23,6 +28,9 @@ public class RowTest {
         newSpace = new Space(0 ,0 , Space.Color.BLACK);
     }
 
+    /**
+     * Test the constructor.
+     */
     @Test
     public void test_constr(){
         Row row = new Row(index);
@@ -30,6 +38,9 @@ public class RowTest {
         assertEquals(row.getRowOfSpaces(), new ArrayList<Space>());
     }
 
+    /**
+     * Test the addSpace method.
+     */
     @Test
     public void test_addSpace(){
         Row row = new Row(index);
@@ -38,18 +49,27 @@ public class RowTest {
         assertEquals(rowOfSpaces.get(0), newSpace);
     }
 
+    /**
+     * Test the getIndex method.
+     */
     @Test
     public void test_getIndex(){
         Row row = new Row(index);
         assertEquals(index, row.getIndex());
     }
 
+    /**
+     * Test the getRowOfSpaces method.
+     */
     @Test
     public void test_getRowOfSpaces(){
         Row row = new Row(index);
         assertTrue(row.getRowOfSpaces() instanceof ArrayList);
     }
 
+    /**
+     * Test the iterator method needed by the Iterable interface.
+     */
     @Test
     public void test_iterator(){
         Row row = new Row(index);

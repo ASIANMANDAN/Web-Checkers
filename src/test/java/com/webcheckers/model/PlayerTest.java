@@ -2,29 +2,40 @@ package com.webcheckers.model;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
-import com.webcheckers.model.Player;
 
 /**
- * file: checkers-app
- * language: java
- * author: erl3193@rit.edu Emily Lederman
- * description:
+ * The unit test suite for the {@link Player} component.
+ *
+ * @author Dan Wang
+ * @author Emily Lederman
+ * @author Kevin Paradis
+ * @author Nathan Farrell
  */
 public class PlayerTest {
 
-    String userName = "user";
+    private String userName = "user";
 
+    /**
+     * Test the constructor.
+     */
     @Test
     public void test_newPlayer(){
         new Player(userName);
     }
 
+    /**
+     * Test the getUsername method.
+     */
     @Test
     public void test_getUN(){
         Player pl = new Player(userName);
         assertEquals(userName, pl.getUsername());
     }
 
+    /**
+     * Test that the equals correctly distinguishes between
+     * different Player objects.
+     */
     @Test
     public void test_equals(){
         Player p1 = new Player(userName);
@@ -52,5 +63,4 @@ public class PlayerTest {
 
         assertFalse(player.equals(playerString));
     }
-
 }

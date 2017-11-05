@@ -11,7 +11,6 @@ import com.webcheckers.ui.boardView.Position;
 import org.junit.Before;
 import org.junit.Test;
 
-import javax.swing.text.DefaultEditorKit;
 import java.util.ArrayList;
 
 /**
