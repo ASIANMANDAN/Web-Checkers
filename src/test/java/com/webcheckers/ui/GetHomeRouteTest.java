@@ -206,4 +206,5 @@ public class GetHomeRouteTest {
         //   * redirect to the Game view
         verify(response).redirect(WebServer.GAME_URL + "?opponent=opponent");
     }
+
 }

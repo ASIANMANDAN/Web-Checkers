@@ -7,6 +7,7 @@ import org.junit.Test;
 import spark.*;
 
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -143,5 +144,15 @@ public class PostSigninRouteTest {
         assertEquals(player, vm.get(GetHomeRoute.CURR_PLAYER));
         assertEquals(null, vm.get(GetHomeRoute.PLAYERS_LIST_ATTR));
         assertEquals(null, vm.get(GetHomeRoute.MESSAGE_ATTR));
+    }
+
+    @Test
+    public void public_nullSignin(){
+        try{
+            playerLobby.signIn(null);
+        }catch(NoSuchElementException e){
+            assertEquals(e.getMessage(), "Invalid result of guess received." );
+        }
+
     }
 }

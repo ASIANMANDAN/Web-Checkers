@@ -43,10 +43,11 @@ public class BoardViewTest {
         this.board.newGame();
         this.arrayBoard = board.getBoard();
 
-
         when(games.getRedPlayer(any(Player.class))).thenReturn(redPlayer);
         when(games.getWhitePlayer(any(Player.class))).thenReturn(whitePlayer);
         when(games.getBoard(any(Player.class))).thenReturn(arrayBoard);
+
+
 
     }
 

@@ -1,10 +1,15 @@
 package com.webcheckers.model.board;
 
 import static org.junit.Assert.*;
+import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
 
 import com.webcheckers.model.board.Board;
 import com.webcheckers.model.board.Piece;
 import com.webcheckers.model.board.Space;
+import com.webcheckers.ui.boardView.Move;
+import com.webcheckers.ui.boardView.Position;
+import org.junit.Before;
 import org.junit.Test;
 
 
@@ -17,7 +22,22 @@ import org.junit.Test;
  * @author Nathan Farrell
  */
 public class BoardTest {
+    private static Space[][] arrayBoard;
+    private static Move move;
 
+    @Before
+    public void test_setup() throws Exception {
+        Board board = new Board();
+        arrayBoard = board.getBoard();
+
+        //Mocking a move
+        move = mock(Move.class);
+        Position start = new Position(0,1);
+        Position end = new Position(1,1);
+
+        when(move.getStart()).thenReturn(start);
+        when(move.getEnd()).thenReturn(end);
+    }
 
     /**
      * Tests the constructor with no args
@@ -25,6 +45,9 @@ public class BoardTest {
      */
     @Test
     public void ctor_noArg() throws Exception { new Board(); }
+
+    @Test
+    public void ctor_withArg() throws Exception { new Board(arrayBoard, Board.ActiveColor.RED); }
 
     /**
      * Tests the currentColor was initialized correctly/
@@ -115,6 +138,28 @@ public class BoardTest {
                 }
             }
         }
+
+    }
+
+    @Test
+    public void test_makeMove() throws Exception{
+        Board redTurnBoard = new Board(arrayBoard, Board.ActiveColor.RED);
+        redTurnBoard.makeMove(move);
+        Board whiteTurnBoard = new Board(arrayBoard, Board.ActiveColor.WHITE);
+        whiteTurnBoard.makeMove(move);
+    }
+
+    @Test
+    public void test_turnEnum(){
+        assertEquals(Board.ActiveColor.RED, Board.ActiveColor.valueOf("RED"));
+        assertEquals(Board.ActiveColor.WHITE, Board.ActiveColor.valueOf("WHITE"));
+    }
+
+    @Test
+    public void test_viewEnum(){
+        assertEquals(Board.ViewMode.PLAY, Board.ViewMode.valueOf("PLAY"));
+        assertEquals(Board.ViewMode.REPLAY, Board.ViewMode.valueOf("REPLAY"));
+        assertEquals(Board.ViewMode.SPECTATE, Board.ViewMode.valueOf("SPECTATE"));
 
     }
 }

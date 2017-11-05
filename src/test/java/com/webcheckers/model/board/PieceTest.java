@@ -69,4 +69,30 @@ public class PieceTest {
         assertTrue(CuT2.equals(CuT6));
     }
 
+    @Test
+    public void test_equals2(){
+        Piece piece = new Piece(Piece.Color.RED, Piece.Type.KING);
+        String notPiece = "NOT A PIECE";
+
+        //Different object
+        assertFalse(piece.equals(notPiece));
+        //Same object
+        assertTrue(piece.equals(piece));
+    }
+
+
+    @Test
+    public void test_enum(){
+        assertEquals(Piece.Color.RED, Piece.Color.valueOf("RED"));
+        assertEquals(Piece.Color.WHITE, Piece.Color.valueOf("WHITE"));
+    }
+
+    @Test
+    public void test_viewEnum(){
+        assertEquals(Piece.Type.KING, Piece.Type.valueOf("KING"));
+        assertEquals(Piece.Type.SINGLE, Piece.Type.valueOf("SINGLE"));
+    }
+
+
+
 }
