@@ -20,6 +20,9 @@ import static org.mockito.Mockito.when;
  * The unit test suite for the {@link GetGameRoute} component.
  *
  * @author Dan Wang
+ * @author Emily Lederman
+ * @author Kevin Paradis
+ * @author Nathan Farrell
  */
 public class GetGameRouteTest {
 
