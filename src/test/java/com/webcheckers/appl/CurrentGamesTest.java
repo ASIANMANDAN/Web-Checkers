@@ -6,8 +6,11 @@ import static org.mockito.Mockito.when;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
 import com.webcheckers.model.board.Space;
+import com.webcheckers.ui.boardView.Move;
+import com.webcheckers.ui.boardView.Position;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.ArrayList;
 
 /**
@@ -25,9 +28,12 @@ public class CurrentGamesTest {
     private Player white;
     private Player notInGame;
     private CurrentGames CuT;
+    private Player nullPlayer;
+    private Player oppOfNullPlayer;
+    private Move move;
 
     @Before
-    public void test_setUp() {
+    public void test_setUp() throws Exception {
         ArrayList<Game> cg = new ArrayList<>();
         Game game1 = mock(Game.class);
         Game game2 = mock(Game.class);
@@ -46,6 +52,10 @@ public class CurrentGamesTest {
         white = mock(Player.class);
         notInGame = mock(Player.class);
 
+        oppOfNullPlayer = mock(Player.class);
+        nullPlayer = mock(Player.class);
+
+
         //Add mocked games
         cg.add(game1);
         cg.add(game2);
@@ -53,11 +63,20 @@ public class CurrentGamesTest {
 
         CuT = new CurrentGames(cg);
 
+        //Mocking a move
+        move = mock(Move.class);
+        Position start = new Position(0,1);
+        Position end = new Position(1,1);
+
+        when(move.getStart()).thenReturn(start);
+        when(move.getEnd()).thenReturn(end);
+
         //Add mocked Players to a game
         //Also tests that adding a game is functional since the game
         //is required by most tests
         try {
             CuT.addGame(red, white);
+            CuT.addGame(oppOfNullPlayer, nullPlayer);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -181,4 +200,24 @@ public class CurrentGamesTest {
         assertFalse(CuT.playerInGame(white));
         assertNull(CuT.getOpponent(red));
     }
+
+    @Test
+    public void test_getBoard(){
+        Space[][] board = CuT.getBoard(red);
+        assertEquals(board, gameBoard);
+        CuT.endGame(nullPlayer);
+        Space[][] nullBoard = CuT.getBoard(nullPlayer);
+        assertEquals(null, nullBoard);
+    }
+
+    @Test
+    public void test_makeMove(){
+        assertTrue(CuT.makeMove(red, move));
+        CuT.endGame(nullPlayer);
+        assertFalse(CuT.makeMove(nullPlayer, move));
+
+    }
+
+
+
 }

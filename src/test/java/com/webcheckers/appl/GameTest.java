@@ -2,11 +2,16 @@ package com.webcheckers.appl;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.when;
+
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
 import com.webcheckers.model.board.Space;
+import com.webcheckers.ui.boardView.Move;
+import com.webcheckers.ui.boardView.Position;
 import org.junit.Before;
 import org.junit.Test;
+import org.mockito.Mock;
 
 /**
  * The unit test suite for the {@link Game} component.
@@ -24,15 +29,26 @@ public class GameTest {
     private Player notInGame;
     private Space[][] gameBoard;
     private Game CuT;
+    private Move move;
 
     @Before
-    public void testSetup() {
+    public void testSetup() throws Exception{
         red = mock(Player.class);
         white = mock(Player.class);
         notInGame = mock(Player.class);
-        Board board = mock(Board.class);
+
+        //Friendly classes
+        Board board = new Board();
         board.newGame();
         gameBoard = board.getBoard();
+
+        //Mocking a move
+        move = mock(Move.class);
+        Position start = new Position(0,1);
+        Position end = new Position(1,1);
+
+        when(move.getStart()).thenReturn(start);
+        when(move.getEnd()).thenReturn(end);
 
         try {
             CuT = new Game(red, white);
@@ -127,5 +143,22 @@ public class GameTest {
 
         CuT.removePlayer(white);
         assertNull(CuT.getWhitePlayer());
+    }
+
+    /**
+     * Tests getBoard method of {@link Game#equals(Object)}.
+     */
+    @Test
+    public void test_getBoard(){
+        Space[][] board = CuT.getBoard();
+        assertEquals(board, gameBoard);
+    }
+
+    /**
+     * Tests makeMove method of {@link Game#equals(Object)}.
+     */
+    @Test
+    public void test_makeMove(){
+        CuT.makeMove(move);
     }
 }

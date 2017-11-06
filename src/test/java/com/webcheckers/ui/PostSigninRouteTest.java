@@ -7,6 +7,7 @@ import org.junit.Test;
 import spark.*;
 
 import java.util.Map;
+import java.util.NoSuchElementException;
 
 import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
@@ -19,6 +20,9 @@ import static org.mockito.Mockito.when;
  * The unit test suite for the {@link PostSigninRoute} component.
  *
  * @author Dan Wang
+ * @author Emily Lederman
+ * @author Kevin Paradis
+ * @author Nathan Farrell
  */
 public class PostSigninRouteTest {
 
@@ -31,7 +35,7 @@ public class PostSigninRouteTest {
     private PlayerLobby playerLobby;
 
     @Before
-    public void setup(){
+    public void test_setUp(){
         request = mock(Request.class);
         session = mock(Session.class);
         when(request.session()).thenReturn(session);
@@ -44,7 +48,7 @@ public class PostSigninRouteTest {
      * Test the sign in page will display the correct error message will display when the submitted username has ".
      */
     @Test
-    public void error_sign_in(){
+    public void test_error_sign_in(){
         //Create scenario for having " in username
         when(request.queryParams(PostSigninRoute.USERNAME_PARAM)).thenReturn("\"");
         final Response response = mock(Response.class);
@@ -73,7 +77,7 @@ public class PostSigninRouteTest {
      * Test the sign in page will display the correct error message when the username is blank.
      */
     @Test
-    public void empty_sign_in(){
+    public void test_empty_sign_in(){
         when(request.queryParams(PostSigninRoute.USERNAME_PARAM)).thenReturn("");
         final Response response = mock(Response.class);
         when(playerLobby.signIn("")).thenReturn(PlayerLobby.InputResult.EMPTY);
@@ -97,7 +101,7 @@ public class PostSigninRouteTest {
      * Test the sign in page will display the correct error message when the username is already in use.
      */
     @Test
-    public void taken_sign_in(){
+    public void test_taken_sign_in(){
         when(request.queryParams(PostSigninRoute.USERNAME_PARAM)).thenReturn("Dan");
         final Response response = mock(Response.class);
         when(playerLobby.signIn("Dan")).thenReturn(PlayerLobby.InputResult.TAKEN);
@@ -121,7 +125,7 @@ public class PostSigninRouteTest {
      * Test the sign in page will redirect you to the home page upon a valid username.
      */
     @Test(expected = HaltException.class)
-    public void valid_sign_in(){
+    public void test_valid_sign_in(){
         final Player player = mock(Player.class);
         when(request.queryParams(PostSigninRoute.USERNAME_PARAM)).thenReturn("Dan");
         final Response response = mock(Response.class);
@@ -143,5 +147,18 @@ public class PostSigninRouteTest {
         assertEquals(player, vm.get(GetHomeRoute.CURR_PLAYER));
         assertEquals(null, vm.get(GetHomeRoute.PLAYERS_LIST_ATTR));
         assertEquals(null, vm.get(GetHomeRoute.MESSAGE_ATTR));
+    }
+
+    /**
+     * Test the sign-in feature in the case where no username was given
+     */
+    @Test
+    public void test_nullSignin(){
+        try{
+            playerLobby.signIn(null);
+        }catch(NoSuchElementException e){
+            assertEquals(e.getMessage(), "Invalid username received." );
+        }
+
     }
 }

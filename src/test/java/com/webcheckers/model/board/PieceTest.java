@@ -11,6 +11,9 @@ import static org.junit.Assert.assertTrue;
  * The unit test suite for the {@link Piece} component.
  *
  * @author Dan Wang
+ * @author Emily Lederman
+ * @author Kevin Paradis
+ * @author Nathan Farrell
  */
 public class PieceTest {
 
@@ -69,4 +72,35 @@ public class PieceTest {
         assertTrue(CuT2.equals(CuT6));
     }
 
+    /**
+     * Test the equals method will reject non-Piece objects.
+     */
+    @Test
+    public void test_equals2(){
+        Piece piece = new Piece(Piece.Color.RED, Piece.Type.KING);
+        String notPiece = "NOT A PIECE";
+
+        //Different object
+        assertFalse(piece.equals(notPiece));
+        //Same object
+        assertTrue(piece.equals(piece));
+    }
+
+    /**
+     * Test the enum values of Color.
+     */
+    @Test
+    public void test_enum(){
+        assertEquals(Piece.Color.RED, Piece.Color.valueOf("RED"));
+        assertEquals(Piece.Color.WHITE, Piece.Color.valueOf("WHITE"));
+    }
+
+    /**
+     * Test the enum values of Type.
+     */
+    @Test
+    public void test_viewEnum(){
+        assertEquals(Piece.Type.KING, Piece.Type.valueOf("KING"));
+        assertEquals(Piece.Type.SINGLE, Piece.Type.valueOf("SINGLE"));
+    }
 }

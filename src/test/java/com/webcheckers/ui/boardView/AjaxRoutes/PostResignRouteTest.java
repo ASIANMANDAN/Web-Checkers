@@ -13,7 +13,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Created by nate on 11/2/17.
+ * The unit test suite for the {@link PostResignRoute} component.
+ *
+ * @author Dan Wang
+ * @author Emily Lederman
+ * @author Kevin Paradis
+ * @author Nathan Farrell
  */
 public class PostResignRouteTest {
 
@@ -50,7 +55,6 @@ public class PostResignRouteTest {
         when(session.attribute(OPPONENT_KEY)).thenReturn(opponent);
 
         CuT = new PostResignRoute();
-
     }
 
 

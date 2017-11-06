@@ -1,7 +1,5 @@
 package com.webcheckers.ui.boardView;
 
-import com.webcheckers.ui.boardView.Move;
-import com.webcheckers.ui.boardView.Position;
 import org.junit.Before;
 import org.junit.Test;
 

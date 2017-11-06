@@ -43,18 +43,18 @@ public class BoardViewTest {
         this.board.newGame();
         this.arrayBoard = board.getBoard();
 
-
         when(games.getRedPlayer(any(Player.class))).thenReturn(redPlayer);
         when(games.getWhitePlayer(any(Player.class))).thenReturn(whitePlayer);
         when(games.getBoard(any(Player.class))).thenReturn(arrayBoard);
-
     }
-
 
     /**
      * Tests to see if an iterable board is created that is the equivalent to a board
      * model for a red player.
-     * @throws Exception
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
      */
     @Test
     public void test_constrBoardViewRed() throws Exception{
@@ -73,7 +73,10 @@ public class BoardViewTest {
     /**
      * Tests to see if an iterable board is created that is the equivalent to a board
      * model for a white player.
-     * @throws Exception
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
      */
     @Test
     public void test_constrBoardViewWhite() throws Exception{
@@ -100,6 +103,10 @@ public class BoardViewTest {
     /**
      * Tests the orientation of the challengers board (red and on the bottom). Makes sure the
      * iterable version matches the correct orientation
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
      */
     @Test
     public void test_redBoard() throws Exception{
@@ -152,6 +159,10 @@ public class BoardViewTest {
     /**
      * Tests the orientation of the challengers board (red and on the bottom). Makes sure the
      * iterable version matches the correct orientation
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
      */
     @Test
     public void test_whiteBoard() throws Exception{
@@ -203,7 +214,10 @@ public class BoardViewTest {
 
     /**
      * Tests the iterator. Go through the List and checks each element if it's a Row.
-     * @throws Exception
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
      */
     @Test
     public void test_iterator() throws Exception{

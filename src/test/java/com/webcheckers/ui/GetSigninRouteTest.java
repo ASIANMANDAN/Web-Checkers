@@ -21,6 +21,9 @@ import static org.mockito.Mockito.when;
  * The unit test suite for the {@link GetSigninRoute} component.
  *
  * @author Dan Wang
+ * @author Emily Lederman
+ * @author Kevin Paradis
+ * @author Nathan Farrell
  */
 public class GetSigninRouteTest {
 
@@ -67,5 +70,4 @@ public class GetSigninRouteTest {
         assertEquals("Player Sign-in", vm.get("title"));
         assertEquals(GetSigninRoute.VIEW_NAME, myModelView.viewName);
     }
-
 }
