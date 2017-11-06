@@ -67,6 +67,7 @@ public class PostSigninRouteTest {
         assertTrue(model instanceof Map);
 
         //Check that the correct title and message displays
+        @SuppressWarnings("unchecked")
         final Map<String, Object> vm = (Map<String, Object>) model;
         assertEquals("Sign-in", vm.get("title"));
         assertEquals("The username you selected was invalid as it contains double quotation marks.",
@@ -92,6 +93,7 @@ public class PostSigninRouteTest {
         assertNotNull(model);
         assertTrue(model instanceof Map);
 
+        @SuppressWarnings("unchecked")
         final Map<String, Object> vm = (Map<String, Object>) model;
         assertEquals("Sign-in", vm.get("title"));
         assertEquals("Your username cannot be blank.", vm.get(PostSigninRoute.MESSAGE_ATTR));
@@ -116,6 +118,7 @@ public class PostSigninRouteTest {
         assertNotNull(model);
         assertTrue(model instanceof Map);
 
+        @SuppressWarnings("unchecked")
         final Map<String, Object> vm = (Map<String, Object>) model;
         assertEquals("Sign-in", vm.get("title"));
         assertEquals("The username you selected is already in use.", vm.get(PostSigninRoute.MESSAGE_ATTR));
@@ -141,6 +144,7 @@ public class PostSigninRouteTest {
         assertNotNull(model);
         assertTrue(model instanceof Map);
 
+        @SuppressWarnings("unchecked")
         final Map<String, Object> vm = (Map<String, Object>) model;
         assertEquals("Welcome!", vm.get("title"));
         assertEquals("0", vm.get(GetHomeRoute.PLAYERS_ONLINE_ATTR));

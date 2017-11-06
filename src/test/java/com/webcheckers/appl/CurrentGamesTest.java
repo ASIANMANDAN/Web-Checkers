@@ -5,6 +5,7 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
+import com.webcheckers.model.board.Piece;
 import com.webcheckers.model.board.Space;
 import com.webcheckers.ui.boardView.Move;
 import com.webcheckers.ui.boardView.Position;
@@ -23,7 +24,6 @@ import java.util.ArrayList;
  */
 public class CurrentGamesTest {
 
-    private Space[][] gameBoard;
     private Player red;
     private Player white;
     private Player notInGame;
@@ -38,14 +38,6 @@ public class CurrentGamesTest {
         Game game1 = mock(Game.class);
         Game game2 = mock(Game.class);
         Game game3 = mock(Game.class);
-
-        try {
-            Board board = new Board();
-            board.newGame();
-            gameBoard = board.getBoard();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         red = mock(Player.class);
         when(red.getUsername()).thenReturn("player");
@@ -201,23 +193,72 @@ public class CurrentGamesTest {
         assertNull(CuT.getOpponent(red));
     }
 
+    /**
+     * Test the getBoard method returns a correctly configured Board.
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
+     */
     @Test
-    public void test_getBoard(){
-        Space[][] board = CuT.getBoard(red);
-        assertEquals(board, gameBoard);
-        CuT.endGame(nullPlayer);
-        Space[][] nullBoard = CuT.getBoard(nullPlayer);
-        assertEquals(null, nullBoard);
+    public void test_getBoard() throws Exception {
+        Board CuT = new Board();
+        CuT.newGame();
+        int size = Board.size;
+        Space[][] cutBoard = CuT.getBoard();
+
+        //Check White Pieces
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < size; col++) {
+                if (row == 0 || row == 2) {
+                    if (col == 1 || col == 3 || col == 5 || col == 7) {
+                        Piece comparePiece = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
+                        Space currentSpace = cutBoard[row][col];
+                        Piece currentPiece = currentSpace.getPiece();
+                        assertEquals(comparePiece, currentPiece);
+                    }
+                } else {
+                    if (col == 0 || col == 2 || col == 4 || col == 6) {
+                        Piece comparePiece = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
+                        Space currentSpace = cutBoard[row][col];
+                        Piece currentPiece = currentSpace.getPiece();
+                        assertEquals(comparePiece, currentPiece);
+                    }
+                }
+            }
+        }
+
+        //Check Red Pieces
+        for (int row = 5; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                if (row == 5 || row == 7) {
+                    if (col == 0 || col == 2 || col == 4 || col == 6) {
+                        Piece comparePiece = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
+                        Space currentSpace = cutBoard[row][col];
+                        Piece currentPiece = currentSpace.getPiece();
+                        assertEquals(comparePiece, currentPiece);
+                    }
+                } else {
+                    if (col == 1 || col == 3 || col == 5 || col == 7) {
+                        Piece comparePiece = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
+                        Space currentSpace = cutBoard[row][col];
+                        Piece currentPiece = currentSpace.getPiece();
+                        assertEquals(comparePiece, currentPiece);
+                    }
+                }
+            }
+        }
+
     }
 
+    /**
+     * Test that the makeMove method places a given Piece in the correct
+     * location on the board;
+     */
     @Test
     public void test_makeMove(){
         assertTrue(CuT.makeMove(red, move));
         CuT.endGame(nullPlayer);
         assertFalse(CuT.makeMove(nullPlayer, move));
-
     }
-
-
-
 }

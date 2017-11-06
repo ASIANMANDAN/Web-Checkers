@@ -50,7 +50,6 @@ public class PlayerTest {
     public void test_samePlayerObject(){
         Player player = new Player(userName);
         assertTrue(player.equals(player));
-
     }
 
     /**

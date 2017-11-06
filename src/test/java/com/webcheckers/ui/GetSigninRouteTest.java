@@ -66,6 +66,7 @@ public class GetSigninRouteTest {
         assertTrue(model instanceof Map);
 
         //Make sure correct information is displayed.
+        @SuppressWarnings("unchecked")
         final Map<String, Object> vm = (Map<String, Object>) model;
         assertEquals("Player Sign-in", vm.get("title"));
         assertEquals(GetSigninRoute.VIEW_NAME, myModelView.viewName);

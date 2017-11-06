@@ -6,6 +6,7 @@ import static org.mockito.Mockito.when;
 
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
+import com.webcheckers.model.board.Piece;
 import com.webcheckers.model.board.Space;
 import com.webcheckers.ui.boardView.Move;
 import com.webcheckers.ui.boardView.Position;
@@ -27,7 +28,6 @@ public class GameTest {
     private Player white;
     //Player is not in the CuT
     private Player notInGame;
-    private Space[][] gameBoard;
     private Game CuT;
     private Move move;
 
@@ -36,11 +36,6 @@ public class GameTest {
         red = mock(Player.class);
         white = mock(Player.class);
         notInGame = mock(Player.class);
-
-        //Friendly classes
-        Board board = new Board();
-        board.newGame();
-        gameBoard = board.getBoard();
 
         //Mocking a move
         move = mock(Move.class);
@@ -147,11 +142,59 @@ public class GameTest {
 
     /**
      * Tests getBoard method of {@link Game#equals(Object)}.
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
      */
     @Test
-    public void test_getBoard(){
-        Space[][] board = CuT.getBoard();
-        assertEquals(board, gameBoard);
+    public void test_getBoard() throws Exception {
+        Board CuT = new Board();
+        CuT.newGame();
+        int size = Board.size;
+        Space[][] cutBoard = CuT.getBoard();
+
+        //Check White Pieces
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < size; col++) {
+                if (row == 0 || row == 2) {
+                    if (col == 1 || col == 3 || col == 5 || col == 7) {
+                        Piece comparePiece = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
+                        Space currentSpace = cutBoard[row][col];
+                        Piece currentPiece = currentSpace.getPiece();
+                        assertEquals(comparePiece, currentPiece);
+                    }
+                } else {
+                    if (col == 0 || col == 2 || col == 4 || col == 6) {
+                        Piece comparePiece = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
+                        Space currentSpace = cutBoard[row][col];
+                        Piece currentPiece = currentSpace.getPiece();
+                        assertEquals(comparePiece, currentPiece);
+                    }
+                }
+            }
+        }
+
+        //Check Red Pieces
+        for (int row = 5; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                if (row == 5 || row == 7) {
+                    if (col == 0 || col == 2 || col == 4 || col == 6) {
+                        Piece comparePiece = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
+                        Space currentSpace = cutBoard[row][col];
+                        Piece currentPiece = currentSpace.getPiece();
+                        assertEquals(comparePiece, currentPiece);
+                    }
+                } else {
+                    if (col == 1 || col == 3 || col == 5 || col == 7) {
+                        Piece comparePiece = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
+                        Space currentSpace = cutBoard[row][col];
+                        Piece currentPiece = currentSpace.getPiece();
+                        assertEquals(comparePiece, currentPiece);
+                    }
+                }
+            }
+        }
     }
 
     /**
