@@ -1,4 +1,4 @@
-package com.webcheckers.ui;
+package com.webcheckers.ui.boardView;
 
 import static org.junit.Assert.*;
 import static org.mockito.Mockito.*;
@@ -8,8 +8,6 @@ import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
 import com.webcheckers.model.board.Piece;
 import com.webcheckers.model.board.Space;
-import com.webcheckers.ui.boardView.BoardView;
-import com.webcheckers.ui.boardView.Row;
 import org.junit.Before;
 import org.junit.Test;
 

@@ -69,6 +69,7 @@ public class GetGameRouteTest {
         assertNotNull(model);
         assertTrue(model instanceof Map);
 
+        @SuppressWarnings("unchecked")
         final Map<String, Object> vm = (Map<String, Object>) model;
         assertEquals("Welcome!", vm.get("title"));
         assertEquals(player, vm.get(GetHomeRoute.CURR_PLAYER));
@@ -96,6 +97,7 @@ public class GetGameRouteTest {
         assertNotNull(model);
         assertTrue(model instanceof Map);
 
+        @SuppressWarnings("unchecked")
         final Map<String, Object> vm = (Map<String, Object>) model;
         assertEquals("Welcome!", vm.get("title"));
         assertEquals(player, vm.get(GetHomeRoute.CURR_PLAYER));
@@ -121,6 +123,7 @@ public class GetGameRouteTest {
         assertNotNull(model);
         assertTrue(model instanceof Map);
 
+        @SuppressWarnings("unchecked")
         final Map<String, Object> vm = (Map<String, Object>) model;
         assertEquals("Game", vm.get("title"));
         assertEquals(Board.ViewMode.PLAY, vm.get(GetGameRoute.MODE_ATTR));
@@ -150,6 +153,7 @@ public class GetGameRouteTest {
         assertNotNull(model);
         assertTrue(model instanceof Map);
 
+        @SuppressWarnings("unchecked")
         final Map<String, Object> vm = (Map<String, Object>) model;
         assertEquals("Game", vm.get("title"));
         assertEquals(Board.ViewMode.PLAY, vm.get(GetGameRoute.MODE_ATTR));
@@ -179,6 +183,7 @@ public class GetGameRouteTest {
         assertNotNull(model);
         assertTrue(model instanceof Map);
 
+        @SuppressWarnings("unchecked")
         final Map<String, Object> vm = (Map<String, Object>) model;
         assertEquals("Welcome!", vm.get("title"));
         assertEquals(player, vm.get(GetHomeRoute.CURR_PLAYER));
