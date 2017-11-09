@@ -1,16 +1,17 @@
 package com.webcheckers.model;
 
-/**
- * file: checkers-app
- * language: java
- * author: erl3193@rit.edu Emily Lederman
- * description:
- */
-
 import com.webcheckers.model.board.Space;
 import com.webcheckers.ui.boardView.Move;
 import com.webcheckers.ui.boardView.Position;
 
+/**
+ * The unit test suite for the {@link Validate} component.
+ *
+ * @author Dan Wang
+ * @author Emily Lederman
+ * @author Kevin Paradis
+ * @author Nathan Farrell
+ */
 public class Validate {
 
     /**
@@ -99,10 +100,11 @@ public class Validate {
     /**
      * Checks to see if the move made was adjacent, if not return false.
      * Does so by checking the displacements of the rows/cols.
+     *
      * @param move Move to be checked.
      * @return bool if adjacent
      */
-    public boolean isAdjacent(Move move){
+    private boolean isAdjacent(Move move) {
 
         // Get Positions
         Position initialPosition = move.getStart();
@@ -120,16 +122,8 @@ public class Validate {
         int colDist = colOfFirst - colOfSecond;
 
         // Check displacement to see if move was adjacent
-        if(rowDist == -1 || rowDist == 0 || rowDist == 1){
-            if (colDist == -1 || colDist == 0 || colDist == 1){
-                return true;
-            }else{
-                return false;
-            }
-        }else{
-            return false;
-        }
-
+        return (rowDist == -1 || rowDist == 0 || rowDist == 1) &&
+                (colDist == -1 || colDist == 0 || colDist == 1);
     }
 
 
