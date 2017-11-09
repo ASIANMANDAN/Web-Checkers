@@ -108,7 +108,7 @@ public class PlayerLobby {
      * @param username username to check.
      * @return boolean of whether or not username is in the lobby.
      */
-    private boolean nameTaken(String username){
+    boolean nameTaken(String username){
         Set<String> usernames = this.playerLobby.keySet();
         return usernames.contains(username);
     }
@@ -120,7 +120,7 @@ public class PlayerLobby {
      * @param username username to verify
      * @return boolean as to what is valid or not.
      */
-    private boolean isValidUsername(String username){
+    boolean isValidUsername(String username){
         return(!username.contains("\""));
     }
 

@@ -19,6 +19,7 @@ import spark.Session;
  * @author Nathan Farrell
  */
 public class PostCheckTurnRoute implements Route{
+
     private final Gson gson = new Gson();
 
     //Key in the session attribute map for the current user Player object

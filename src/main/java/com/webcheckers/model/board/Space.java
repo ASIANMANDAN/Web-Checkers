@@ -16,7 +16,7 @@ public class Space {
     private int row;
     private int col;
     private Piece piece;
-    private Color color;
+    private final Color color;
 
     /**
      * Constructor for a space on a game board.
@@ -28,7 +28,7 @@ public class Space {
      * the bounds established by a standard game board
      */
     public Space(int row, int col, Color color) throws Exception {
-        if ((col < 0 || row >= Board.size) && (row < 0 || row >= Board.size)) {
+        if ((col < 0 || col >= Board.size) && (row < 0 || row >= Board.size)) {
             throw new Exception("the  must be between 0 and the board SIZE.");
         } else {
             this.row = row;
@@ -57,6 +57,13 @@ public class Space {
         if (this.isValid()) {
             this.piece = piece;
         }
+    }
+
+    /**
+     * Remove a piece from a given Space.
+     */
+    void removePiece() {
+        this.piece = null;
     }
 
     /**

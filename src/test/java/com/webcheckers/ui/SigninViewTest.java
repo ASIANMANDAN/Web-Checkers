@@ -14,6 +14,9 @@ import static org.junit.Assert.*;
  * The unit test suite for the {@code signin.ftl} component.
  *
  * @author Dan Wang
+ * @author Emily Lederman
+ * @author Kevin Paradis
+ * @author Nathan Farrell
  */
 public class SigninViewTest {
 
@@ -99,5 +102,4 @@ public class SigninViewTest {
         assertTrue("Error message displays.", viewHtml.contains("The username you selected was invalid as " +
                 "it contains double quotation marks"));
     }
-
 }

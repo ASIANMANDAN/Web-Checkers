@@ -165,6 +165,7 @@ public class GetHomeRouteTest {
         // Invoke the test
         CuT.handle(request, response);
 
+
         // Analyze the results:
         //   * model is a non-null Map
         final Object model = myModelView.model;
@@ -180,6 +181,9 @@ public class GetHomeRouteTest {
         assertEquals(message, vm.get(GetHomeRoute.MESSAGE_ATTR));
     }
 
+    /**
+     * Test that a player in a game is redirected to the game page.
+     */
     @Test
     public void test_inGame() {
         //Mock two players, one of which will be used as current player
@@ -203,4 +207,5 @@ public class GetHomeRouteTest {
         //   * redirect to the Game view
         verify(response).redirect(WebServer.GAME_URL + "?opponent=opponent");
     }
+
 }

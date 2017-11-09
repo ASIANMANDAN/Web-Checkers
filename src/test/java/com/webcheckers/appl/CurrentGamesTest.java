@@ -5,9 +5,13 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
+import com.webcheckers.model.board.Piece;
 import com.webcheckers.model.board.Space;
+import com.webcheckers.ui.boardView.Move;
+import com.webcheckers.ui.boardView.Position;
 import org.junit.Before;
 import org.junit.Test;
+
 import java.util.ArrayList;
 
 /**
@@ -20,31 +24,29 @@ import java.util.ArrayList;
  */
 public class CurrentGamesTest {
 
-    private Space[][] gameBoard;
     private Player red;
     private Player white;
     private Player notInGame;
     private CurrentGames CuT;
+    private Player nullPlayer;
+    private Player oppOfNullPlayer;
+    private Move move;
 
     @Before
-    public void test_setUp() {
+    public void test_setUp() throws Exception {
         ArrayList<Game> cg = new ArrayList<>();
         Game game1 = mock(Game.class);
         Game game2 = mock(Game.class);
         Game game3 = mock(Game.class);
 
-        try {
-            Board board = new Board();
-            board.newGame();
-            gameBoard = board.getBoard();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-
         red = mock(Player.class);
         when(red.getUsername()).thenReturn("player");
         white = mock(Player.class);
         notInGame = mock(Player.class);
+
+        oppOfNullPlayer = mock(Player.class);
+        nullPlayer = mock(Player.class);
+
 
         //Add mocked games
         cg.add(game1);
@@ -53,11 +55,20 @@ public class CurrentGamesTest {
 
         CuT = new CurrentGames(cg);
 
+        //Mocking a move
+        move = mock(Move.class);
+        Position start = new Position(0,1);
+        Position end = new Position(1,1);
+
+        when(move.getStart()).thenReturn(start);
+        when(move.getEnd()).thenReturn(end);
+
         //Add mocked Players to a game
         //Also tests that adding a game is functional since the game
         //is required by most tests
         try {
             CuT.addGame(red, white);
+            CuT.addGame(oppOfNullPlayer, nullPlayer);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -111,15 +122,6 @@ public class CurrentGamesTest {
     @Test
     public void test_getOpponent_1() {
         assertNull(CuT.getOpponent(notInGame));
-    }
-
-    /**
-     * Test that the correct URL is generated for a given player
-     */
-    @Test
-    public void test_createURL() {
-        String URL = "/game?opponent=player";
-        assertEquals(URL, CuT.createURL(white));
     }
 
     /**
@@ -189,5 +191,74 @@ public class CurrentGamesTest {
         CuT.endGame(white);
         assertFalse(CuT.playerInGame(white));
         assertNull(CuT.getOpponent(red));
+    }
+
+    /**
+     * Test the getBoard method returns a correctly configured Board.
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
+     */
+    @Test
+    public void test_getBoard() throws Exception {
+        Board CuT = new Board();
+        CuT.newGame();
+        int size = Board.size;
+        Space[][] cutBoard = CuT.getBoard();
+
+        //Check White Pieces
+        for (int row = 0; row < 3; row++) {
+            for (int col = 0; col < size; col++) {
+                if (row == 0 || row == 2) {
+                    if (col == 1 || col == 3 || col == 5 || col == 7) {
+                        Piece comparePiece = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
+                        Space currentSpace = cutBoard[row][col];
+                        Piece currentPiece = currentSpace.getPiece();
+                        assertEquals(comparePiece, currentPiece);
+                    }
+                } else {
+                    if (col == 0 || col == 2 || col == 4 || col == 6) {
+                        Piece comparePiece = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
+                        Space currentSpace = cutBoard[row][col];
+                        Piece currentPiece = currentSpace.getPiece();
+                        assertEquals(comparePiece, currentPiece);
+                    }
+                }
+            }
+        }
+
+        //Check Red Pieces
+        for (int row = 5; row < size; row++) {
+            for (int col = 0; col < size; col++) {
+                if (row == 5 || row == 7) {
+                    if (col == 0 || col == 2 || col == 4 || col == 6) {
+                        Piece comparePiece = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
+                        Space currentSpace = cutBoard[row][col];
+                        Piece currentPiece = currentSpace.getPiece();
+                        assertEquals(comparePiece, currentPiece);
+                    }
+                } else {
+                    if (col == 1 || col == 3 || col == 5 || col == 7) {
+                        Piece comparePiece = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
+                        Space currentSpace = cutBoard[row][col];
+                        Piece currentPiece = currentSpace.getPiece();
+                        assertEquals(comparePiece, currentPiece);
+                    }
+                }
+            }
+        }
+
+    }
+
+    /**
+     * Test that the makeMove method places a given Piece in the correct
+     * location on the board;
+     */
+    @Test
+    public void test_makeMove(){
+        assertTrue(CuT.makeMove(red, move));
+        CuT.endGame(nullPlayer);
+        assertFalse(CuT.makeMove(nullPlayer, move));
     }
 }

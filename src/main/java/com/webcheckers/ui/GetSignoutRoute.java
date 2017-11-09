@@ -1,5 +1,6 @@
 package com.webcheckers.ui;
 
+import com.webcheckers.appl.CurrentGames;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
 import spark.*;
@@ -26,6 +27,10 @@ public class GetSignoutRoute implements Route{
 
     //Key in the session attribute map for the current user Player object
     static final String CURR_PLAYER = "currentPlayer";
+    //Key in the session attribute map for the current players opponent
+    static final String OPPONENT_KEY = "opponent";
+    //Key in the session attribute map for the hash of current players in a game
+    static final String CURRENTGAMES_KEY = "currentGames";
 
     private final TemplateEngine templateEngine;
     private final PlayerLobby playerLobby;
@@ -59,17 +64,27 @@ public class GetSignoutRoute implements Route{
     public Object handle(Request request, Response response) throws Exception {
         //Retrieve the HTTP session
         final Session httpSession = request.session();
-        Player player = httpSession.attribute(CURR_PLAYER);
+
+        Player currentPlayer = httpSession.attribute(CURR_PLAYER);
+        CurrentGames currentGames = httpSession.attribute(CURRENTGAMES_KEY);
+
+        //Remove current player from session
         httpSession.removeAttribute(CURR_PLAYER);
+
+        //Remove the player from a game if they are in one
+        if (currentGames.playerInGame(currentPlayer)) {
+            currentGames.removePlayer(currentPlayer);
+        }
+
+        //signs out the current user
+        playerLobby.signOut(currentPlayer);
+        //Remove the players opponent if they had one
+        httpSession.removeAttribute(OPPONENT_KEY);
 
         Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Player Sign-out");
         //updates number of players
         vm.put(PLAYERS_ONLINE_ATTR, playerLobby.getNumOfUsers());
-        //signs out the current user
-        playerLobby.signOut(player);
-        //Remove current player from session
-        httpSession.removeAttribute(CURR_PLAYER);
         //Return the user to the home page
         response.redirect(WebServer.HOME_URL);
 

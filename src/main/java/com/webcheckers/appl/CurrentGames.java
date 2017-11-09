@@ -74,18 +74,6 @@ public class CurrentGames {
     }
 
     /**
-     * creates a URL to which the currentPlayer will be redirected to.
-     *
-     * @param player the player which is used to find
-     *        the game they're associated with
-     * @return the URL to be redirected to
-     */
-    public String createURL(Player player) {
-        String opponent = getOpponent(player).getUsername();
-        return "/game?opponent=" + opponent;
-    }
-
-    /**
      * Given a player in a game, return that players opponent.
      *
      * @param player the player whose opponent to find
@@ -136,7 +124,7 @@ public class CurrentGames {
     public Space[][] getBoard(Player player) {
         Game game = getGame(player);
         if (game != null) {
-            return game.getBoard().getBoard();
+            return game.getBoard();
         }
         return null;
     }
@@ -150,7 +138,7 @@ public class CurrentGames {
     public Board.ActiveColor getTurn(Player player) {
         Game game = getGame(player);
         if (game != null) {
-            return game.getBoard().currentTurn;
+            return game.getTurn();
         }
         return null;
     }
@@ -188,10 +176,24 @@ public class CurrentGames {
      *         one isn't
      */
     public String validateMove(Player player, Move move) {
-        Game game = getGame(player);
         Space[][] board = this.getBoard(player);
 
         return validator.isValid(move, board);
+    }
+
+    /** Moves a Piece from one Space to another.
+     *
+     * @param player the player who made the move
+     * @param move the move to make
+     * @return whether or not the move was successfully made.
+     */
+    public boolean makeMove(Player player, Move move) {
+        Game game = getGame(player);
+        if (game != null) {
+            game.makeMove(move);
+            return true;
+        }
+        return false;
     }
 
     /**

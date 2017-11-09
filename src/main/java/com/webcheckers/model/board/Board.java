@@ -1,5 +1,8 @@
 package com.webcheckers.model.board;
 
+import com.webcheckers.ui.boardView.Move;
+import com.webcheckers.ui.boardView.Position;
+
 /**
  * Model tier class that represents the checkers board.
  *
@@ -17,7 +20,7 @@ public class Board {
     public enum ViewMode {PLAY, SPECTATE, REPLAY}
 
     private Space[][] board;
-    public final ActiveColor currentTurn;
+    public ActiveColor currentTurn;
 
     //Used to determine the size of the board
     public static final int size = 8;
@@ -51,6 +54,20 @@ public class Board {
     }
 
     /**
+     * Creates a Board object based off a given game board and current turn.
+     *
+     * @param board the game board to crate the Board after
+     * @param turn the current turn
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
+     */
+    public Board(Space[][] board, Board.ActiveColor turn) throws Exception {
+        this.board = board;
+        this.currentTurn = turn;
+    }
+
+    /**
      * Populates the board with pieces in the starting game formation.
      */
     public void newGame() {
@@ -76,6 +93,26 @@ public class Board {
                             Piece.Type.SINGLE));
                 }
             }
+        }
+    }
+
+    /**
+     * Move a piece on the game board.
+     *
+     * @param move the start and end coordinates of the piece to move
+     */
+    public void makeMove(Move move) {
+        Position start = move.getStart();
+        Position end = move.getEnd();
+
+        Piece piece = this.board[start.getRow()][start.getCell()].getPiece();
+        this.board[start.getRow()][start.getCell()].removePiece();
+        this.board[end.getRow()][end.getCell()].setPiece(piece);
+
+        if (this.currentTurn.equals(ActiveColor.RED)) {
+            this.currentTurn = ActiveColor.WHITE;
+        } else {
+            this.currentTurn = ActiveColor.RED;
         }
     }
 
