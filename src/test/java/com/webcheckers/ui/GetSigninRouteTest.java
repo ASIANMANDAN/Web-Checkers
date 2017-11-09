@@ -21,6 +21,9 @@ import static org.mockito.Mockito.when;
  * The unit test suite for the {@link GetSigninRoute} component.
  *
  * @author Dan Wang
+ * @author Emily Lederman
+ * @author Kevin Paradis
+ * @author Nathan Farrell
  */
 public class GetSigninRouteTest {
 
@@ -63,9 +66,9 @@ public class GetSigninRouteTest {
         assertTrue(model instanceof Map);
 
         //Make sure correct information is displayed.
+        @SuppressWarnings("unchecked")
         final Map<String, Object> vm = (Map<String, Object>) model;
         assertEquals("Player Sign-in", vm.get("title"));
         assertEquals(GetSigninRoute.VIEW_NAME, myModelView.viewName);
     }
-
 }

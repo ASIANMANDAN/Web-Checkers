@@ -78,15 +78,23 @@ public class GetGameRoute implements Route{
 
             //Case for when an opponent resigns
             if (currentGames.getOpponent(currentPlayer) == null) {
+
+                //Attempt to retrieve opponent from attribute map
                 Player opponent = httpSession.attribute(OPPONENT_KEY);
-                String msg = opponent.getUsername() + " has resigned from the game.";
-                LOG.fine("The match between " + opponent.getUsername() + " and " +
-                        currentPlayer.getUsername() + " has ended.");
+
+                //If the opponent is not in the attribute map then that
+                //indicates that they resigned before the current player
+                //has connected for the first time.
+                if (opponent != null) {
+                    String msg = opponent.getUsername() + " has resigned from the game.";
+                    LOG.fine("The match between " + opponent.getUsername() + " and " +
+                            currentPlayer.getUsername() + " has ended.");
+                    httpSession.attribute(MESSAGE_KEY, msg);
+                }
 
                 //Remove the game from the currentGames list and redirect player
                 currentGames.endGame(currentPlayer);
                 httpSession.removeAttribute(OPPONENT_KEY);
-                httpSession.attribute(MESSAGE_KEY, msg);
                 response.redirect(WebServer.HOME_URL);
                 halt();
                 return null;

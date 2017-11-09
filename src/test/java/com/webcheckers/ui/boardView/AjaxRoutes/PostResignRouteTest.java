@@ -1,8 +1,7 @@
-package com.webcheckers.ui.BoardView.AjaxRoutes;
+package com.webcheckers.ui.boardView.AjaxRoutes;
 
 import com.webcheckers.appl.CurrentGames;
 import com.webcheckers.model.Player;
-import com.webcheckers.ui.boardView.AjaxRoutes.PostResignRoute;
 import org.junit.Before;
 import org.junit.Test;
 import spark.Request;
@@ -14,7 +13,12 @@ import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.when;
 
 /**
- * Created by nate on 11/2/17.
+ * The unit test suite for the {@link PostResignRoute} component.
+ *
+ * @author Dan Wang
+ * @author Emily Lederman
+ * @author Kevin Paradis
+ * @author Nathan Farrell
  */
 public class PostResignRouteTest {
 
@@ -51,7 +55,6 @@ public class PostResignRouteTest {
         when(session.attribute(OPPONENT_KEY)).thenReturn(opponent);
 
         CuT = new PostResignRoute();
-
     }
 
 

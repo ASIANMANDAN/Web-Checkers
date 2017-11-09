@@ -94,8 +94,13 @@ public class GetHomeRoute implements Route {
 	//Checks if the current user has been selected upon each refresh
 	Player currentPlayer = httpSession.attribute(CURR_PLAYER);
 	if (currentPlayer != null) {
-		if (currentGames.playerInGame(currentPlayer)) {
-			response.redirect(currentGames.createURL(currentPlayer));
+
+		Player opponent = currentGames.getOpponent(currentPlayer);
+
+		if (currentGames.playerInGame(currentPlayer) && opponent != null) {
+			response.redirect("/game?opponent=" + opponent.getUsername());
+		} else {
+			currentGames.endGame(currentPlayer);
 		}
 	}
 

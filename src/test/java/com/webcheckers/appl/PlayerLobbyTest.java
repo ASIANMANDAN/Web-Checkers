@@ -14,6 +14,9 @@ import static org.mockito.Mockito.when;
  * The unit test suite for the {@link PlayerLobby} component.
  *
  * @author Dan Wang
+ * @author Emily Lederman
+ * @author Kevin Paradis
+ * @author Nathan Farrell
  */
 public class PlayerLobbyTest {
 
@@ -155,5 +158,16 @@ public class PlayerLobbyTest {
         assertTrue(CuT.getPlayerLobby() instanceof Map);
         assertEquals(1, CuT.getPlayerLobby().size());
         assertTrue(CuT.getPlayerLobby().containsKey(name));
+    }
+
+    /**
+     * Test the enum values of InputResult.
+     */
+    @Test
+    public void test_enum(){
+        assertEquals(PlayerLobby.InputResult.ACCEPTED, PlayerLobby.InputResult.valueOf("ACCEPTED"));
+        assertEquals(PlayerLobby.InputResult.INVALID, PlayerLobby.InputResult.valueOf("INVALID"));
+        assertEquals(PlayerLobby.InputResult.EMPTY, PlayerLobby.InputResult.valueOf("EMPTY"));
+        assertEquals(PlayerLobby.InputResult.TAKEN, PlayerLobby.InputResult.valueOf("TAKEN"));
     }
 }

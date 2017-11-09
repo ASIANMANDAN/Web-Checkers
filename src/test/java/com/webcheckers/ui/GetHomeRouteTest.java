@@ -165,6 +165,7 @@ public class GetHomeRouteTest {
         // Invoke the test
         CuT.handle(request, response);
 
+
         // Analyze the results:
         //   * model is a non-null Map
         final Object model = myModelView.model;
@@ -206,4 +207,5 @@ public class GetHomeRouteTest {
         //   * redirect to the Game view
         verify(response).redirect(WebServer.GAME_URL + "?opponent=opponent");
     }
+
 }
