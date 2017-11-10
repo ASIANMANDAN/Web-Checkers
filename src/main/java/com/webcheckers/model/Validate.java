@@ -249,7 +249,7 @@ public class Validate {
                 }
             }
 
-            //Check just the left side
+            //Check the right side
             if (col == Board.size) {
                 Space left = board[row - 1][col - 1];
                 if (left.getPiece() != null && left.getPiece().getColor() == Piece.Color.WHITE) {
@@ -257,7 +257,7 @@ public class Validate {
                 }
             }
 
-            //Check just the right side
+            //Check the left side
             if (col == 0) {
                 Space right = board[row - 1][col + 1];
                 if (right.getPiece() != null && right.getPiece().getColor() == Piece.Color.WHITE) {
@@ -281,7 +281,7 @@ public class Validate {
                 }
             }
 
-            //Check just the left side
+            //Check the right side
             if (col == Board.size) {
                 Space left = board[row + 1][col - 1];
                 if (left.getPiece() != null && left.getPiece().getColor() == Piece.Color.RED) {
@@ -289,7 +289,7 @@ public class Validate {
                 }
             }
 
-            //Check just the right side
+            //Check the left side
             if (col == 0) {
                 Space right = board[row + 1][col + 1];
                 if (right.getPiece() != null && right.getPiece().getColor() == Piece.Color.RED) {
