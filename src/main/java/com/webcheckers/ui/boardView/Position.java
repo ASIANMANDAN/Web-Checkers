@@ -41,4 +41,22 @@ public class Position {
     public int getRow() {
         return row;
     }
+
+    /**
+     * Equals method to be used for comparing two Position objects.
+     *
+     * @param obj the Position object that is being compared
+     * @return whether or not these two objects are equal
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof Position)) {
+            return false;
+        }
+        final Position that = (Position) obj;
+        return this.getRow() == that.getRow() && this.getCell() == that.getCell();
+    }
 }

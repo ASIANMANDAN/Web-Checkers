@@ -34,7 +34,7 @@ public class PostValidateMoveTest {
     private static PostValidateMove CuT;
 
     @Before
-    public void test_setup(){
+    public void test_setup() throws Exception {
         request = mock(Request.class);
         session = mock(Session.class);
         currentGames = mock(CurrentGames.class);
@@ -42,6 +42,11 @@ public class PostValidateMoveTest {
         player = mock(Player.class);
 
         when(request.session()).thenReturn(session);
+        when(request.session().attribute(PostValidateMove.CURR_PLAYER)).thenReturn(player);
+        when(request.session().attribute(PostValidateMove.CURRENTGAMES_KEY)).thenReturn(currentGames);
+        when(request.session().attribute(PostValidateMove.MOVE_KEY)).thenReturn(move);
+
+        when(currentGames.validateMove(player, move)).thenReturn(null);
 
         CuT = new PostValidateMove();
     }
@@ -56,9 +61,15 @@ public class PostValidateMoveTest {
         Response response = mock(Response.class);
 
         //Obtain Message
-        Object message = CuT.handle(request, response);
+        Object message = null;
+
+        try {
+            message = CuT.handle(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
 
         //Test Message
-        assertEquals("{\"text\":\"true\",\"type\":\"info\"}", message);
+        assertEquals("{\"text\":\"Move is valid\",\"type\":\"info\"}", message);
     }
 }

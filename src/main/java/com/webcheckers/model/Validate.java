@@ -28,41 +28,34 @@ public class Validate {
      * @return a message stating either that a move is valid or why
      *         one isn't
      */
-    public String isValid(Move move, Space[][] board) {
+    public String isValid(Move move, Board board) {
         String message = null;
 
-        //Stops the player from jumping when one isn't available
-        if (!isJumpPresent(move, board) && didJump(move, board)) {
-            message = "There was no jump present. Therefore you can't jump.";
-        }
+        ArrayList<Move> validJumps = isJumpPresent(move, board);
 
-        //Forces the player to take an available jump
-        if (isJumpPresent(move, board) && !didJump(move, board)) {
+        //Case for when a jump is available but was not taken
+        if (validJumps.size() > 0 && !didJump(move, validJumps)) {
             message = "A jump is currently present and must be taken.";
         }
 
-        //todo determine if this check is the same as check #1
-        if (!isAdjacent(move) && !isJumpPresent(move, board)){
-            message =  "There are no jumps present. Therefore you must move to a space that is " +
-                    "adjacent to the piece you wish to move.";
+        if (validJumps.size() == 0 && !isAdjacent(move)) {
+            message = "That move cannot be a jump since there are no jumps " +
+                    "are available.";
         }
 
-        if (!isDiagonal(move, board)) {
-            message =  "The move was not diagonal";
+        if (!isDiagonal(move)) {
+            message = "That move was not diagonal";
         }
-
         return message;
-
     }
 
     /**
      * Determine if a proposed Move is diagonal from the Pieces' start.
      *
      * @param move the proposed move to make
-     * @param board the board the move will take place on
      * @return whether or not the move is diagonal
      */
-    private boolean isDiagonal(Move move, Space[][] board) {
+    private boolean isDiagonal(Move move) {
         Position start = move.getStart();
         Position end = move.getEnd();
 
@@ -111,14 +104,14 @@ public class Validate {
         return false;
     }
 
-
     /**
      * Checks to see if the move made was adjacent, if not return false.
      * Does so by checking the displacements of the rows/cols.
+     *
      * @param move Move to be checked.
      * @return bool if adjacent
      */
-    public boolean isAdjacent(Move move){
+    private boolean isAdjacent(Move move){
 
         // Get Positions
         Position initialPosition = move.getStart();
@@ -137,51 +130,21 @@ public class Validate {
 
         // Check displacement to see if move was adjacent
         if(rowDist == -1 || rowDist == 0 || rowDist == 1){
-            if (colDist == -1 || colDist == 0 || colDist == 1){
-                return true;
-            }else{
-                return false;
-            }
+            return colDist == -1 || colDist == 0 || colDist == 1;
         }else{
             return false;
         }
-
     }
 
     /**
      * Determine if the given Move was a jump.
      *
      * @param move the proposed move to make
-     * @param board the current game Board
+     * @param validJumps a list of all valid jumps that can currently be made
      * @return whether or not the Move mad was a jump or not
      */
-    private boolean didJump(Move move, Space[][] board) {
-        Position start = move.getStart();
-        Position end = move.getEnd();
-
-        int row = start.getRow();
-        int col = start.getCell();
-        Space startSpace = board[row][col];
-
-        //Piece moving "upwards"
-        if (start.getRow() > end.getRow()) {
-            int distance = start.getRow() - end.getRow();
-
-            if (distance == 2 && opponentAdjacent(startSpace, board)) {
-                return isDiagonal(move, board);
-            }
-        }
-
-        //Piece moving "downwards"
-        if (start.getRow() < end.getRow()) {
-            int distance = end.getRow() - start.getRow();
-
-            if (distance == 2 && opponentAdjacent(startSpace, board)) {
-                return isDiagonal(move, board);
-            }
-        }
-
-        return false;
+    private boolean didJump(Move move, ArrayList<Move> validJumps) {
+        return validJumps.contains(move);
     }
 
     /**
@@ -190,36 +153,37 @@ public class Validate {
      *
      * @param move a Move used for determining the color of the player
      * @param board the game Board
-     * @return whether or not one of the players pieces has a jump
-     *         that can be made
+     * @return an ArrayList of valid jumps. If the list is empty then no jump
+     *         is present.
      */
-    private boolean isJumpPresent(Move move, Space[][] board) {
+    private ArrayList<Move> isJumpPresent(Move move, Board board) {
+        ArrayList<Move> validJumps = new ArrayList<>();
 
         int row = move.getStart().getRow();
         int col = move.getStart().getCell();
 
-        Piece.Color color = board[row][col].getPiece().getColor();
+        Space[][] gameBoard = board.getBoard();
+        Piece.Color color = gameBoard[row][col].getPiece().getColor();
 
+        //Iterate through the board
         for (int i=0; i < Board.size; i++) {
             for (int j=0; j < Board.size; j++) {
 
-                Space space = board[i][j];
+                Space space = gameBoard[i][j];
+                Piece piece = space.getPiece();
 
-                //Indicates that the Space contains one of the players pieces
-                if (space.getPiece() != null && space.getPiece().getColor() == color) {
+                //Determine if a piece belongs to the active players
+                if (piece != null && piece.getColor() == color) {
 
                     //Indicates an opponent is adjacent to a piece
-                    if (opponentAdjacent(space, board)) {
-
-                        if (canJump(space, board)) {
-                            return true;
-                        }
+                    if (opponentNearby(space, board)) {
+                        //Collect all legal jumps to the list
+                        validJumps.addAll(getJumps(space, board));
                     }
                 }
-
             }
         }
-        return false;
+        return validJumps;
     }
 
     /**
@@ -229,133 +193,181 @@ public class Validate {
      * @param board the game Board
      * @return whether or not an opponents piece is adjacent to the given Space
      */
-    private boolean opponentAdjacent(Space space, Space[][] board) {
+    private boolean opponentNearby(Space space, Board board) {
 
         int row = space.getRow();
         int col = space.getCol();
-        Piece.Color color = space.getPiece().getColor();
-        Piece.Type type = space.getPiece().getType();
 
-        //Case when piece is RED and is SINGLE, only check in front of it
-        if (color == Piece.Color.RED && type == Piece.Type.SINGLE) {
+        Space[][] gameBoard = board.getBoard();
 
-            //Check both sides of the given space
-            if (col > 0 && col < Board.size - 1 && row > 0) {
+        Piece piece = space.getPiece();
+        Piece.Color color = piece.getColor();
 
-                Space left = board[row - 1][col - 1];
-                Space right = board[row - 1][col + 1];
+        //Ensure that the top spaces can be checked
+        if ((row - 1) >= 0) {
 
-                if ((left.getPiece() != null && left.getPiece().getColor() == Piece.Color.WHITE) ||
-                        (right.getPiece() != null && right.getPiece().getColor() == Piece.Color.WHITE)) {
+            //Ensure that the left side can be checked
+            if ((col - 1) >= 0) {
+
+                //Get the piece in the upper left space and see if it is an opponents
+                Piece adjacentPiece = gameBoard[row - 1][col - 1].getPiece();
+                if (adjacentPiece != null && adjacentPiece.getColor() != color) {
                     return true;
                 }
             }
 
-            //Check the right side
-            if (col == Board.size) {
-                Space left = board[row - 1][col - 1];
-                if (left.getPiece() != null && left.getPiece().getColor() == Piece.Color.WHITE) {
-                    return true;
-                }
-            }
+            //Ensure that the right side can be checked
+            if ((col + 1) <= Board.size - 1) {
 
-            //Check the left side
-            if (col == 0) {
-                Space right = board[row - 1][col + 1];
-                if (right.getPiece() != null && right.getPiece().getColor() == Piece.Color.WHITE) {
+                //Get the piece in the upper right space and see if it is an opponents
+                Piece adjacentPiece = gameBoard[row - 1][col + 1].getPiece();
+                if (adjacentPiece != null && adjacentPiece.getColor() != color) {
                     return true;
                 }
             }
         }
 
-        //Case when piece is WHITE and is SINGLE, only check in front of it
-        if (color == Piece.Color.WHITE && type == Piece.Type.SINGLE) {
+        //Ensure that the bottom spaces can be checked
+        if ((row + 1) <= Board.size - 1) {
 
-            //Check both sides of the given space
-            if (col > 0 && col < Board.size - 1 && row < Board.size - 1) {
+            //Ensure that the left side can be checked
+            if ((col - 1) >= 0) {
 
-                Space left = board[row + 1][col - 1];
-                Space right = board[row + 1][col + 1];
-
-                if ((left.getPiece() != null && left.getPiece().getColor() == Piece.Color.RED) ||
-                        (right.getPiece() != null && right.getPiece().getColor() == Piece.Color.RED)) {
+                //Get the piece in the bottom left space and see if it is an opponents
+                Piece adjacentPiece = gameBoard[row + 1][col - 1].getPiece();
+                if (adjacentPiece != null && adjacentPiece.getColor() != color) {
                     return true;
                 }
             }
 
-            //Check the right side
-            if (col == Board.size) {
-                Space left = board[row + 1][col - 1];
-                if (left.getPiece() != null && left.getPiece().getColor() == Piece.Color.RED) {
-                    return true;
-                }
-            }
+            //Ensure that the right side can be checked
+            if ((col + 1) <= Board.size - 1) {
 
-            //Check the left side
-            if (col == 0) {
-                Space right = board[row + 1][col + 1];
-                if (right.getPiece() != null && right.getPiece().getColor() == Piece.Color.RED) {
+                //Get the piece in the bottom right space and see if it is an opponents
+                Piece adjacentPiece = gameBoard[row + 1][col + 1].getPiece();
+                if (adjacentPiece != null && adjacentPiece.getColor() != color) {
                     return true;
                 }
             }
         }
+        //No opponent is adjacent to the given space
         return false;
     }
 
-    /**
-     * Determines if a jump is possible from a given Board Space.
-     *
-     * @param space the Space on the Board to check
-     * @param board the game Board
-     * @return whether or not a jump is possible
-     */
-    private boolean canJump(Space space, Space[][] board) {
+    private ArrayList<Move> getJumps(Space space, Board board) {
+        ArrayList<Move> jumps = new ArrayList<>();
 
         int row = space.getRow();
         int col = space.getCol();
-        Piece.Color color = space.getPiece().getColor();
 
-        if (color == Piece.Color.RED) {
+        Space[][] gameBoard = board.getBoard();
 
-            //Ensure the piece would not go out of bounds if it jumped
-            if (row - 2 >= 0) {
+        Piece piece = space.getPiece();
+        Piece.Color color = piece.getColor();
 
-                //Check just the left side
-                if ((col - 2) >= 0) {
-                    if (board[row - 2][col - 2].getPiece() == null) {
-                        return true;
-                    }
+        //Ensure that a jump upwards can be made by the piece and won't be out
+        //of bounds
+        if (((row - 2) >= 0 && color == Piece.Color.RED) ||
+                ((row - 2) >= 0 && piece.getType() == Piece.Type.KING)) {
+
+            //Ensure that a jump in the upper left direction won't be out of bounds
+            if ((col - 2) >= 0) {
+
+                Space middle = gameBoard[row - 1][col - 1];
+                Space end = gameBoard[row - 2][col - 2];
+                Piece pieceMiddle = middle.getPiece();
+                Piece pieceEnd = end.getPiece();
+
+                //Check that the piece being jumped over exists and is of
+                //the opposite color. Also check that the end space does not
+                //already have a piece next to it
+                if (pieceMiddle != null && pieceMiddle.getColor() != color &&
+                        pieceEnd == null) {
+
+                    Position pStart = new Position(row, col);
+                    Position pEnd = new Position(end.getRow(), end.getCol());
+                    Move move = new Move(pStart, pEnd);
+
+                    //Add move to list of valid jumps
+                    jumps.add(move);
                 }
+            }
 
-                //Check right
-                if ((col + 2) <= Board.size - 1) {
-                    if (board[row - 2][col + 2].getPiece() == null) {
-                        return true;
-                    }
+            //Ensure that a jump in the upper right direction won't be out of bounds
+            if ((col + 2) <= Board.size - 1) {
+
+                Space middle = gameBoard[row - 1][col + 1];
+                Space end = gameBoard[row - 2][col + 2];
+                Piece pieceMiddle = middle.getPiece();
+                Piece pieceEnd = end.getPiece();
+
+                //Check that the piece being jumped over exists and is of
+                //the opposite color. Also check that the end space does not
+                //already have a piece next to it
+                if (pieceMiddle != null && pieceMiddle.getColor() != color &&
+                        pieceEnd == null) {
+
+                    Position pStart = new Position(row, col);
+                    Position pEnd = new Position(end.getRow(), end.getCol());
+                    Move move = new Move(pStart, pEnd);
+
+                    //Add move to list of valid jumps
+                    jumps.add(move);
                 }
             }
         }
 
-        if (color == Piece.Color.WHITE) {
+        //Ensure that a jump downwards can be made by the piece and won't be out
+        //of bounds
+        if (((row + 2) <= Board.size - 1 && color == Piece.Color.WHITE) ||
+                ((row + 2) <= Board.size - 1 && piece.getType() == Piece.Type.KING)) {
 
-            //Ensure the piece would not go out of bounds if it jumped
-            if (row + 2 <= Board.size - 1) {
+            //Ensure that a jump in the lower left direction won't be out of bounds
+            if ((col - 2) >= 0) {
 
-                //Check just the left side
-                if ((col - 2) >= 0) {
-                    if (board[row + 2][col - 2].getPiece() == null) {
-                        return true;
-                    }
+                Space middle = gameBoard[row + 1][col - 1];
+                Space end = gameBoard[row + 2][col - 2];
+                Piece pieceMiddle = middle.getPiece();
+                Piece pieceEnd = end.getPiece();
+
+                //Check that the piece being jumped over exists and is of
+                //the opposite color. Also check that the end space does not
+                //already have a piece next to it
+                if (pieceMiddle != null && pieceMiddle.getColor() != color &&
+                        pieceEnd == null) {
+
+                    Position pStart = new Position(row, col);
+                    Position pEnd = new Position(end.getRow(), end.getCol());
+                    Move move = new Move(pStart, pEnd);
+
+                    //Add move to list of valid jumps
+                    jumps.add(move);
                 }
+            }
 
-                //Check right
-                if ((col + 2) <= Board.size - 1) {
-                    if (board[row + 2][col + 2].getPiece() == null) {
-                        return true;
-                    }
+            //Ensure that a jump in the lower right direction won't be out of bounds
+            if ((col + 2) <= Board.size - 1) {
+
+                Space middle = gameBoard[row + 1][col + 1];
+                Space end = gameBoard[row + 2][col + 2];
+                Piece pieceMiddle = middle.getPiece();
+                Piece pieceEnd = end.getPiece();
+
+                //Check that the piece being jumped over exists and is of
+                //the opposite color. Also check that the end space does not
+                //already have a piece next to it
+                if (pieceMiddle != null && pieceMiddle.getColor() != color &&
+                        pieceEnd == null) {
+
+                    Position pStart = new Position(row, col);
+                    Position pEnd = new Position(end.getRow(), end.getCol());
+                    Move move = new Move(pStart, pEnd);
+
+                    //Add move to list of valid jumps
+                    jumps.add(move);
                 }
             }
         }
-        return false;
+        return jumps;
     }
 }

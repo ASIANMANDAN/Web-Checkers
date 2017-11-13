@@ -15,6 +15,11 @@ import org.junit.Test;
  */
 public class ValidateTest {
 
+    private final String ERROR_NOT_DIAGONAL = "That move was not diagonal";
+    private final String ERROR_NO_JUMPS = "That move cannot be a jump since there " +
+            "are no jumps are available.";
+    private final String ERROR_MUST_JUMP = "A jump is currently present and must be taken.";
+
     private Validate CuT;
 
     //Friendly Objects
@@ -22,7 +27,6 @@ public class ValidateTest {
     private Position start;
     private Position end;
     private Board board;
-    private Space[][] gameBoard;
 
     @Before
     public void test_setUp() {
@@ -30,8 +34,7 @@ public class ValidateTest {
 
         try {
             board = new Board();
-            gameBoard = board.getBoard();
-            gameBoard[4][3].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
+            board.getBoard()[4][3].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -47,7 +50,7 @@ public class ValidateTest {
         move = new Move(start, end);
 
         //No error message will be generated if valid
-        assertNull(CuT.isValid(move, gameBoard));
+        assertNull(CuT.isValid(move, board));
     }
 
     /**
@@ -60,7 +63,7 @@ public class ValidateTest {
         move = new Move(start, end);
 
         //No error message will be generated if valid
-        assertNull(CuT.isValid(move, gameBoard));
+        assertNull(CuT.isValid(move, board));
     }
 
     /**
@@ -73,10 +76,10 @@ public class ValidateTest {
         move = new Move(start, end);
 
         //Change piece to white to allow it to move in the tested direction
-        gameBoard[4][4].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
+        board.getBoard()[4][4].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
 
         //No error message will be generated if valid
-        assertNull(CuT.isValid(move, gameBoard));
+        assertNull(CuT.isValid(move, board));
     }
 
     /**
@@ -89,10 +92,10 @@ public class ValidateTest {
         move = new Move(start, end);
 
         //Change piece to white to allow it to move in the tested direction
-        gameBoard[4][4].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
+        board.getBoard()[4][4].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
 
         //No error message will be generated if valid
-        assertNull(CuT.isValid(move, gameBoard));
+        assertNull(CuT.isValid(move, board));
     }
 
     /**
@@ -104,10 +107,8 @@ public class ValidateTest {
         end = new Position(3, 3);
         move = new Move(start, end);
 
-        String error = "The move was not diagonal";
-
         //No error message will be generated if valid
-        assertEquals(error, CuT.isValid(move, gameBoard));
+        assertEquals(ERROR_NOT_DIAGONAL, CuT.isValid(move, board));
     }
 
     /**
@@ -119,12 +120,8 @@ public class ValidateTest {
         end = new Position(2, 1);
         move = new Move(start, end);
 
-        String error = "There are no jumps present. " +
-                "Therefore you must move to a space that is " +
-                "adjacent to the piece you wish to move.";
-
         //No error message will be generated if valid
-        assertEquals(error, CuT.isValid(move, gameBoard));
+        assertEquals(ERROR_NO_JUMPS, CuT.isValid(move, board));
     }
 
     /**
@@ -136,10 +133,9 @@ public class ValidateTest {
         end = new Position(2, 1);
         move = new Move(start, end);
 
-        //
-        gameBoard[3][2].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
+        board.getBoard()[3][2].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
 
-        assertNull(CuT.isValid(move, gameBoard));
+        assertNull(CuT.isValid(move, board));
     }
 
     /**
@@ -151,9 +147,9 @@ public class ValidateTest {
         end = new Position(2, 5);
         move = new Move(start, end);
 
-        gameBoard[3][4].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
+        board.getBoard()[3][4].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
 
-        assertNull(CuT.isValid(move, gameBoard));
+        assertNull(CuT.isValid(move, board));
     }
 
     /**
@@ -166,11 +162,11 @@ public class ValidateTest {
         move = new Move(start, end);
 
         //Change piece to white to allow it to move in the tested direction
-        gameBoard[2][3].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
+        board.getBoard()[2][3].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
         //Place opponents piece adjacent to allow the diagonal move
-        gameBoard[3][2].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
+        board.getBoard()[3][2].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
 
-        assertNull(CuT.isValid(move, gameBoard));
+        assertNull(CuT.isValid(move, board));
     }
 
     /**
@@ -183,10 +179,51 @@ public class ValidateTest {
         move = new Move(start, end);
 
         //Change piece to white to allow it to move in the tested direction
-        gameBoard[2][3].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
+        board.getBoard()[2][3].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
         //Place opponents piece adjacent to allow the diagonal move
-        gameBoard[3][4].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
+        board.getBoard()[3][4].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
 
-        assertNull(CuT.isValid(move, gameBoard));
+        assertNull(CuT.isValid(move, board));
+    }
+
+    /**
+     * Test an invalid jump where the player tries to jump over nothing.
+     */
+    @Test
+    public void test_jumpPresent_4() {
+        start = new Position(4,3);
+        end = new Position(2, 1);
+        move = new Move(start, end);
+
+        assertEquals(ERROR_NO_JUMPS, CuT.isValid(move, board));
+    }
+
+    /**
+     * Test an invalid jump where the player tries to jump over their own piece.
+     */
+    @Test
+    public void test_jumpPresent_5() {
+        start = new Position(4,3);
+        end = new Position(2, 1);
+        move = new Move(start, end);
+
+        board.getBoard()[3][2].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
+
+        assertEquals(ERROR_NO_JUMPS, CuT.isValid(move, board));
+    }
+
+    /**
+     * Test an invalid jump where a valid jump exists but the player
+     * does not take it.
+     */
+    @Test
+    public void test_jumpPresent_6() {
+        start = new Position(4,3);
+        end = new Position(2, 5);
+        move = new Move(start, end);
+
+        board.getBoard()[3][2].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
+
+        assertEquals(ERROR_MUST_JUMP, CuT.isValid(move, board));
     }
 }

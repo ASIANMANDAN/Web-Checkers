@@ -22,7 +22,7 @@ public class PostValidateMove implements Route {
     static final String MOVE_KEY = "move";
 
     @Override
-    public Object handle(Request request, Response response) {
+    public Object handle(Request request, Response response) throws Exception {
         Session httpSession = request.session();
         CurrentGames currentGames = httpSession.attribute(CURRENTGAMES_KEY);
         Player currentPlayer = httpSession.attribute(CURR_PLAYER);

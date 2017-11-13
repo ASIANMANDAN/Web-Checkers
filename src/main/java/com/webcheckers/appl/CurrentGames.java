@@ -181,7 +181,7 @@ public class CurrentGames {
         //Copy the board to pass to validator to avoid it making changes
         Board board = new Board(getBoard(player), getTurn(player));
 
-        return validator.isValid(move, board.getBoard());
+        return validator.isValid(move, board);
     }
 
     /**
