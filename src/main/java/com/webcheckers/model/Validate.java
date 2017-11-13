@@ -6,6 +6,8 @@ import com.webcheckers.model.board.Space;
 import com.webcheckers.ui.boardView.Move;
 import com.webcheckers.ui.boardView.Position;
 
+import java.util.ArrayList;
+
 /**
  * A class used to determine if a proposed Move complies with the
  * laws of American Checkers.

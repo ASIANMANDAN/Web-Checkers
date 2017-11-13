@@ -175,11 +175,13 @@ public class CurrentGames {
      * @return a message stating either that a move is valid or why
      *         one isn't
      */
-    public String validateMove(Player player, Move move) {
+    public String validateMove(Player player, Move move) throws Exception {
         Game game = getGame(player);
-        Space[][] board = this.getBoard(player);
 
-        return validator.isValid(move, board);
+        //Copy the board to pass to validator to avoid it making changes
+        Board board = new Board(getBoard(player), getTurn(player));
+
+        return validator.isValid(move, board.getBoard());
     }
 
     /**
