@@ -109,6 +109,10 @@ public class Board {
         this.board[start.getRow()][start.getCell()].removePiece();
         this.board[end.getRow()][end.getCell()].setPiece(piece);
 
+        if(end.getRow() == 0 || end.getRow() == 7){
+            makeKing(this.board[end.getRow()][end.getCell()]);
+        }
+
         if (this.currentTurn.equals(ActiveColor.RED)) {
             this.currentTurn = ActiveColor.WHITE;
         } else {
@@ -123,5 +127,32 @@ public class Board {
      */
     public Space[][] getBoard() {
         return this.board;
+    }
+
+    /**
+     * Turn a single piece into a king piece.
+     *
+     * @param space
+     */
+    public void makeKing(Space space){
+        Piece piece = space.getPiece();
+
+        //Check if piece is a single
+        if(piece.getType() == Piece.Type.SINGLE){
+            //Check piece color
+            if(piece.getColor() == Piece.Color.RED){
+                //Check if piece is in the correct row for promotion
+                if(space.getRow() == size-1){
+                    space.removePiece();
+                    space.setPiece(new Piece(piece.getColor(), Piece.Type.KING));
+                }
+            }
+            else if(piece.getColor() == Piece.Color.WHITE){
+                if(space.getRow() == 0){
+                    space.removePiece();
+                    space.setPiece(new Piece(piece.getColor(), Piece.Type.KING));
+                }
+            }
+        }
     }
 }
