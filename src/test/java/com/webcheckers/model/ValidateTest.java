@@ -290,4 +290,34 @@ public class ValidateTest {
 
         assertNull(CuT.continueJump(move, board));
     }
+
+    /**
+     * Test that the system correctly stops RED pieces from moving backwards.
+     */
+    @Test
+    public void test_backwards_0() {
+        start = new Position(4,3);
+        end = new Position(5, 2);
+        move = new Move(start, end);
+
+        //No error message will be generated if valid
+        assertEquals(ERROR_BACKWARDS, CuT.isValid(move, board));
+    }
+
+    /**
+     * Test that the system correctly stops WHITE pieces from moving backwards.
+     */
+    @Test
+    public void test_backwards_1() {
+        start = new Position(4,3);
+        end = new Position(2, 1);
+        move = new Move(start, end);
+
+        //Change piece to white to allow it to move in the tested direction
+        board.getBoard()[4][3].removePiece();
+        board.getBoard()[4][3].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
+
+        //No error message will be generated if valid
+        assertEquals(ERROR_BACKWARDS, CuT.isValid(move, board));
+    }
 }
