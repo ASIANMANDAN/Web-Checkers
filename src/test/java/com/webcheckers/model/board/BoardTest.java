@@ -18,6 +18,9 @@ import org.junit.Test;
  * @author Nathan Farrell
  */
 public class BoardTest {
+
+    private Board CuT;
+
     private static Space[][] arrayBoard;
     private static Move move;
 
@@ -33,6 +36,8 @@ public class BoardTest {
 
         when(move.getStart()).thenReturn(start);
         when(move.getEnd()).thenReturn(end);
+
+        CuT = new Board();
     }
 
     /**
@@ -174,6 +179,17 @@ public class BoardTest {
         redTurnBoard.makeMove(move);
         Board whiteTurnBoard = new Board(arrayBoard, Board.ActiveColor.WHITE);
         whiteTurnBoard.makeMove(move);
+    }
+
+    /**
+     * Test that the toggleTurn method correctly toggles turns.
+     */
+    @Test
+    public void test_toggleTurn() {
+        CuT.toggleTurn();
+        assertEquals(Board.ActiveColor.WHITE, CuT.currentTurn);
+        CuT.toggleTurn();
+        assertEquals(Board.ActiveColor.RED, CuT.currentTurn);
     }
 
     /**

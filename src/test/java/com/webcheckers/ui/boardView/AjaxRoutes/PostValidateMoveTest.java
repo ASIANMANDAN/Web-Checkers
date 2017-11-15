@@ -45,6 +45,7 @@ public class PostValidateMoveTest {
         when(request.session().attribute(PostValidateMove.CURR_PLAYER)).thenReturn(player);
         when(request.session().attribute(PostValidateMove.CURRENTGAMES_KEY)).thenReturn(currentGames);
         when(request.session().attribute(PostValidateMove.MOVE_KEY)).thenReturn(move);
+        when(request.session().attribute(PostValidateMove.MOVE_MADE_KEY)).thenReturn(false);
 
         when(currentGames.validateMove(player, move)).thenReturn(null);
 

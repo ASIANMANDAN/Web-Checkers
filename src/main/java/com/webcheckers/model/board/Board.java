@@ -108,7 +108,12 @@ public class Board {
         Piece piece = this.board[start.getRow()][start.getCell()].getPiece();
         this.board[start.getRow()][start.getCell()].removePiece();
         this.board[end.getRow()][end.getCell()].setPiece(piece);
+    }
 
+    /**
+     * Change the current turn so that it is the other players.
+     */
+    public void toggleTurn() {
         if (this.currentTurn.equals(ActiveColor.RED)) {
             this.currentTurn = ActiveColor.WHITE;
         } else {
