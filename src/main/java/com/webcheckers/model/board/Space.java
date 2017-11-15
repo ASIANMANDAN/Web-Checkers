@@ -62,7 +62,7 @@ public class Space {
     /**
      * Remove a piece from a given Space.
      */
-    void removePiece() {
+    public void removePiece() {
         this.piece = null;
     }
 

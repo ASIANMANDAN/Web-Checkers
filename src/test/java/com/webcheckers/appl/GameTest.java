@@ -129,6 +129,17 @@ public class GameTest {
     }
 
     /**
+     * Test that the toggleTurn method correctly toggles turns.
+     */
+    @Test
+    public void test_toggleTurn() {
+        CuT.toggleTurn();
+        assertEquals(Board.ActiveColor.WHITE, CuT.board.currentTurn);
+        CuT.toggleTurn();
+        assertEquals(Board.ActiveColor.RED, CuT.board.currentTurn);
+    }
+
+    /**
      * Test that players can be removed from games.
      */
     @Test
