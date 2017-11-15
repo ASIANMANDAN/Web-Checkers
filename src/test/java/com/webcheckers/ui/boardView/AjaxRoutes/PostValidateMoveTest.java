@@ -42,6 +42,9 @@ public class PostValidateMoveTest {
         player = mock(Player.class);
 
         when(request.session()).thenReturn(session);
+        when(session.attribute(PostValidateMove.CURRENTGAMES_KEY)).thenReturn(currentGames);
+        when(session.attribute(PostValidateMove.CURR_PLAYER)).thenReturn(player);
+        when(currentGames.validateMove(player, move)).thenReturn(null);
 
         CuT = new PostValidateMove();
     }
@@ -59,6 +62,6 @@ public class PostValidateMoveTest {
         Object message = CuT.handle(request, response);
 
         //Test Message
-        assertEquals("{\"text\":\"true\",\"type\":\"info\"}", message);
+        assertEquals("{\"text\":\"Move is valid\",\"type\":\"info\"}", message);
     }
 }
