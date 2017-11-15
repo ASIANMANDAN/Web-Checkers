@@ -1,6 +1,7 @@
 package com.webcheckers.appl;
 
 import com.webcheckers.model.Player;
+import com.webcheckers.model.Validate;
 import com.webcheckers.model.board.Board;
 import com.webcheckers.model.board.Space;
 import com.webcheckers.ui.boardView.Move;
@@ -22,11 +23,14 @@ public class CurrentGames {
     //Holds a list of all active games
     private static ArrayList<Game> currentGames;
 
+    private static Validate validator;
+
     /**
      * Default constructor, creates an empty list of games.
      */
     public CurrentGames() {
         currentGames = new ArrayList<>();
+        validator = new Validate();
     }
 
     /**
@@ -36,6 +40,7 @@ public class CurrentGames {
      */
     public CurrentGames(ArrayList<Game> cg) {
         currentGames = cg;
+        validator = new Validate();
     }
 
     /**
@@ -162,7 +167,21 @@ public class CurrentGames {
     }
 
     /**
-     * Moves a Piece from one Space to another.
+     * Determine if a given move is valid given the current
+     * board configuration.
+     *
+     * @param player the player who made the move
+     * @param move the proposed move to make
+     * @return a message stating either that a move is valid or why
+     *         one isn't
+     */
+    public String validateMove(Player player, Move move) {
+        Space[][] board = this.getBoard(player);
+
+        return validator.isValid(move, board);
+    }
+
+    /** Moves a Piece from one Space to another.
      *
      * @param player the player who made the move
      * @param move the move to make
