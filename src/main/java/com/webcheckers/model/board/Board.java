@@ -130,29 +130,34 @@ public class Board {
     }
 
     /**
-     * Turn a single piece into a king piece.
+     * Turn a single piece into a king
      *
-     * @param space
+     * @param space - the space that has the piece to upgrade
+     * @return if the piece was successfully upgraded.
      */
-    public void makeKing(Space space){
+    public boolean makeKing(Space space){
         Piece piece = space.getPiece();
+        boolean result = false;
 
         //Check if piece is a single
         if(piece.getType() == Piece.Type.SINGLE){
             //Check piece color
             if(piece.getColor() == Piece.Color.RED){
                 //Check if piece is in the correct row for promotion
-                if(space.getRow() == size-1){
-                    space.removePiece();
-                    space.setPiece(new Piece(piece.getColor(), Piece.Type.KING));
-                }
-            }
-            else if(piece.getColor() == Piece.Color.WHITE){
                 if(space.getRow() == 0){
                     space.removePiece();
                     space.setPiece(new Piece(piece.getColor(), Piece.Type.KING));
+                    result = true;
+                }
+            }
+            else if(piece.getColor() == Piece.Color.WHITE){
+                if(space.getRow() == size-1){
+                    space.removePiece();
+                    space.setPiece(new Piece(piece.getColor(), Piece.Type.KING));
+                    result = true;
                 }
             }
         }
+        return result;
     }
 }
