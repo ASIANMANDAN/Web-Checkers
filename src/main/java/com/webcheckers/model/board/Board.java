@@ -125,7 +125,13 @@ public class Board {
         }
     }
 
-    public Space getMiddle(Move move) {
+    /**
+     * Get the Space which a piece is jumping over.
+     *
+     * @param move the Move being made
+     * @return the Space that was jumped over (if a jump occurred)
+     */
+    private Space getMiddle(Move move) {
         Position start = move.getStart();
         Position end = move.getEnd();
 
