@@ -109,7 +109,7 @@ public class Board {
         this.board[start.getRow()][start.getCell()].removePiece();
         this.board[end.getRow()][end.getCell()].setPiece(piece);
 
-        if(end.getRow() == 0 || end.getRow() == 7){
+        if(end.getRow() == 0 || end.getRow() == size - 1){
             makeKing(this.board[end.getRow()][end.getCell()]);
         }
 
