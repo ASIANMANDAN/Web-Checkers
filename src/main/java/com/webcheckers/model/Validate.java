@@ -86,6 +86,7 @@ public class Validate {
      * @return whether or not the move is diagonal
      */
     private boolean isDiagonal(Move move) {
+      
         Position start = move.getStart();
         Position end = move.getEnd();
 
@@ -280,6 +281,7 @@ public class Validate {
                 }
             }
         }
+
         //No opponent is adjacent to the given space
         return false;
     }

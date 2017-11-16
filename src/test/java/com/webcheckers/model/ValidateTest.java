@@ -40,6 +40,7 @@ public class ValidateTest {
         try {
             board = new Board();
             board.getBoard()[4][3].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
+
         } catch (Exception e) {
             e.printStackTrace();
         }

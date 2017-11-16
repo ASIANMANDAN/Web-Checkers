@@ -26,6 +26,7 @@ public class PostValidateMove implements Route {
     @Override
     public Object handle(Request request, Response response) throws Exception {
         Session httpSession = request.session();
+
         CurrentGames currentGames = httpSession.attribute(CURRENTGAMES_KEY);
         Player currentPlayer = httpSession.attribute(CURR_PLAYER);
 
@@ -53,6 +54,7 @@ public class PostValidateMove implements Route {
 
             //Save the valid move in case player chooses to undo the move
             httpSession.attribute(MOVE_KEY, move);
+          
             return gson.toJson(new Message("Move is valid", Message.Type.info));
         } else {
             return gson.toJson(new Message(message, Message.Type.error));
