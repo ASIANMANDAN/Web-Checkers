@@ -45,6 +45,11 @@ public class Validate {
         if (!isDiagonal(move)) {
             message = "That move was not diagonal";
         }
+
+        if (isBackwards(move, board)) {
+            message = "That piece cannot move backwards";
+        }
+
         return message;
     }
 
@@ -76,6 +81,9 @@ public class Validate {
             message = "A jump is currently present and must be taken.";
         }
 
+        if (isBackwards(move, board)) {
+            message = "That piece cannot move backwards";
+        }
         return message;
     }
 
