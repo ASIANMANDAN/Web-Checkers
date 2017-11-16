@@ -109,6 +109,14 @@ public class Board {
         this.board[start.getRow()][start.getCell()].removePiece();
         this.board[end.getRow()][end.getCell()].setPiece(piece);
 
+        //Determine if the move made was a jump and store the
+        //middle Space here so the piece can be "captured"
+        Space middle = getMiddle(move);
+
+        //"Capture" an opponents Piece if a jump occurred
+        if (middle != null) {
+            board[middle.getRow()][middle.getCol()].removePiece();
+
         if(end.getRow() == 0 || end.getRow() == size - 1){
             if(this.board[end.getRow()][end.getCell()].getPiece().getType() != Piece.Type.KING){
                 makeKing(this.board[end.getRow()][end.getCell()]);
@@ -120,6 +128,66 @@ public class Board {
         } else {
             this.currentTurn = ActiveColor.RED;
         }
+    }
+
+    /**
+     * Get the Space which a piece is jumping over.
+     *
+     * @param move the Move being made
+     * @return the Space that was jumped over (if a jump occurred)
+     */
+    private Space getMiddle(Move move) {
+        Position start = move.getStart();
+        Position end = move.getEnd();
+
+        //The row and column location of the middle Space
+        int rowMiddle = 0;
+        int colMiddle = 0;
+
+        //Indicates the Piece is moving "upwards"
+        if (start.getRow() > end.getRow()) {
+
+            int distance = start.getRow() - end.getRow();
+
+            //Indicates a jump did not occur
+            if (distance < 2) {
+                return null;
+            }
+
+            rowMiddle = start.getRow() - 1;
+
+            //Indicates a leftwards move
+            if (start.getCell() < end.getCell()) {
+                colMiddle = start.getCell() + 1;
+            }
+            //Move occurred to the right of the start Position
+            else {
+                colMiddle = start.getCell() - 1;
+            }
+        }
+
+        //Indicates the Piece is moving "downwards"
+        if (start.getRow() < end.getRow()) {
+
+            int distance = end.getRow() - start.getRow();
+
+            //Indicates a jump did not occur
+            if (distance < 2) {
+                return null;
+            }
+
+            rowMiddle = start.getRow() + 1;
+
+            //Indicates a leftwards move
+            if (start.getCell() < end.getCell()) {
+                colMiddle = start.getCell() + 1;
+            }
+            //Move occurred to the right of the start Position
+            else {
+                colMiddle = start.getCell() - 1;
+            }
+        }
+        return board[rowMiddle][colMiddle];
     }
 
     /**

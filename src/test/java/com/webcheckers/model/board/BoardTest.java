@@ -18,21 +18,23 @@ import org.junit.Test;
  * @author Nathan Farrell
  */
 public class BoardTest {
+
+    private Board CuT;
+
+    //Friendly Objects
     private static Space[][] arrayBoard;
     private static Move move;
+    private Position start;
+    private Position end;
 
     @Before
     public void test_setup() throws Exception {
-        Board board = new Board();
-        arrayBoard = board.getBoard();
+        CuT = new Board();
+        arrayBoard = CuT.getBoard();
 
-        //Mocking a move
-        move = mock(Move.class);
-        Position start = new Position(0,1);
-        Position end = new Position(1,1);
-
-        when(move.getStart()).thenReturn(start);
-        when(move.getEnd()).thenReturn(end);
+        start = new Position(0,1);
+        end = new Position(1,1);
+        move = new Move(start, end);
     }
 
     /**
@@ -193,7 +195,26 @@ public class BoardTest {
         assertEquals(Board.ViewMode.PLAY, Board.ViewMode.valueOf("PLAY"));
         assertEquals(Board.ViewMode.REPLAY, Board.ViewMode.valueOf("REPLAY"));
         assertEquals(Board.ViewMode.SPECTATE, Board.ViewMode.valueOf("SPECTATE"));
+    }
 
+    /**
+     * Test that when jumped, a piece is removed from the Board.
+     */
+    @Test
+    public void test_capturePiece() {
+        start = new Position(4, 3);
+        end = new Position(2, 5);
+        move = new Move(start, end);
+
+        arrayBoard[4][3].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
+        //Create a piece to jump
+        arrayBoard[3][4].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
+
+        //Test that the piece was placed correctly
+        assertNotNull(arrayBoard[3][4].getPiece());
+        CuT.makeMove(move);
+        //Test the piece was removed after the move
+        assertNull(arrayBoard[3][4].getPiece());
     }
 
     /**

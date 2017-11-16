@@ -176,12 +176,14 @@ public class CurrentGames {
      *         one isn't
      */
     public String validateMove(Player player, Move move) {
+        Game game = getGame(player);
         Space[][] board = this.getBoard(player);
 
         return validator.isValid(move, board);
     }
 
-    /** Moves a Piece from one Space to another.
+    /**
+     * Moves a Piece from one Space to another.
      *
      * @param player the player who made the move
      * @param move the move to make
