@@ -21,23 +21,20 @@ public class BoardTest {
 
     private Board CuT;
 
+    //Friendly Objects
     private static Space[][] arrayBoard;
     private static Move move;
+    private Position start;
+    private Position end;
 
     @Before
     public void test_setup() throws Exception {
-        Board board = new Board();
-        arrayBoard = board.getBoard();
-
-        //Mocking a move
-        move = mock(Move.class);
-        Position start = new Position(0,1);
-        Position end = new Position(1,1);
-
-        when(move.getStart()).thenReturn(start);
-        when(move.getEnd()).thenReturn(end);
-
         CuT = new Board();
+        arrayBoard = CuT.getBoard();
+
+        start = new Position(0,1);
+        end = new Position(1,1);
+        move = new Move(start, end);
     }
 
     /**
@@ -209,6 +206,55 @@ public class BoardTest {
         assertEquals(Board.ViewMode.PLAY, Board.ViewMode.valueOf("PLAY"));
         assertEquals(Board.ViewMode.REPLAY, Board.ViewMode.valueOf("REPLAY"));
         assertEquals(Board.ViewMode.SPECTATE, Board.ViewMode.valueOf("SPECTATE"));
+    }
 
+    /**
+     * Test that when jumped, a piece is removed from the Board.
+     */
+    @Test
+    public void test_capturePiece() {
+        start = new Position(4, 3);
+        end = new Position(2, 5);
+        move = new Move(start, end);
+
+        arrayBoard[4][3].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
+        //Create a piece to jump
+        arrayBoard[3][4].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
+
+        //Test that the piece was placed correctly
+        assertNotNull(arrayBoard[3][4].getPiece());
+        CuT.makeMove(move);
+        //Test the piece was removed after the move
+        assertNull(arrayBoard[3][4].getPiece());
+    }
+
+    /**
+     * Test the makeKing method.
+     */
+    @Test
+    public void test_makeKing() throws Exception {
+        Board CuT = new Board();
+
+        //Check white single piece in bottom row promotes
+        Space space1 = CuT.getBoard()[7][0];
+        Piece piece1 = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
+        space1.setPiece(piece1);
+        //Check red single piece in top row promotes
+        Space space2 = CuT.getBoard()[0][1];
+        Piece piece2 = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
+        space2.setPiece(piece2);
+        //Check piece won't promote when in the wrong row
+        Space space3 = CuT.getBoard()[1][0];
+        Piece piece3 = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
+        space3.setPiece(piece3);
+        //Check piece won't promote when already a king
+        Space space4 = CuT.getBoard()[0][7];
+        Piece piece4 = new Piece(Piece.Color.RED, Piece.Type.KING);
+        space4.setPiece(piece4);
+
+        assertTrue(CuT.makeKing(space1));
+        assertTrue(CuT.makeKing(space2));
+        assertFalse(CuT.makeKing(space3));
+        assertFalse(CuT.makeKing(space4));
     }
 }

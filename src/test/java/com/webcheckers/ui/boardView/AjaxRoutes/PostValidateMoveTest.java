@@ -42,10 +42,10 @@ public class PostValidateMoveTest {
         player = mock(Player.class);
 
         when(request.session()).thenReturn(session);
-        when(request.session().attribute(PostValidateMove.CURR_PLAYER)).thenReturn(player);
-        when(request.session().attribute(PostValidateMove.CURRENTGAMES_KEY)).thenReturn(currentGames);
         when(request.session().attribute(PostValidateMove.MOVE_KEY)).thenReturn(move);
         when(request.session().attribute(PostValidateMove.MOVE_MADE_KEY)).thenReturn(false);
+        when(session.attribute(PostValidateMove.CURRENTGAMES_KEY)).thenReturn(currentGames);
+        when(session.attribute(PostValidateMove.CURR_PLAYER)).thenReturn(player);
 
         when(currentGames.validateMove(player, move)).thenReturn(null);
 

@@ -128,6 +128,7 @@ public class GetGameRouteTest {
         assertNotNull(model);
         assertTrue(model instanceof Map);
 
+        @SuppressWarnings("unchecked")
         final Map<String, Object> vm = (Map<String, Object>) model;
         assertEquals("Game", vm.get("title"));
         assertEquals(Board.ViewMode.PLAY, vm.get(GetGameRoute.MODE_ATTR));
@@ -189,6 +190,7 @@ public class GetGameRouteTest {
 
         //Because of there being no opponent, the page redirects and doesn't fill a model
         final Object model = myModelView.model;
+
         String message = "player2 has resigned from the game.";
         assertEquals(message, session.attribute(GetGameRoute.MESSAGE_KEY));
         assertNull(model);

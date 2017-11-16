@@ -108,6 +108,20 @@ public class Board {
         Piece piece = this.board[start.getRow()][start.getCell()].getPiece();
         this.board[start.getRow()][start.getCell()].removePiece();
         this.board[end.getRow()][end.getCell()].setPiece(piece);
+      
+        //Determine if the move made was a jump and store the
+        //middle Space here so the piece can be "captured"
+        Space middle = getMiddle(move);
+
+        //"Capture" an opponents Piece if a jump occurred
+        if (middle != null) {
+            board[middle.getRow()][middle.getCol()].removePiece();
+
+        if(end.getRow() == 0 || end.getRow() == size - 1){
+            if(this.board[end.getRow()][end.getCell()].getPiece().getType() != Piece.Type.KING){
+                makeKing(this.board[end.getRow()][end.getCell()]);
+            }
+        }
     }
 
     /**
@@ -122,11 +136,103 @@ public class Board {
     }
 
     /**
+     * Get the Space which a piece is jumping over.
+     *
+     * @param move the Move being made
+     * @return the Space that was jumped over (if a jump occurred)
+     */
+    private Space getMiddle(Move move) {
+        Position start = move.getStart();
+        Position end = move.getEnd();
+
+        //The row and column location of the middle Space
+        int rowMiddle = 0;
+        int colMiddle = 0;
+
+        //Indicates the Piece is moving "upwards"
+        if (start.getRow() > end.getRow()) {
+
+            int distance = start.getRow() - end.getRow();
+
+            //Indicates a jump did not occur
+            if (distance < 2) {
+                return null;
+            }
+
+            rowMiddle = start.getRow() - 1;
+
+            //Indicates a leftwards move
+            if (start.getCell() < end.getCell()) {
+                colMiddle = start.getCell() + 1;
+            }
+            //Move occurred to the right of the start Position
+            else {
+                colMiddle = start.getCell() - 1;
+            }
+        }
+
+        //Indicates the Piece is moving "downwards"
+        if (start.getRow() < end.getRow()) {
+
+            int distance = end.getRow() - start.getRow();
+
+            //Indicates a jump did not occur
+            if (distance < 2) {
+                return null;
+            }
+
+            rowMiddle = start.getRow() + 1;
+
+            //Indicates a leftwards move
+            if (start.getCell() < end.getCell()) {
+                colMiddle = start.getCell() + 1;
+            }
+            //Move occurred to the right of the start Position
+            else {
+                colMiddle = start.getCell() - 1;
+            }
+        }
+        return board[rowMiddle][colMiddle];
+    }
+
+    /**
      * Retrieves the 2d array of Spaces representing the game board.
      *
      * @return 2d array of Spaces.
      */
     public Space[][] getBoard() {
         return this.board;
+    }
+
+    /**
+     * Turn a single piece into a king
+     *
+     * @param space - the space that has the piece to upgrade
+     * @return if the piece was successfully upgraded.
+     */
+    public boolean makeKing(Space space){
+        Piece piece = space.getPiece();
+        boolean result = false;
+
+        //Check if piece is a single
+        if(piece.getType() == Piece.Type.SINGLE){
+            //Check piece color
+            if(piece.getColor() == Piece.Color.RED){
+                //Check if piece is in the correct row for promotion
+                if(space.getRow() == 0){
+                    space.removePiece();
+                    space.setPiece(new Piece(piece.getColor(), Piece.Type.KING));
+                    result = true;
+                }
+            }
+            else if(piece.getColor() == Piece.Color.WHITE){
+                if(space.getRow() == size-1){
+                    space.removePiece();
+                    space.setPiece(new Piece(piece.getColor(), Piece.Type.KING));
+                    result = true;
+                }
+            }
+        }
+        return result;
     }
 }

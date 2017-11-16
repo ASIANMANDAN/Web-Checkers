@@ -84,7 +84,6 @@ public class Validate {
         if (isBackwards(move, board)) {
             message = "That piece cannot move backwards";
         }
-
         return message;
     }
 
@@ -95,6 +94,7 @@ public class Validate {
      * @return whether or not the move is diagonal
      */
     private boolean isDiagonal(Move move) {
+      
         Position start = move.getStart();
         Position end = move.getEnd();
 
@@ -173,40 +173,6 @@ public class Validate {
         }else{
             return false;
         }
-    }
-
-    /**
-     * Determine if a given Move is traveling backwards given the
-     * start and end location of the moving piece.
-     *
-     * @param move the proposed move to make
-     * @param board the board the move will take place on
-     * @return whether or not the proposed move is backwards for the
-     *         given piece
-     */
-    private boolean isBackwards(Move move, Board board) {
-
-        Position start = move.getStart();
-        Position end = move.getEnd();
-
-        Space[][] gameBoard = board.getBoard();
-        Piece piece = gameBoard[start.getRow()][start.getCell()].getPiece();
-
-        //A king can move in either direction
-        if (piece.getType() == Piece.Type.KING) {
-            return false;
-        }
-
-        //Indicates "upwards" movement which cannot be made by single white pieces
-        if (start.getRow() > end.getRow() && piece.getColor() == Piece.Color.WHITE) {
-            return true;
-        }
-
-        //Indicates "downwards" movement which cannot be made by single red pieces
-        if (start.getRow() < end.getRow() && piece.getColor() == Piece.Color.RED) {
-            return true;
-        }
-        return false;
     }
 
     /**
@@ -323,6 +289,7 @@ public class Validate {
                 }
             }
         }
+
         //No opponent is adjacent to the given space
         return false;
     }

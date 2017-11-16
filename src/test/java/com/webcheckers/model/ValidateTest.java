@@ -24,7 +24,6 @@ public class ValidateTest {
     private final String ERROR_NO_JUMPS = "That move cannot be a jump since " +
             "there are no jumps available.";
     private final String ERROR_MUST_JUMP = "A jump is currently present and must be taken.";
-    private final String ERROR_BACKWARDS = "That piece cannot move backwards";
 
     private Validate CuT;
 
@@ -41,6 +40,7 @@ public class ValidateTest {
         try {
             board = new Board();
             board.getBoard()[4][3].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
+
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -289,35 +289,5 @@ public class ValidateTest {
         Move move3 = new Move(start3, end3);
 
         assertNull(CuT.continueJump(move, board));
-    }
-
-    /**
-     * Test that the system correctly stops RED pieces from moving backwards.
-     */
-    @Test
-    public void test_backwards_0() {
-        start = new Position(4,3);
-        end = new Position(5, 2);
-        move = new Move(start, end);
-
-        //No error message will be generated if valid
-        assertEquals(ERROR_BACKWARDS, CuT.isValid(move, board));
-    }
-
-    /**
-     * Test that the system correctly stops WHITE pieces from moving backwards.
-     */
-    @Test
-    public void test_backwards_1() {
-        start = new Position(4,3);
-        end = new Position(2, 1);
-        move = new Move(start, end);
-
-        //Change piece to white to allow it to move in the tested direction
-        board.getBoard()[4][3].removePiece();
-        board.getBoard()[4][3].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
-
-        //No error message will be generated if valid
-        assertEquals(ERROR_BACKWARDS, CuT.isValid(move, board));
     }
 }
