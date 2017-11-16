@@ -24,6 +24,7 @@ public class PostValidateMove implements Route {
     @Override
     public Object handle(Request request, Response response) {
         Session httpSession = request.session();
+
         CurrentGames currentGames = httpSession.attribute(CURRENTGAMES_KEY);
         Player currentPlayer = httpSession.attribute(CURR_PLAYER);
 

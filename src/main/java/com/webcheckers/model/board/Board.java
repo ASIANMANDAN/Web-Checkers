@@ -116,6 +116,11 @@ public class Board {
         //"Capture" an opponents Piece if a jump occurred
         if (middle != null) {
             board[middle.getRow()][middle.getCol()].removePiece();
+
+        if(end.getRow() == 0 || end.getRow() == size - 1){
+            if(this.board[end.getRow()][end.getCell()].getPiece().getType() != Piece.Type.KING){
+                makeKing(this.board[end.getRow()][end.getCell()]);
+            }
         }
 
         if (this.currentTurn.equals(ActiveColor.RED)) {
@@ -192,5 +197,37 @@ public class Board {
      */
     public Space[][] getBoard() {
         return this.board;
+    }
+
+    /**
+     * Turn a single piece into a king
+     *
+     * @param space - the space that has the piece to upgrade
+     * @return if the piece was successfully upgraded.
+     */
+    public boolean makeKing(Space space){
+        Piece piece = space.getPiece();
+        boolean result = false;
+
+        //Check if piece is a single
+        if(piece.getType() == Piece.Type.SINGLE){
+            //Check piece color
+            if(piece.getColor() == Piece.Color.RED){
+                //Check if piece is in the correct row for promotion
+                if(space.getRow() == 0){
+                    space.removePiece();
+                    space.setPiece(new Piece(piece.getColor(), Piece.Type.KING));
+                    result = true;
+                }
+            }
+            else if(piece.getColor() == Piece.Color.WHITE){
+                if(space.getRow() == size-1){
+                    space.removePiece();
+                    space.setPiece(new Piece(piece.getColor(), Piece.Type.KING));
+                    result = true;
+                }
+            }
+        }
+        return result;
     }
 }

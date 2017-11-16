@@ -116,7 +116,7 @@ public class Validate {
      * @param move Move to be checked.
      * @return bool if adjacent
      */
-    public boolean isAdjacent(Move move){
+    private boolean isAdjacent(Move move) {
 
         // Get Positions
         Position initialPosition = move.getStart();
