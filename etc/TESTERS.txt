@@ -1,0 +1,4 @@
+1. Using command prompt, navigate to the directory that the pom.xml file was unzipped to and run "mvn compile exec:java"
+2. In a normal browser window, put "localhost:4567" in the the URL bar.
+3. In order to simulate a second client, open an incognito tab and put "localhost:4567" in the URL bar.
+4. Test!
