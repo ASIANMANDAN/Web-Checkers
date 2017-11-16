@@ -224,7 +224,7 @@ public class CurrentGames {
     }
 
     /**
-     * Change the current turn so that it is the other players.
+     * Toggle the state of the turn so that it is the other players.
      *
      * @param player the player who is ending their turn
      */
