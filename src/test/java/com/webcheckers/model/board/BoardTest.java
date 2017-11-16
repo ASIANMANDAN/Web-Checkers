@@ -179,6 +179,17 @@ public class BoardTest {
     }
 
     /**
+     * Test that the toggleTurn method correctly toggles turns.
+     */
+    @Test
+    public void test_toggleTurn() {
+        CuT.toggleTurn();
+        assertEquals(Board.ActiveColor.WHITE, CuT.currentTurn);
+        CuT.toggleTurn();
+        assertEquals(Board.ActiveColor.RED, CuT.currentTurn);
+    }
+
+    /**
      * Test the enum values of ActiveColor.
      */
     @Test

@@ -41,4 +41,23 @@ public class Move {
     public Position getEnd() {
         return end;
     }
+
+    /**
+     * Equals method to be used for comparing two Move objects.
+     *
+     * @param obj the Move object that is being compared
+     * @return whether or not these two objects are equal
+     */
+    @Override
+    public boolean equals(Object obj) {
+        if (obj == this) {
+            return true;
+        }
+        if (!(obj instanceof Move)) {
+            return false;
+        }
+        final Move that = (Move) obj;
+        return this.getStart().equals(that.getStart()) &&
+                this.getEnd().equals(that.getEnd());
+    }
 }

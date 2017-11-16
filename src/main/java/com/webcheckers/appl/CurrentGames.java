@@ -4,6 +4,7 @@ import com.webcheckers.model.Player;
 import com.webcheckers.model.Validate;
 import com.webcheckers.model.board.Board;
 import com.webcheckers.model.board.Space;
+import com.webcheckers.ui.boardView.Message;
 import com.webcheckers.ui.boardView.Move;
 
 import java.util.ArrayList;
@@ -174,12 +175,36 @@ public class CurrentGames {
      * @param move the proposed move to make
      * @return a message stating either that a move is valid or why
      *         one isn't
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
      */
-    public String validateMove(Player player, Move move) {
+    public String validateMove(Player player, Move move) throws Exception {
         Game game = getGame(player);
-        Space[][] board = this.getBoard(player);
 
+        //Copy the board to pass to validator to avoid it making changes
+        Board board = new Board(getBoard(player), getTurn(player));
         return validator.isValid(move, board);
+    }
+
+    /**
+     *  Determine if a given move is valid win the case of multiple jumps.
+     *
+     * @param player the player who made the move
+     * @param move the proposed move to make
+     * @return a message stating either that a move is valid or why
+     *         one isn't
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
+     */
+    public String continueJump(Player player, Move move) throws Exception {
+        Game game = getGame(player);
+
+        //Copy the board to pass to validator to avoid it making changes
+        Board board = new Board(getBoard(player), getTurn(player));
+
+        return validator.continueJump(move, board);
     }
 
     /**
@@ -196,6 +221,18 @@ public class CurrentGames {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Change the current turn so that it is the other players.
+     *
+     * @param player the player who is ending their turn
+     */
+    public void toggleTurn(Player player) {
+        Game game = getGame(player);
+        if (game != null) {
+            game.toggleTurn();
+        }
     }
 
     /**

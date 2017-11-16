@@ -2,6 +2,7 @@ package com.webcheckers.appl;
 
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
+import com.webcheckers.model.board.Piece;
 import com.webcheckers.model.board.Space;
 import com.webcheckers.ui.boardView.Move;
 
@@ -97,6 +98,13 @@ public class Game {
     }
 
     /**
+     * Change the current turn so that it is the other players.
+     */
+    protected void toggleTurn() {
+        this.board.toggleTurn();
+    }
+
+    /**
      * Gets the board model which tracks the game.
      *
      * @return the board model
@@ -105,6 +113,11 @@ public class Game {
         return board.getBoard();
     }
 
+    /**
+     * Gets the current players turn.
+     *
+     * @return the turn
+     */
     protected Board.ActiveColor getTurn() {
         return board.currentTurn;
     }

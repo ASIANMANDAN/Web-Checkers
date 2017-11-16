@@ -108,7 +108,7 @@ public class Board {
         Piece piece = this.board[start.getRow()][start.getCell()].getPiece();
         this.board[start.getRow()][start.getCell()].removePiece();
         this.board[end.getRow()][end.getCell()].setPiece(piece);
-
+      
         //Determine if the move made was a jump and store the
         //middle Space here so the piece can be "captured"
         Space middle = getMiddle(move);
@@ -122,7 +122,12 @@ public class Board {
                 makeKing(this.board[end.getRow()][end.getCell()]);
             }
         }
+    }
 
+    /**
+     * Change the current turn so that it is the other players.
+     */
+    public void toggleTurn() {
         if (this.currentTurn.equals(ActiveColor.RED)) {
             this.currentTurn = ActiveColor.WHITE;
         } else {

@@ -147,6 +147,17 @@ public class CurrentGamesTest {
     }
 
     /**
+     * Test that the toggleTurn method correctly toggles turns.
+     */
+    @Test
+    public void test_toggleTurn() {
+        CuT.toggleTurn(red);
+        assertEquals(Board.ActiveColor.WHITE, CuT.getTurn(red));
+        CuT.toggleTurn(red);
+        assertEquals(Board.ActiveColor.RED, CuT.getTurn(red));
+    }
+
+    /**
      * Test that the correct turn is returned from the Board object.
      */
     @Test
