@@ -116,6 +116,7 @@ public class Board {
         //"Capture" an opponents Piece if a jump occurred
         if (middle != null) {
             board[middle.getRow()][middle.getCol()].removePiece();
+        }
 
         if(end.getRow() == 0 || end.getRow() == size - 1){
             if(this.board[end.getRow()][end.getCell()].getPiece().getType() != Piece.Type.KING){
