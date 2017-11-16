@@ -110,7 +110,9 @@ public class Board {
         this.board[end.getRow()][end.getCell()].setPiece(piece);
 
         if(end.getRow() == 0 || end.getRow() == size - 1){
-            makeKing(this.board[end.getRow()][end.getCell()]);
+            if(this.board[end.getRow()][end.getCell()].getPiece().getType() != Piece.Type.KING){
+                makeKing(this.board[end.getRow()][end.getCell()]);
+            }
         }
 
         if (this.currentTurn.equals(ActiveColor.RED)) {
