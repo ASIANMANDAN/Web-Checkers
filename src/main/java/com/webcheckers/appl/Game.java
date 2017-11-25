@@ -98,6 +98,15 @@ public class Game {
     }
 
     /**
+     * Undo a previously made move.
+     *
+     * @param move the move that was made
+     */
+    protected void undoMove(Move move) {
+        this.board.undoMove(move);
+    }
+
+    /**
      * Change the current turn so that it is the other players.
      */
     protected void toggleTurn() {

@@ -124,6 +124,8 @@ The Piece class serves as a way to determine the color and type of piece. The ty
 
 Outside of the board package, there is also a Player class that represents an individual Player. The Player class works with application tier services to perform actions like signing in/leaving a game/creating a game/picking an opponent. 
 
+A Validate class is also included outside of the board package. This class is a pure fabrication, with the responsibility of ensuring that proposed moves adhere to the rules of checkers before they are allowed to be made. The rational behind creating this class was to keep cohesion high within the Board class. Additionally, we did not feel that it was the responsibility of the Board class to enforce the rules, but to serve as a representation of the current game space.
+
 ### Tier: Application
 
 The components of the Application tier work to manage information and logic which span the entirety of the application. Additionally, these components are responsible for providing client specific services needed by the UI tier.
@@ -195,5 +197,5 @@ The Validate component contains a series of checks that enforce different rules.
 *Fig 10. Class diagram of the Validate sub system*
 
 ### Dynamic models
-![Validate Sequence](https://lh3.googleusercontent.com/-9nG-RZNI0kg/WgzRWjU-FVI/AAAAAAAAAEA/oLvzA5iipy8TWlIASt-l4MZrLNfK9RemQCLcBGAs/s0/Validate+Sub+System+Sequence+-+Page+1.png "Validate Sub System Sequence.png")
+![Validate Sequence](https://lh3.googleusercontent.com/-qu-Cwxd8iGQ/WhjShqy1MKI/AAAAAAAAAEk/brp0CMVaucAK5oSwUNm2E3AANYIukgb1QCLcBGAs/s0/Validate+Sub+System+Sequence+-+Page+1+%25281%2529.png "Validate Sub System Sequence.png")
 *Fig 11. Sequence diagram of the Validate sub system*

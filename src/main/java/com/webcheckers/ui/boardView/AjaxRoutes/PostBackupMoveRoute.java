@@ -47,9 +47,7 @@ public class PostBackupMoveRoute implements Route {
         CurrentGames currentGames = httpSession.attribute(CURRENTGAMES_KEY);
         Move move = httpSession.attribute(MOVE_KEY);
 
-        //Reverse the original move so that calling make move will undo it
-        Move reverse = new Move(move.getEnd(), move.getStart());
-        currentGames.makeMove(currentPlayer, reverse);
+        currentGames.undoMove(currentPlayer, move);
 
         //Swap the move made attribute
         httpSession.attribute(MOVE_MADE_KEY, false);

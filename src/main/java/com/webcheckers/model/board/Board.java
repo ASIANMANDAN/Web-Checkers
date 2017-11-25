@@ -2,6 +2,7 @@ package com.webcheckers.model.board;
 
 import com.webcheckers.ui.boardView.Move;
 import com.webcheckers.ui.boardView.Position;
+import java.util.Stack;
 
 /**
  * Model tier class that represents the checkers board.
@@ -21,6 +22,9 @@ public class Board {
 
     private Space[][] board;
     public ActiveColor currentTurn;
+
+    //A stack to remember what pieces were captured in a given turn
+    private Stack<Piece> capturedPieces = new Stack<>();
 
     //Used to determine the size of the board
     public static final int size = 8;
@@ -115,12 +119,52 @@ public class Board {
 
         //"Capture" an opponents Piece if a jump occurred
         if (middle != null) {
+            this.capturedPieces.push(middle.getPiece());
             board[middle.getRow()][middle.getCol()].removePiece();
         }
 
         if(end.getRow() == 0 || end.getRow() == size - 1){
-            if(this.board[end.getRow()][end.getCell()].getPiece().getType() != Piece.Type.KING){
+            Space space = this.board[end.getRow()][end.getCell()];
+            if(space.getPiece().getType() != Piece.Type.KING){
                 makeKing(this.board[end.getRow()][end.getCell()]);
+            }
+        }
+    }
+
+    /**
+     * Undo a previously made move on the game board.
+     *
+     * @param move the start and end coordinates of the move that was just made
+     */
+    public void undoMove(Move move) {
+        //Reverse the move
+        Position start = move.getEnd();
+        Position end = move.getStart();
+
+        Piece piece = this.board[start.getRow()][start.getCell()].getPiece();
+        this.board[start.getRow()][start.getCell()].removePiece();
+        this.board[end.getRow()][end.getCell()].setPiece(piece);
+
+        //Determine if the move made was a jump and store the
+        //middle Space here so the piece can be "captured"
+        Space middle = getMiddle(move);
+
+        //"Capture" an opponents Piece if a jump occurred
+        if (middle != null) {
+
+            //Replace a piece if the middle space is null. This is in case
+            //a player chooses to undo a jump
+            if (middle.getPiece() == null && !this.capturedPieces.empty()) {
+                board[middle.getRow()][middle.getCol()].setPiece(this.capturedPieces.pop());
+            }
+        }
+
+        if(start.getRow() == 0 || start.getRow() == size - 1){
+            Space space = this.board[end.getRow()][end.getCell()];
+            if(space.getPiece().getType() == Piece.Type.KING){
+                Piece.Color color = space.getPiece().getColor();
+                space.removePiece();
+                space.setPiece(new Piece(color, Piece.Type.SINGLE));
             }
         }
     }
@@ -134,6 +178,9 @@ public class Board {
         } else {
             this.currentTurn = ActiveColor.RED;
         }
+        //Create a new Stack so pieces captured in a previous
+        //turn are not remembered
+        this.capturedPieces = new Stack<>();
     }
 
     /**

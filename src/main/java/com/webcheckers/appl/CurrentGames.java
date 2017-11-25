@@ -224,6 +224,22 @@ public class CurrentGames {
     }
 
     /**
+     * Undoes a previously made move.
+     *
+     * @param player the player who made the move
+     * @param move the move that was just made
+     * @return whether or not the move was successfully undone.
+     */
+    public boolean undoMove(Player player, Move move) {
+        Game game = getGame(player);
+        if (game != null) {
+            game.undoMove(move);
+            return true;
+        }
+        return false;
+    }
+
+    /**
      * Toggle the state of the turn so that it is the other players.
      *
      * @param player the player who is ending their turn
