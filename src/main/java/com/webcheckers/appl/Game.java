@@ -1,5 +1,6 @@
 package com.webcheckers.appl;
 
+import com.webcheckers.model.CheckForWin;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
 import com.webcheckers.model.board.Space;
@@ -19,6 +20,7 @@ public class Game {
     Player red;
     Player white;
     Board board;
+    CheckForWin winChecker;
 
     /**
      * Constructor for a Game object.
@@ -34,6 +36,9 @@ public class Game {
         //Create a new board and set it up for gameplay
         this.board = new Board();
         this.board.newGame();
+
+        //Create the win checker for checking for a win after every move.
+        this.winChecker = new CheckForWin();
     }
 
     /**
@@ -94,6 +99,22 @@ public class Game {
      */
     protected void makeMove(Move move) {
         this.board.makeMove(move);
+    }
+
+    /**
+     * Checks the Game to see if there is a player that won.
+     *
+     * @return true if victory present/false otherwise
+     */
+    protected boolean checkForWin(){
+        boolean victoryPresent = this.winChecker.checkForWin(this.board.getNumOfWhitePieces(),
+                this.board.getNumOfRedPieces(), this.board.getBoard(), this.board.currentTurn );
+
+        if (victoryPresent){
+            return true;
+        }else{
+            return false;
+        }
     }
 
     /**

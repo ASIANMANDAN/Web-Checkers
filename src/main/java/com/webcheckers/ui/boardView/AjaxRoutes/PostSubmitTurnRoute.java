@@ -2,6 +2,9 @@ package com.webcheckers.ui.boardView.AjaxRoutes;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.CurrentGames;
+import com.webcheckers.ui.GetGameRoute;
+import com.webcheckers.ui.GetHomeRoute;
+import com.webcheckers.ui.WebServer;
 import com.webcheckers.ui.boardView.Message;
 import com.webcheckers.ui.boardView.Move;
 import spark.Request;
@@ -43,13 +46,23 @@ public class PostSubmitTurnRoute implements Route {
         CurrentGames currentGames = httpSession.attribute(CURRENTGAMES_KEY);
         Move move = httpSession.attribute(MOVE_KEY);
 
+        //TODO: add winning move check to current games
+
+
         //Attempt to make move
         if (currentGames.makeMove(httpSession.attribute(CURR_PLAYER), move)) {
+
+            if (currentGames.checkForWin(httpSession.attribute(CURR_PLAYER))){
+                response.redirect(WebServer.HOME_URL);
+            }
+
             //Text of Message is ignored
             return gson.toJson(new Message("",Message.Type.info));
         } else {
             //Text of Message is ignored
             return gson.toJson(new Message("",Message.Type.error));
         }
+
+
     }
 }

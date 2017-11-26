@@ -1,7 +1,11 @@
 package com.webcheckers.model.board;
 
+import com.sun.tools.javac.util.Pair;
 import com.webcheckers.ui.boardView.Move;
 import com.webcheckers.ui.boardView.Position;
+
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Model tier class that represents the checkers board.
@@ -21,6 +25,10 @@ public class Board {
 
     private Space[][] board;
     public ActiveColor currentTurn;
+
+    //Number of checker pieces on the board per color
+    public int numOfWhitePieces = 12;
+    public int numOfRedPieces = 12;
 
     //Used to determine the size of the board
     public static final int size = 8;
@@ -115,6 +123,12 @@ public class Board {
 
         //"Capture" an opponents Piece if a jump occurred
         if (middle != null) {
+            Piece jumpedPiece = board[middle.getRow()][middle.getCol()].getPiece();
+            if(jumpedPiece.getColor() == Piece.Color.RED){
+                numOfRedPieces--;
+            }else{
+                numOfWhitePieces--;
+            }
             board[middle.getRow()][middle.getCol()].removePiece();
         }
 
@@ -123,6 +137,53 @@ public class Board {
         } else {
             this.currentTurn = ActiveColor.RED;
         }
+    }
+
+    /**
+     * Checks the board to see if there is a player that won.
+     *
+     * @return true if victory present/false otherwise
+     */
+    public boolean checkForVictory(){
+        ActiveColor opponentColor;
+        if(this.currentTurn != ActiveColor.RED){
+            opponentColor = ActiveColor.WHITE;
+        }else{
+            opponentColor = ActiveColor.RED;
+        }
+
+        if (numOfWhitePieces == 0 || numOfRedPieces == 0){
+            return true;
+        }
+
+        boolean cantMove = true;
+        //Check if opponents pieces can move
+        for (int row = 0; row < this.size; row++){
+            for (int col = 0; col < this.size; col++){
+
+                //Check opponents color
+                if(opponentColor == ActiveColor.WHITE){
+                    Space space = this.board[row][col];
+                    Piece piece = space.getPiece();
+                    Piece.Color color = piece.getColor();
+
+                    if (piece != null && color == Piece.Color.WHITE){
+                        Space upperLeft = this.board[row-1][col-1];
+                        Space upperRight = this.board[row-1][col+1];
+                        Space bottomLeft = this.board[row+1][col-1];
+                        Space bottomRight = this.board[row+1][col-1];
+
+                    }
+
+                }else{
+                    Space space = this.board[row][col];
+
+                }
+            }
+        }
+
+
+        return false;
     }
 
     /**
@@ -183,6 +244,24 @@ public class Board {
             }
         }
         return board[rowMiddle][colMiddle];
+    }
+
+    /**
+     * Retrieves num of white pieces.
+     *
+     * @return # of white pieces
+     */
+    public int getNumOfWhitePieces(){
+        return numOfWhitePieces;
+    }
+
+    /**
+     * Retrieves num of red pieces
+     *
+     * @return # of red pieces
+     */
+    public int getNumOfRedPieces(){
+        return numOfRedPieces;
     }
 
     /**

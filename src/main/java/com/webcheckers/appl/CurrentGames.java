@@ -198,6 +198,23 @@ public class CurrentGames {
         return false;
     }
 
+    //TODO: add winning move check
+
+    /**
+     * Checks if the move made is a winning move.
+     *
+     * @param player Player to retrieve the game
+     * @return bool
+     */
+    public boolean checkForWin(Player player){
+        Game game = getGame(player);
+        if (game != null){
+            game.checkForWin();
+        }
+
+        return false;
+    }
+
     /**
      * Returns the game that a given player is a part of.
      *
