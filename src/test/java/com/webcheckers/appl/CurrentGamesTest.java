@@ -13,6 +13,7 @@ import org.junit.Before;
 import org.junit.Test;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * The unit test suite for the {@link CurrentGames} component.
@@ -34,7 +35,7 @@ public class CurrentGamesTest {
 
     @Before
     public void test_setUp() throws Exception {
-        ArrayList<Game> cg = new ArrayList<>();
+        HashMap<Player, Game> cg = new HashMap<>();
         Game game1 = mock(Game.class);
         Game game2 = mock(Game.class);
         Game game3 = mock(Game.class);
@@ -49,9 +50,12 @@ public class CurrentGamesTest {
 
 
         //Add mocked games
-        cg.add(game1);
-        cg.add(game2);
-        cg.add(game3);
+        cg.put(red, game1);
+        cg.put(white, game1);
+        cg.put(red, game2);
+        cg.put(white, game1);
+        cg.put(red, game3);
+        cg.put(white, game1);
 
         CuT = new CurrentGames(cg);
 

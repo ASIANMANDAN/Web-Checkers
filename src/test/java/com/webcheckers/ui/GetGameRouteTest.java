@@ -9,6 +9,7 @@ import org.junit.Test;
 import spark.*;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -48,8 +49,9 @@ public class GetGameRouteTest {
         player2 = new Player("player2");
 
         Game mockGame = new Game(player, player2);
-        ArrayList<Game> gameList = new ArrayList<>();
-        gameList.add(mockGame);
+        HashMap<Player, Game> gameList = new HashMap<>();
+        gameList.put(player, mockGame);
+        gameList.put(player2, mockGame);
 
         currentGames = new CurrentGames(gameList);
 
