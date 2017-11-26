@@ -1,8 +1,8 @@
 package com.webcheckers.model.board;
 
-import com.sun.tools.javac.util.Pair;
 import com.webcheckers.ui.boardView.Move;
 import com.webcheckers.ui.boardView.Position;
+import java.util.Stack;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -29,6 +29,9 @@ public class Board {
     //Number of checker pieces on the board per color
     public int numOfWhitePieces = 12;
     public int numOfRedPieces = 12;
+
+    //A stack to remember what pieces were captured in a given turn
+    private Stack<Piece> capturedPieces = new Stack<>();
 
     //Used to determine the size of the board
     public static final int size = 8;
@@ -116,6 +119,47 @@ public class Board {
         Piece piece = this.board[start.getRow()][start.getCell()].getPiece();
         this.board[start.getRow()][start.getCell()].removePiece();
         this.board[end.getRow()][end.getCell()].setPiece(piece);
+      
+        //Determine if the move made was a jump and store the
+        //middle Space here so the piece can be "captured"
+        Space middle = getMiddle(move);
+
+        //"Capture" an opponents Piece if a jump occurred
+        if (middle != null) {
+
+//            Piece jumpedPiece = board[middle.getRow()][middle.getCol()].getPiece();
+//            if(jumpedPiece.getColor() == Piece.Color.RED){
+//                numOfRedPieces--;
+//            }else{
+//                numOfWhitePieces--;
+//            }
+
+            this.capturedPieces.push(middle.getPiece());
+
+            board[middle.getRow()][middle.getCol()].removePiece();
+        }
+
+        if(end.getRow() == 0 || end.getRow() == size - 1){
+            Space space = this.board[end.getRow()][end.getCell()];
+            if(space.getPiece().getType() != Piece.Type.KING){
+                makeKing(this.board[end.getRow()][end.getCell()]);
+            }
+        }
+    }
+
+    /**
+     * Undo a previously made move on the game board.
+     *
+     * @param move the start and end coordinates of the move that was just made
+     */
+    public void undoMove(Move move) {
+        //Reverse the move
+        Position start = move.getEnd();
+        Position end = move.getStart();
+
+        Piece piece = this.board[start.getRow()][start.getCell()].getPiece();
+        this.board[start.getRow()][start.getCell()].removePiece();
+        this.board[end.getRow()][end.getCell()].setPiece(piece);
 
         //Determine if the move made was a jump and store the
         //middle Space here so the piece can be "captured"
@@ -123,20 +167,36 @@ public class Board {
 
         //"Capture" an opponents Piece if a jump occurred
         if (middle != null) {
-            Piece jumpedPiece = board[middle.getRow()][middle.getCol()].getPiece();
-            if(jumpedPiece.getColor() == Piece.Color.RED){
-                numOfRedPieces--;
-            }else{
-                numOfWhitePieces--;
+
+            //Replace a piece if the middle space is null. This is in case
+            //a player chooses to undo a jump
+            if (middle.getPiece() == null && !this.capturedPieces.empty()) {
+                board[middle.getRow()][middle.getCol()].setPiece(this.capturedPieces.pop());
             }
-            board[middle.getRow()][middle.getCol()].removePiece();
         }
 
+        if(start.getRow() == 0 || start.getRow() == size - 1){
+            Space space = this.board[end.getRow()][end.getCell()];
+            if(space.getPiece().getType() == Piece.Type.KING){
+                Piece.Color color = space.getPiece().getColor();
+                space.removePiece();
+                space.setPiece(new Piece(color, Piece.Type.SINGLE));
+            }
+        }
+    }
+
+    /**
+     * Change the current turn so that it is the other players.
+     */
+    public void toggleTurn() {
         if (this.currentTurn.equals(ActiveColor.RED)) {
             this.currentTurn = ActiveColor.WHITE;
         } else {
             this.currentTurn = ActiveColor.RED;
         }
+        //Create a new Stack so pieces captured in a previous
+        //turn are not remembered
+        this.capturedPieces = new Stack<>();
     }
 
     /**
@@ -271,5 +331,37 @@ public class Board {
      */
     public Space[][] getBoard() {
         return this.board;
+    }
+
+    /**
+     * Turn a single piece into a king
+     *
+     * @param space - the space that has the piece to upgrade
+     * @return if the piece was successfully upgraded.
+     */
+    public boolean makeKing(Space space){
+        Piece piece = space.getPiece();
+        boolean result = false;
+
+        //Check if piece is a single
+        if(piece.getType() == Piece.Type.SINGLE){
+            //Check piece color
+            if(piece.getColor() == Piece.Color.RED){
+                //Check if piece is in the correct row for promotion
+                if(space.getRow() == 0){
+                    space.removePiece();
+                    space.setPiece(new Piece(piece.getColor(), Piece.Type.KING));
+                    result = true;
+                }
+            }
+            else if(piece.getColor() == Piece.Color.WHITE){
+                if(space.getRow() == size-1){
+                    space.removePiece();
+                    space.setPiece(new Piece(piece.getColor(), Piece.Type.KING));
+                    result = true;
+                }
+            }
+        }
+        return result;
     }
 }

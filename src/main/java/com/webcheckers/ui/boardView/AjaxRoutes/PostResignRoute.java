@@ -27,6 +27,8 @@ public class PostResignRoute implements Route{
     static final String CURR_PLAYER = "currentPlayer";
     //Key in the session attribute map for the current players opponent
     static final String OPPONENT_KEY = "opponent";
+    //Key in the session attribute map for if a move has been made
+    static final String MOVE_MADE_KEY = "moveMade";
 
     /**
      * Allows a player to resign from the game.
@@ -44,6 +46,10 @@ public class PostResignRoute implements Route{
         CurrentGames currentGames = session.attribute(CURRENTGAMES_KEY);
         session.removeAttribute(OPPONENT_KEY);
         currentGames.removePlayer(currPlayer);
+
+        //Remove the jump made flag which is used for detecting
+        //consecutive jumps
+        session.removeAttribute(MOVE_MADE_KEY);
 
         LOG.fine(currPlayer.getUsername() + " has resigned. Redirecting to home page");
         Message message = new Message("Player Resigned. Redirecting to home page", Message.Type.info);

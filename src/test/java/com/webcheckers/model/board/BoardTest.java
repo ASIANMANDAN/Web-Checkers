@@ -179,6 +179,17 @@ public class BoardTest {
     }
 
     /**
+     * Test that the toggleTurn method correctly toggles turns.
+     */
+    @Test
+    public void test_toggleTurn() {
+        CuT.toggleTurn();
+        assertEquals(Board.ActiveColor.WHITE, CuT.currentTurn);
+        CuT.toggleTurn();
+        assertEquals(Board.ActiveColor.RED, CuT.currentTurn);
+    }
+
+    /**
      * Test the enum values of ActiveColor.
      */
     @Test
@@ -215,5 +226,35 @@ public class BoardTest {
         CuT.makeMove(move);
         //Test the piece was removed after the move
         assertNull(arrayBoard[3][4].getPiece());
+    }
+
+    /**
+     * Test the makeKing method.
+     */
+    @Test
+    public void test_makeKing() throws Exception {
+        Board CuT = new Board();
+
+        //Check white single piece in bottom row promotes
+        Space space1 = CuT.getBoard()[7][0];
+        Piece piece1 = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
+        space1.setPiece(piece1);
+        //Check red single piece in top row promotes
+        Space space2 = CuT.getBoard()[0][1];
+        Piece piece2 = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
+        space2.setPiece(piece2);
+        //Check piece won't promote when in the wrong row
+        Space space3 = CuT.getBoard()[1][0];
+        Piece piece3 = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
+        space3.setPiece(piece3);
+        //Check piece won't promote when already a king
+        Space space4 = CuT.getBoard()[0][7];
+        Piece piece4 = new Piece(Piece.Color.RED, Piece.Type.KING);
+        space4.setPiece(piece4);
+
+        assertTrue(CuT.makeKing(space1));
+        assertTrue(CuT.makeKing(space2));
+        assertFalse(CuT.makeKing(space3));
+        assertFalse(CuT.makeKing(space4));
     }
 }

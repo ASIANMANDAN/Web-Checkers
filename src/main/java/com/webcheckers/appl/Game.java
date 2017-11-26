@@ -3,6 +3,7 @@ package com.webcheckers.appl;
 import com.webcheckers.model.CheckForWin;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
+import com.webcheckers.model.board.Piece;
 import com.webcheckers.model.board.Space;
 import com.webcheckers.ui.boardView.Move;
 
@@ -106,15 +107,31 @@ public class Game {
      *
      * @return true if victory present/false otherwise
      */
-    protected boolean checkForWin(){
+    protected boolean checkForWin() {
         boolean victoryPresent = this.winChecker.checkForWin(this.board.getNumOfWhitePieces(),
-                this.board.getNumOfRedPieces(), this.board.getBoard(), this.board.currentTurn );
+                this.board.getNumOfRedPieces(), this.board.getBoard(), this.board.currentTurn);
 
-        if (victoryPresent){
+        if (victoryPresent) {
             return true;
-        }else{
+        } else {
             return false;
         }
+    }
+
+    /**
+     * Undo a previously made move.
+     *
+     * @param move the move that was made
+     */
+    protected void undoMove(Move move) {
+        this.board.undoMove(move);
+    }
+
+    /**
+     * Change the current turn so that it is the other players.
+     */
+    protected void toggleTurn() {
+        this.board.toggleTurn();
     }
 
     /**
@@ -126,6 +143,11 @@ public class Game {
         return board.getBoard();
     }
 
+    /**
+     * Gets the current players turn.
+     *
+     * @return the turn
+     */
     protected Board.ActiveColor getTurn() {
         return board.currentTurn;
     }

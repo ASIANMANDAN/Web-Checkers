@@ -42,6 +42,8 @@ public class GetGameRoute implements Route{
     static final String MESSAGE_KEY = "message";
     //Key in the session attribute map for the current players opponent
     static final String OPPONENT_KEY = "opponent";
+    //Key in the session attribute map for if a jump has been made
+    static final String MOVE_MADE_KEY = "moveMade";
 
     private final TemplateEngine templateEngine;
 
@@ -102,6 +104,7 @@ public class GetGameRoute implements Route{
 
             Player opponent = currentGames.getOpponent(currentPlayer);
             httpSession.attribute(OPPONENT_KEY, opponent);
+            httpSession.attribute(MOVE_MADE_KEY, false);
 
             //Start building the view-model
             Map<String, Object> vm = new HashMap<>();
@@ -152,6 +155,7 @@ public class GetGameRoute implements Route{
             //Construct a new game and add it to the list of ongoing games
             currentGames.addGame(currentPlayer, opponent);
             httpSession.attribute(OPPONENT_KEY, opponent);
+            httpSession.attribute(MOVE_MADE_KEY, false);
 
             //Start building the view-model
             Map<String, Object> vm = new HashMap<>();

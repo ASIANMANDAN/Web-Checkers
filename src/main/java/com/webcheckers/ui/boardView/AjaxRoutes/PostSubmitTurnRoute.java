@@ -2,9 +2,7 @@ package com.webcheckers.ui.boardView.AjaxRoutes;
 
 import com.google.gson.Gson;
 import com.webcheckers.appl.CurrentGames;
-import com.webcheckers.ui.GetGameRoute;
-import com.webcheckers.ui.GetHomeRoute;
-import com.webcheckers.ui.WebServer;
+import com.webcheckers.model.Player;
 import com.webcheckers.ui.boardView.Message;
 import com.webcheckers.ui.boardView.Move;
 import spark.Request;
@@ -31,6 +29,8 @@ public class PostSubmitTurnRoute implements Route {
     static final String CURRENTGAMES_KEY = "currentGames";
     //Key in the session attribute map for the current user Player object
     static final String CURR_PLAYER = "currentPlayer";
+    //Key in the session attribute map for if a jump has been made
+    static final String MOVE_MADE_KEY = "moveMade";
 
     /**
      * Allows the player to submit their turn.
@@ -43,26 +43,26 @@ public class PostSubmitTurnRoute implements Route {
     @Override
     public Object handle(Request request, Response response) {
         Session httpSession = request.session();
+        Player currentPlayer = httpSession.attribute(CURR_PLAYER);
         CurrentGames currentGames = httpSession.attribute(CURRENTGAMES_KEY);
         Move move = httpSession.attribute(MOVE_KEY);
 
-        //TODO: add winning move check to current games
-
-
         //Attempt to make move
-        if (currentGames.makeMove(httpSession.attribute(CURR_PLAYER), move)) {
+        if (currentGames.makeMove(currentPlayer, move)) {
+            currentGames.toggleTurn(currentPlayer);
 
-            if (currentGames.checkForWin(httpSession.attribute(CURR_PLAYER))){
-                response.redirect(WebServer.HOME_URL);
-            }
+            //Toggle for next turn
+            httpSession.attribute(MOVE_MADE_KEY, false);
 
             //Text of Message is ignored
             return gson.toJson(new Message("",Message.Type.info));
         } else {
+
+            //Toggle for next turn
+            httpSession.attribute(MOVE_MADE_KEY, false);
+
             //Text of Message is ignored
             return gson.toJson(new Message("",Message.Type.error));
         }
-
-
     }
 }
