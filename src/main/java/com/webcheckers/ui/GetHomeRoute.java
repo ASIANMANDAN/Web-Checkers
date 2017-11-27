@@ -21,6 +21,7 @@ public class GetHomeRoute implements Route {
   static final String PLAYERS_ONLINE_ATTR = "numPlayersOnline";
   static final String PLAYERS_LIST_ATTR = "allPlayers";
   static final String MESSAGE_ATTR = "message";
+  static final String GAMES_IN_PROGRESS_ATTR = "allGames";
 
   //Key in the session attribute map for the playerLobby object
   static final String PLAYERLOBBY_KEY = "playerLobby";
@@ -80,6 +81,8 @@ public class GetHomeRoute implements Route {
 	vm.put(CURR_PLAYER, httpSession.attribute(CURR_PLAYER));
 	//Provide the playerlobby to the view-model
 	vm.put(PLAYERS_LIST_ATTR, playerLobby.getUserList());
+	//Provide the list of ongoing games to the view-model
+	vm.put(GAMES_IN_PROGRESS_ATTR, currentGames.getGamesList());
 
 	//Provide a message to the view-model if there has been an error
 	vm.put(MESSAGE_ATTR, httpSession.attribute(MESSAGE_KEY));
