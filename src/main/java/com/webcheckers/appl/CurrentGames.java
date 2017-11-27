@@ -3,6 +3,7 @@ package com.webcheckers.appl;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.Validate;
 import com.webcheckers.model.board.Board;
+import com.webcheckers.model.board.Piece;
 import com.webcheckers.model.board.Space;
 import com.webcheckers.ui.boardView.Message;
 import com.webcheckers.ui.boardView.Move;
@@ -145,6 +146,20 @@ public class CurrentGames {
     }
 
     /**
+     * Return the piece color of a given player.
+     *
+     * @param player the player whose color to find
+     * @return the players piece color
+     */
+    public Piece.Color getPlayerColor(Player player) {
+        Game game = getGame(player);
+        if (game != null) {
+            return game.getPlayerColor(player);
+        }
+        return null;
+    }
+
+    /**
      * Sets a given player to null in the Game object.
      * This represents a player who has resigned.
      *
@@ -180,8 +195,6 @@ public class CurrentGames {
      * game board
      */
     public String validateMove(Player player, Move move) throws Exception {
-        Game game = getGame(player);
-
         //Copy the board to pass to validator to avoid it making changes
         Board board = new Board(getBoard(player), getTurn(player));
         return validator.isValid(move, board);
@@ -199,8 +212,6 @@ public class CurrentGames {
      * game board
      */
     public String continueJump(Player player, Move move) throws Exception {
-        Game game = getGame(player);
-
         //Copy the board to pass to validator to avoid it making changes
         Board board = new Board(getBoard(player), getTurn(player));
 
@@ -223,21 +234,22 @@ public class CurrentGames {
         return false;
     }
 
-    //TODO: add winning move check
-
     /**
      * Checks if the move made is a winning move.
      *
-     * @param player Player to retrieve the game
-     * @return bool
+     * @param player any player associated with the game in question
+     * @return the piece color of the victorious player, null if no winner
      */
-    public boolean checkForWin(Player player){
+    public Piece.Color hasWon(Player player) throws Exception {
         Game game = getGame(player);
+
         if (game != null){
-            game.checkForWin();
+            //Copy the board to pass to validator to avoid it making changes
+            Board board = new Board(getBoard(player), getTurn(player));
+            return validator.hasWon(board);
         }
 
-        return false;
+        return null;
     }
 
     /**

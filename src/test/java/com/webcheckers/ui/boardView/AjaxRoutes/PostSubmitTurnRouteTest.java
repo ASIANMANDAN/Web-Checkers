@@ -43,7 +43,6 @@ public class PostSubmitTurnRouteTest {
         when(request.session()).thenReturn(session);
         when(session.attribute(PostSubmitTurnRoute.CURRENTGAMES_KEY)).thenReturn(currentGames);
         when(session.attribute(PostSubmitTurnRoute.CURR_PLAYER)).thenReturn(player);
-        when(session.attribute(PostSubmitTurnRoute.MOVE_KEY)).thenReturn(move);
 
         CuT = new PostSubmitTurnRoute();
     }

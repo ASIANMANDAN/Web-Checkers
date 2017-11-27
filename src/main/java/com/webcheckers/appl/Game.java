@@ -36,7 +36,12 @@ public class Game {
 
         //Create a new board and set it up for gameplay
         this.board = new Board();
-        this.board.newGame();
+        //this.board.newGame();
+        Space[][] board = this.getBoard();
+        board[2][3].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
+        board[1][2].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
+        this.board = new Board(board, Board.ActiveColor.RED);
+
 
         //Create the win checker for checking for a win after every move.
         this.winChecker = new CheckForWin();
@@ -125,6 +130,22 @@ public class Game {
      */
     protected void undoMove(Move move) {
         this.board.undoMove(move);
+    }
+
+    /**
+     * Return the piece color of a given player.
+     *
+     * @param player the player whose color to find
+     * @return the players piece color
+     */
+    protected Piece.Color getPlayerColor(Player player) {
+        if (player.equals(this.red)) {
+            return Piece.Color.RED;
+        }
+        if (player.equals(this.white)) {
+            return Piece.Color.WHITE;
+        }
+        return null;
     }
 
     /**

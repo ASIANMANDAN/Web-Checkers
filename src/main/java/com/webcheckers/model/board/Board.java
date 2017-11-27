@@ -27,8 +27,8 @@ public class Board {
     public ActiveColor currentTurn;
 
     //Number of checker pieces on the board per color
-    public int numOfWhitePieces = 12;
-    public int numOfRedPieces = 12;
+    private int numOfWhitePieces = 0;
+    private int numOfRedPieces = 0;
 
     //A stack to remember what pieces were captured in a given turn
     private Stack<Piece> capturedPieces = new Stack<>();
@@ -76,6 +76,26 @@ public class Board {
     public Board(Space[][] board, Board.ActiveColor turn) throws Exception {
         this.board = board;
         this.currentTurn = turn;
+
+        int red = 0;
+        int white = 0;
+        //Count the number of pieces on the passed in board
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                Space space = this.board[i][j];
+                if (space.getPiece() != null) {
+                    if (space.getPiece().getColor() == Piece.Color.RED) {
+                        red++;
+                    }
+                    if (space.getPiece().getColor() == Piece.Color.WHITE) {
+                        white++;
+                    }
+                }
+
+            }
+        }
+        this.numOfRedPieces = red;
+        this.numOfWhitePieces = white;
     }
 
     /**
@@ -105,6 +125,8 @@ public class Board {
                 }
             }
         }
+        this.numOfRedPieces = 12;
+        this.numOfWhitePieces = 12;
     }
 
     /**
@@ -127,12 +149,12 @@ public class Board {
         //"Capture" an opponents Piece if a jump occurred
         if (middle != null) {
 
-//            Piece jumpedPiece = board[middle.getRow()][middle.getCol()].getPiece();
-//            if(jumpedPiece.getColor() == Piece.Color.RED){
-//                numOfRedPieces--;
-//            }else{
-//                numOfWhitePieces--;
-//            }
+            //Update the piece count
+            if(middle.getPiece().getColor() == Piece.Color.RED){
+                numOfRedPieces--;
+            }else{
+                numOfWhitePieces--;
+            }
 
             this.capturedPieces.push(middle.getPiece());
 
@@ -168,6 +190,13 @@ public class Board {
         //"Capture" an opponents Piece if a jump occurred
         if (middle != null) {
 
+//            //Update the piece count
+//            if(middle.getPiece().getColor() == Piece.Color.RED){
+//                numOfRedPieces++;
+//            }else{
+//                numOfWhitePieces++;
+//            }
+
             //Replace a piece if the middle space is null. This is in case
             //a player chooses to undo a jump
             if (middle.getPiece() == null && !this.capturedPieces.empty()) {
@@ -200,50 +229,34 @@ public class Board {
     }
 
     /**
-     * Checks the board to see if there is a player that won.
+     * Finds the first instance of a players piece on the board.
      *
-     * @return true if victory present/false otherwise
+     * @param player the desired players piece color
+     * @return the coordinates for that piece as a Space
      */
-    public boolean checkForVictory(){
-        ActiveColor opponentColor;
-        if(this.currentTurn != ActiveColor.RED){
-            opponentColor = ActiveColor.WHITE;
-        }else{
-            opponentColor = ActiveColor.RED;
-        }
+    public Space findPiece(Piece.Color player) {
 
-        if (numOfWhitePieces == 0 || numOfRedPieces == 0){
-            return true;
-        }
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
 
-        boolean cantMove = true;
-        //Check if opponents pieces can move
-        for (int row = 0; row < this.size; row++){
-            for (int col = 0; col < this.size; col++){
+                if (player == Piece.Color.RED) {
+                    Space space = board[i][j];
 
-                //Check opponents color
-                if(opponentColor == ActiveColor.WHITE){
-                    Space space = this.board[row][col];
-                    Piece piece = space.getPiece();
-                    Piece.Color color = piece.getColor();
-
-                    if (piece != null && color == Piece.Color.WHITE){
-                        Space upperLeft = this.board[row-1][col-1];
-                        Space upperRight = this.board[row-1][col+1];
-                        Space bottomLeft = this.board[row+1][col-1];
-                        Space bottomRight = this.board[row+1][col-1];
-
+                    if (space.getPiece() != null &&
+                            space.getPiece().getColor() == Piece.Color.RED) {
+                        return space;
                     }
+                } else {
+                    Space space = board[i][j];
 
-                }else{
-                    Space space = this.board[row][col];
-
+                    if (space.getPiece() != null &&
+                            space.getPiece().getColor() == Piece.Color.WHITE) {
+                        return space;
+                    }
                 }
             }
         }
-
-
-        return false;
+        return null;
     }
 
     /**

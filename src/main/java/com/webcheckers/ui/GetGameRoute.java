@@ -3,6 +3,7 @@ package com.webcheckers.ui;
 import com.webcheckers.appl.CurrentGames;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
+import com.webcheckers.model.board.Piece;
 import com.webcheckers.ui.boardView.BoardView;
 import spark.*;
 
@@ -73,6 +74,37 @@ public class GetGameRoute implements Route{
         final Session httpSession = request.session();
         Player currentPlayer = httpSession.attribute(CURR_PLAYER);
         CurrentGames currentGames = httpSession.attribute(CURRENTGAMES_KEY);
+
+        //Case for player winning/losing an ongoing game
+        Piece.Color winner = currentGames.hasWon(currentPlayer);
+        if (winner != null) {
+            String message;
+
+            Piece.Color playerColor = currentGames.getPlayerColor(currentPlayer);
+            Player opponent = httpSession.attribute(OPPONENT_KEY);
+
+            if (playerColor == winner) {
+                message = "Congratulations! You just beat " +
+                        opponent.getUsername() +
+                        " in a transcendental game of checkers.";
+
+                LOG.fine(currentPlayer.getUsername() + " has just won against " +
+                        opponent.getUsername());
+            } else {
+                message = opponent.getUsername() +
+                        " has just won the game. Better luck next time.";
+            }
+            httpSession.attribute(MESSAGE_KEY, message);
+
+            //Set the player free so they may join another game
+            currentGames.removePlayer(currentPlayer);
+            httpSession.removeAttribute(MOVE_MADE_KEY);
+            //httpSession.removeAttribute(OPPONENT_KEY);
+            response.redirect(WebServer.HOME_URL);
+            halt();
+            return null;
+        }
+
 
         //Case for when a selected opponent is redirected to a game
         //or any player in game hits refresh
