@@ -265,4 +265,17 @@ public class CurrentGames {
         }
         return null;
     }
+
+    /**
+     * Make an array list of the names of each game.
+     *
+     * @return array list of game names
+     */
+    public ArrayList<String> getGamesList(){
+        ArrayList inProgress = new ArrayList();
+        for(Game game : currentGames){
+            inProgress.add(game.toString());
+        }
+        return inProgress;
+    }
 }
