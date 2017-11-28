@@ -161,21 +161,6 @@ public class CurrentGames {
     }
 
     /**
-     * Given a player, find that users game and remove it from
-     * the list of ongoing games.
-     *
-     * @param player name of any user in that game
-     */
-    public void endGame(Player player) {
-        Game game = getGame(player);
-
-        if (game != null) {
-            game.removePlayer(player);
-            currentGames.remove(player, game);
-        }
-    }
-
-    /**
      * Determine if a given move is valid given the current
      * board configuration.
      *

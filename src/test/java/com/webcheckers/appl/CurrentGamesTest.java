@@ -12,7 +12,6 @@ import com.webcheckers.ui.boardView.Position;
 import org.junit.Before;
 import org.junit.Test;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -53,9 +52,9 @@ public class CurrentGamesTest {
         cg.put(red, game1);
         cg.put(white, game1);
         cg.put(red, game2);
-        cg.put(white, game1);
+        cg.put(white, game2);
         cg.put(red, game3);
-        cg.put(white, game1);
+        cg.put(white, game3);
 
         CuT = new CurrentGames(cg);
 
@@ -199,16 +198,6 @@ public class CurrentGamesTest {
     }
 
     /**
-     * Test that a Game object can be removed from the list of active Games.
-     */
-    @Test
-    public void test_endGame() {
-        CuT.endGame(white);
-        assertFalse(CuT.playerInGame(white));
-        assertNull(CuT.getOpponent(red));
-    }
-
-    /**
      * Test the getBoard method returns a correctly configured Board.
      *
      * @throws Exception occurs if the given column or row of a space
@@ -273,7 +262,7 @@ public class CurrentGamesTest {
     @Test
     public void test_makeMove(){
         assertTrue(CuT.makeMove(red, move));
-        CuT.endGame(nullPlayer);
+        CuT.removePlayer(nullPlayer);
         assertFalse(CuT.makeMove(nullPlayer, move));
     }
 }
