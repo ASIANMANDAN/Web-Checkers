@@ -23,7 +23,7 @@ import java.util.logging.Logger;
  */
 public class PlayerLobby {
     //Results for checking a valid username
-    public enum InputResult {ACCEPTED, INVALID, EMPTY, TAKEN}
+    public enum InputResult {ACCEPTED, INVALID, EMPTY, TAKEN, SPACE}
 
     private static final Logger LOG = Logger.getLogger(PlayerLobby.class.getName());
 
@@ -48,6 +48,10 @@ public class PlayerLobby {
                 LOG.fine(username+" is invalid! Cannot use \"s in a username.");
                 return result;
             }
+            else if (username.contains(" ")) {
+                LOG.fine(username+" is invalid! Cannot use spaces in a username.");
+                return InputResult.SPACE;
+            }
             else {
                 if(!nameTaken(username)){ // Checks if username is in lobby
 
@@ -69,7 +73,6 @@ public class PlayerLobby {
             LOG.fine("Username cannot be blank!");
         }
         return result;
-
     }
 
     /**

@@ -40,6 +40,16 @@ public class PlayerLobbyTest {
     }
 
     /**
+     * Test the sign in method will return SPACE when a username with a space
+     * is entered
+     */
+    @Test
+    public void test_sign_in_space() {
+        String name = "ab ba";
+        assertEquals(PlayerLobby.InputResult.SPACE, CuT.signIn(name));
+    }
+
+    /**
      * Test the sign in method will return EMPTY when a blank username is entered.
      */
     @Test
