@@ -274,8 +274,19 @@ public class CurrentGames {
     public ArrayList<String> getGamesList(){
         ArrayList inProgress = new ArrayList();
         for(Game game : currentGames){
-            inProgress.add(game.toString());
+            if(game.toString() != null){
+                inProgress.add(game.toString());
+            }
         }
         return inProgress;
+    }
+
+    /**
+     * Get the number of games in current games
+     *
+     * @return number of elements in currentGames.
+     */
+    public int size(){
+        return currentGames.size();
     }
 }
