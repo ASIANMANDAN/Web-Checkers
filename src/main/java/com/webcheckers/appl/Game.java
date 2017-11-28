@@ -148,6 +148,9 @@ public class Game {
      */
     @Override
     public String toString(){
+        if(getRedPlayer() == null || getWhitePlayer() == null){
+            return null;
+        }
         return getRedPlayer().getUsername() + " vs " + getWhitePlayer().getUsername();
     }
 }
