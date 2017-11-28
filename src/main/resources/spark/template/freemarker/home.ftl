@@ -43,13 +43,13 @@
         <br />
 
         <form action="./game" method="GET">
-            <#if allGames??>
+            <#if numGames == 0 >
+                <p>No games are currently being played.</p>
+            <#else>
                 <#list allGames as game>
                     <input type="radio" name="spectate" value=${game} /> ${game} <br />
                 </#list> <br />
                 <button type="submit">Spectate!</button>
-            <#else>
-                <p>No games are currently being played.</p>
             </#if>
         </form>
         <br />
