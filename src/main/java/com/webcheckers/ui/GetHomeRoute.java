@@ -100,7 +100,7 @@ public class GetHomeRoute implements Route {
 		if (currentGames.playerInGame(currentPlayer) && opponent != null) {
 			response.redirect("/game?opponent=" + opponent.getUsername());
 		} else {
-			currentGames.endGame(currentPlayer);
+			currentGames.removePlayer(currentPlayer);
 		}
 	}
 

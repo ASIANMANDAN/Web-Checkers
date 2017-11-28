@@ -8,7 +8,7 @@ import org.junit.Before;
 import org.junit.Test;
 import spark.*;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Map;
 
 import static org.junit.Assert.*;
@@ -32,7 +32,7 @@ public class GetGameRouteTest {
     private Request request;
     private Session session;
     private TemplateEngine engine;
-    private Player player;
+    private Player player1;
     private Player player2;
     private CurrentGames currentGames;
 
@@ -44,12 +44,13 @@ public class GetGameRouteTest {
 
         engine = mock(TemplateEngine.class);
 
-        player = new Player("player");
+        player1 = new Player("player");
         player2 = new Player("player2");
 
-        Game mockGame = new Game(player, player2);
-        ArrayList<Game> gameList = new ArrayList<>();
-        gameList.add(mockGame);
+        Game mockGame = new Game(player1, player2);
+        HashMap<Player, Game> gameList = new HashMap<>();
+        gameList.put(player1, mockGame);
+        gameList.put(player2, mockGame);
 
         currentGames = new CurrentGames(gameList);
 
@@ -179,7 +180,7 @@ public class GetGameRouteTest {
         currentGames.removePlayer(player2);
         final MyModelAndView myModelView = new MyModelAndView();
         when(engine.render(any(ModelAndView.class))).thenAnswer(MyModelAndView.makeAnswer(myModelView));
-        when(session.attribute(GetGameRoute.CURR_PLAYER)).thenReturn(player);
+        when(session.attribute(GetGameRoute.CURR_PLAYER)).thenReturn(player1);
         when(session.attribute(GetGameRoute.MESSAGE_KEY)).thenReturn("player2 has resigned from the game.");
 
         try{
