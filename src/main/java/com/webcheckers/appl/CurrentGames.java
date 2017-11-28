@@ -4,10 +4,9 @@ import com.webcheckers.model.Player;
 import com.webcheckers.model.Validate;
 import com.webcheckers.model.board.Board;
 import com.webcheckers.model.board.Space;
-import com.webcheckers.ui.boardView.Message;
 import com.webcheckers.ui.boardView.Move;
 
-import java.util.ArrayList;
+import java.util.HashMap;
 
 /**
  * Application Tier class which represents a list of users
@@ -22,7 +21,8 @@ import java.util.ArrayList;
 public class CurrentGames {
 
     //Holds a list of all active games
-    private static ArrayList<Game> currentGames;
+    //private static ArrayList<Game> currentGames;
+    private static HashMap<Player, Game> currentGames;
 
     private static Validate validator;
 
@@ -30,7 +30,7 @@ public class CurrentGames {
      * Default constructor, creates an empty list of games.
      */
     public CurrentGames() {
-        currentGames = new ArrayList<>();
+        currentGames = new HashMap<>();
         validator = new Validate();
     }
 
@@ -39,7 +39,7 @@ public class CurrentGames {
      *
      * @param cg list of Game objects
      */
-    public CurrentGames(ArrayList<Game> cg) {
+    public CurrentGames(HashMap<Player, Game> cg) {
         currentGames = cg;
         validator = new Validate();
     }
@@ -51,11 +51,10 @@ public class CurrentGames {
      * @return whether that player is in a game already or not
      */
     public boolean playerInGame(Player player) {
-        //Iterate through each game in the collection
-        for (Game game : currentGames) {
-            if (game.playerInGame(player)) {
-                return true;
-            }
+        Game game = getGame(player);
+
+        if (game != null) {
+            return game.playerInGame(player);
         }
         return false;
     }
@@ -71,7 +70,9 @@ public class CurrentGames {
      * game board
      */
     public void addGame(Player red, Player white) throws Exception {
-        currentGames.add(new Game(red, white));
+        Game game = new Game(red, white);
+        currentGames.put(red, game);
+        currentGames.put(white, game);
     }
 
     /**
@@ -154,17 +155,9 @@ public class CurrentGames {
         Game game = getGame(player);
         if (game != null) {
             game.removePlayer(player);
+            //Remove this player from the map to represent their resignation
+            currentGames.remove(player, game);
         }
-    }
-
-    /**
-     * Given a player, find that users game and remove it from
-     * the list of ongoing games.
-     *
-     * @param player name of any user in that game
-     */
-    public void endGame(Player player) {
-        currentGames.remove(getGame(player));
     }
 
     /**
@@ -180,7 +173,6 @@ public class CurrentGames {
      * game board
      */
     public String validateMove(Player player, Move move) throws Exception {
-        Game game = getGame(player);
 
         //Copy the board to pass to validator to avoid it making changes
         Board board = new Board(getBoard(player), getTurn(player));
@@ -199,7 +191,6 @@ public class CurrentGames {
      * game board
      */
     public String continueJump(Player player, Move move) throws Exception {
-        Game game = getGame(player);
 
         //Copy the board to pass to validator to avoid it making changes
         Board board = new Board(getBoard(player), getTurn(player));
@@ -258,12 +249,7 @@ public class CurrentGames {
      * @return the game that player is a part of
      */
     private Game getGame(Player player) {
-        for (Game game : currentGames) {
-            if (player.equals(game.red) || player.equals(game.white)) {
-                return game;
-            }
-        }
-        return null;
+        return currentGames.get(player);
     }
 
     /**

@@ -43,4 +43,15 @@ public class Player {
         final Player that = (Player) obj;
         return this.username.equals(that.getUsername());
     }
+
+    /**
+     * Override of default hash method to force the system
+     * to hash players by their username and nothing else;
+     *
+     * @return the objects hash code
+     */
+    @Override
+    public int hashCode() {
+        return username.hashCode();
+    }
 }
