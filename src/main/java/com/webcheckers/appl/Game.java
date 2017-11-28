@@ -34,11 +34,7 @@ public class Game {
 
         //Create a new board and set it up for gameplay
         this.board = new Board();
-        //this.board.newGame();
-        Space[][] board = this.getBoard();
-        board[2][3].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
-        board[1][2].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
-        this.board = new Board(board, Board.ActiveColor.RED);
+        this.board.newGame();
     }
 
     /**
