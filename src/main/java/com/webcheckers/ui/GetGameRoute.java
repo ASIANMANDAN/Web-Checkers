@@ -127,7 +127,7 @@ public class GetGameRoute implements Route{
                 }
 
                 //Remove the game from the currentGames list and redirect player
-                currentGames.endGame(currentPlayer);
+                currentGames.removePlayer(currentPlayer);
                 httpSession.removeAttribute(OPPONENT_KEY);
                 response.redirect(WebServer.HOME_URL);
                 halt();
