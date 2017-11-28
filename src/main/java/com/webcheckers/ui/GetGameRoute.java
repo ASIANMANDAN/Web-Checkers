@@ -86,7 +86,7 @@ public class GetGameRoute implements Route{
             if (playerColor == winner) {
                 message = "Congratulations! You just beat " +
                         opponent.getUsername() +
-                        " in a transcendental game of checkers.";
+                        " in a game of checkers!";
 
                 LOG.fine(currentPlayer.getUsername() + " has just won against " +
                         opponent.getUsername());

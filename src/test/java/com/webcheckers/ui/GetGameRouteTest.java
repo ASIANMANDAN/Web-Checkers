@@ -29,7 +29,7 @@ import static org.mockito.Mockito.when;
 public class GetGameRouteTest {
 
     private final String VICTORY = "Congratulations! You just beat player4 " +
-            " in a transcendental game of checkers.";
+            " in a game of checkers.";
     private final String DEFEAT = "player3 has just won the game. Better " +
             "luck next time.";
 

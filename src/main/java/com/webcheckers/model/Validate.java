@@ -345,44 +345,62 @@ public class Validate {
             return Piece.Color.RED;
         }
 
-        //Find the first instance of a red players piece
-        Space red = board.findPiece(Piece.Color.RED);
         //Construct the list of all viable moves
-        ArrayList<Move> redMoves = new ArrayList<>();
-        ArrayList<Move> redTemp = getMoves(red, board);
-        if (redTemp != null) {
-            redMoves.addAll(redTemp);
-        }
-        redTemp = getJumps(red, board);
-        if (redTemp != null) {
-            redMoves.addAll(redTemp);
-        }
+        ArrayList<Move> redMoves = getAllMoves(Piece.Color.RED, board);
 
-        //Find the first instance of a white players piece
-        Space white = board.findPiece(Piece.Color.WHITE);
         //Construct the list of all viable moves
-        ArrayList<Move> whiteMoves = new ArrayList<>();
-        ArrayList<Move> whiteTemp = getMoves(white, board);
-        if (whiteTemp != null) {
-            whiteMoves.addAll(whiteTemp);
-        }
-        whiteTemp = getJumps(white, board);
-        if (whiteTemp != null) {
-            whiteMoves.addAll(whiteTemp);
-        }
+        ArrayList<Move> whiteMoves = getAllMoves(Piece.Color.WHITE, board);
 
         //List size of 0 indicates that the player has either no remaining
         //pieces or all remaining pieces are blocked by opponent
-        if (redMoves.size() == 0) {
+        if (redMoves != null && redMoves.size() == 0) {
             return Piece.Color.WHITE;
         }
 
         //List size of 0 indicates that the player has either no remaining
         //pieces or all remaining pieces are blocked by opponent
-        if (whiteMoves.size() == 0) {
+        if (whiteMoves != null && whiteMoves.size() == 0) {
             return Piece.Color.RED;
         }
         return null;
+    }
+
+    /**
+     * Get a collection of all valid movements that can be made by a
+     * given player.
+     *
+     * @param color the players piece color
+     * @param board a configuration of the gameboard
+     * @return a collection of all valid moves
+     */
+    private ArrayList<Move> getAllMoves(Piece.Color color, Board board) {
+        ArrayList<Move> validMoves = new ArrayList<>();
+
+        Space[][] gameboard = board.getBoard();
+
+        //Iterate through the board model
+        for (int i=0; i < Board.size; i++) {
+            for (int j=0; j < Board.size; j++) {
+
+                Space space = gameboard[i][j];
+                Piece piece = space.getPiece();
+
+                //Determine if a piece belongs to the active players
+                if (piece != null && piece.getColor() == color) {
+                    ArrayList<Move> temp = new ArrayList<>();
+
+                    //Check if an opponent is nearby, if one is,
+                    //determine if it can be jumped
+                    if (opponentNearby(space, board)) {
+                        temp = getJumps(space, board);
+                    } else {
+                        temp = getMoves(space, board);
+                    }
+                    validMoves.addAll(temp);
+                }
+            }
+        }
+        return validMoves;
     }
 
     /**

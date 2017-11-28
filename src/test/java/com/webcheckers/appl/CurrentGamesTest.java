@@ -359,4 +359,33 @@ public class CurrentGamesTest {
         assertTrue(CuT.makeMove(red, move));
         assertEquals(Piece.Color.WHITE, CuT.hasWon(red));
     }
+
+    /**
+     * Test that a game continues when one piece is trapped but another
+     * can continue moving.
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
+     */
+    @Test
+    public  void test_hasWon_2() throws Exception{
+        Space[][] board = new Board().getBoard();
+        //Set up a scenario where winning a win is not present
+        board[7][6].setPiece(new Piece(Piece.Color.RED, Piece.Type.KING));
+        board[7][0].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
+        board[6][1].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
+        board[4][3].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
+        Position start = new Position(4,3);
+        Position end = new Position(5,2);
+        move = new Move(start, end);
+
+        CuT.removePlayer(red);
+        CuT.removePlayer(white);
+        CuT.addGame(red, white, board);
+
+        assertNull(CuT.hasWon(red));
+        assertTrue(CuT.makeMove(red, move));
+        assertNull(CuT.hasWon(red));
+    }
 }
