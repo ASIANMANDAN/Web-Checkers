@@ -337,13 +337,13 @@ public class Validate {
      */
     public Piece.Color hasWon(Board board) {
 
-//        if (board.getNumOfRedPieces() == 0) {
-//            return Piece.Color.WHITE;
-//        }
-//
-//        if (board.getNumOfWhitePieces() == 0) {
-//            return Piece.Color.RED;
-//        }
+        if (board.getNumOfRedPieces() == 0) {
+            return Piece.Color.WHITE;
+        }
+
+        if (board.getNumOfWhitePieces() == 0) {
+            return Piece.Color.RED;
+        }
 
         //Find the first instance of a red players piece
         Space red = board.findPiece(Piece.Color.RED);
@@ -581,8 +581,8 @@ public class Validate {
 
         //Ensure that a move downwards can be made by the piece and won't be out
         //of bounds
-        if (((row + 1) >= Board.size - 1 && color == Piece.Color.WHITE) ||
-                ((row + 1) >= Board.size - 1 && piece.getType() == Piece.Type.KING)) {
+        if (((row + 1) <= Board.size - 1 && color == Piece.Color.WHITE) ||
+                ((row + 1) <= Board.size - 1 && piece.getType() == Piece.Type.KING)) {
 
             //Ensure that a move in the lower left direction won't be out of bounds
             if ((col - 1) >= 0) {

@@ -77,6 +77,23 @@ public class CurrentGames {
     }
 
     /**
+     * Creates a Game object and adds it to the list of
+     * all ongoing games.
+     *
+     * @param red the player to be assigned red
+     * @param white the player to be assigned white
+     * @param board a board configuration
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
+     */
+    public void addGame(Player red, Player white, Space[][] board) throws Exception {
+        Game game = new Game(red, white, board);
+        currentGames.put(red, game);
+        currentGames.put(white, game);
+    }
+
+    /**
      * Given a player in a game, return that players opponent.
      *
      * @param player the player whose opponent to find

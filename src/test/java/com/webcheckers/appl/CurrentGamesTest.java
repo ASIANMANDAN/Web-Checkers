@@ -61,7 +61,7 @@ public class CurrentGamesTest {
         //Mocking a move
         move = mock(Move.class);
         Position start = new Position(0,1);
-        Position end = new Position(1,1);
+        Position end = new Position(1,0);
 
         when(move.getStart()).thenReturn(start);
         when(move.getEnd()).thenReturn(end);
@@ -257,12 +257,106 @@ public class CurrentGamesTest {
 
     /**
      * Test that the makeMove method places a given Piece in the correct
-     * location on the board;
+     * location on the board.
      */
     @Test
     public void test_makeMove(){
+        Space space = CuT.getBoard(red)[0][1];
+        space.setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
+
+        assertNotNull(space.getPiece());
         assertTrue(CuT.makeMove(red, move));
-        CuT.removePlayer(nullPlayer);
-        assertFalse(CuT.makeMove(nullPlayer, move));
+        assertNull(space.getPiece());
+
+        CuT.removePlayer(red);
+        //Test a move cannot be made now that no player is in the game
+        assertFalse(CuT.makeMove(red, move));
+    }
+
+    /**
+     * Test that the undoMove method takes a move, reverses the coordinates, and
+     * places the piece back at its original starting coordinate.
+     */
+    @Test
+    public void test_undoMove() {
+        Space space = CuT.getBoard(red)[0][1];
+        space.setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
+
+        //Show piece is at the move start
+        assertNotNull(space.getPiece());
+        assertTrue(CuT.makeMove(red, move));
+        //Show piece has moved
+        assertNull(space.getPiece());
+        assertTrue(CuT.undoMove(red, move));
+        //Show piece has moved back
+        assertNotNull(space.getPiece());
+    }
+
+    /**
+     * Test that the system returns the correct Piece colors for given
+     * players.
+     */
+    @Test
+    public void test_getPlayerColor() {
+        assertEquals(Piece.Color.RED, CuT.getPlayerColor(red));
+        assertEquals(Piece.Color.WHITE, CuT.getPlayerColor(white));
+
+        Player notInGame = new Player("notInGame");
+        assertNull(CuT.getPlayerColor(notInGame));
+    }
+
+    /**
+     * Test that a game can be won when a player captures all of an opponents
+     * pieces.
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
+     */
+    @Test
+    public void test_hasWon_0() throws Exception {
+        Space[][] board = new Board().getBoard();
+        //Set up a scenario where winning is possible
+        board[2][3].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
+        board[1][2].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
+        Position start = new Position(2,3);
+        Position end = new Position(0,1);
+        move = new Move(start, end);
+
+        CuT.removePlayer(red);
+        CuT.removePlayer(white);
+        CuT.addGame(red, white, board);
+
+        assertNull(CuT.hasWon(red));
+        assertTrue(CuT.makeMove(red, move));
+        assertEquals(Piece.Color.RED, CuT.hasWon(red));
+    }
+
+    /**
+     * Test that a game can be won when a player blocks all of their
+     * opponents possible moves
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
+     */
+    @Test
+    public void test_hasWon_1() throws Exception {
+        Space[][] board = new Board().getBoard();
+        //Set up a scenario where winning is possible
+        board[7][0].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
+        board[6][1].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
+        board[4][3].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
+        Position start = new Position(4,3);
+        Position end = new Position(5,2);
+        move = new Move(start, end);
+
+        CuT.removePlayer(red);
+        CuT.removePlayer(white);
+        CuT.addGame(red, white, board);
+
+        assertNull(CuT.hasWon(red));
+        assertTrue(CuT.makeMove(red, move));
+        assertEquals(Piece.Color.WHITE, CuT.hasWon(red));
     }
 }

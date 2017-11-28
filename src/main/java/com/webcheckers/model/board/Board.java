@@ -190,12 +190,12 @@ public class Board {
         //"Capture" an opponents Piece if a jump occurred
         if (middle != null) {
 
-//            //Update the piece count
-//            if(middle.getPiece().getColor() == Piece.Color.RED){
-//                numOfRedPieces++;
-//            }else{
-//                numOfWhitePieces++;
-//            }
+            //Update the piece count
+            if(middle.getPiece().getColor() == Piece.Color.RED){
+                numOfRedPieces++;
+            }else{
+                numOfWhitePieces++;
+            }
 
             //Replace a piece if the middle space is null. This is in case
             //a player chooses to undo a jump

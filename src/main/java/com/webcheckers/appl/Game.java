@@ -1,6 +1,5 @@
 package com.webcheckers.appl;
 
-import com.webcheckers.model.CheckForWin;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
 import com.webcheckers.model.board.Piece;
@@ -21,7 +20,6 @@ public class Game {
     Player red;
     Player white;
     Board board;
-    CheckForWin winChecker;
 
     /**
      * Constructor for a Game object.
@@ -36,15 +34,28 @@ public class Game {
 
         //Create a new board and set it up for gameplay
         this.board = new Board();
-        //this.board.newGame();
-        Space[][] board = this.getBoard();
-        board[2][3].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
-        board[1][2].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
+        this.board.newGame();
+//        Space[][] board = this.getBoard();
+//        board[2][3].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
+//        board[1][2].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
+//        this.board = new Board(board, Board.ActiveColor.RED);
+    }
+
+    /**
+     * Constructor for a Game object which accepts a board configuration for
+     * ease of testing.
+     *
+     * @param red the player who initiated the game, i.e. who selected
+     *           an opponent and hit play
+     * @param white the player who was chosen and gets redirected from home
+     * @param board a board configuration
+     */
+    public Game(Player red, Player white, Space[][] board) throws Exception {
+        this.red = red;
+        this.white = white;
+
+        //Input the given board
         this.board = new Board(board, Board.ActiveColor.RED);
-
-
-        //Create the win checker for checking for a win after every move.
-        this.winChecker = new CheckForWin();
     }
 
     /**
@@ -105,22 +116,6 @@ public class Game {
      */
     protected void makeMove(Move move) {
         this.board.makeMove(move);
-    }
-
-    /**
-     * Checks the Game to see if there is a player that won.
-     *
-     * @return true if victory present/false otherwise
-     */
-    protected boolean checkForWin() {
-        boolean victoryPresent = this.winChecker.checkForWin(this.board.getNumOfWhitePieces(),
-                this.board.getNumOfRedPieces(), this.board.getBoard(), this.board.currentTurn);
-
-        if (victoryPresent) {
-            return true;
-        } else {
-            return false;
-        }
     }
 
     /**
