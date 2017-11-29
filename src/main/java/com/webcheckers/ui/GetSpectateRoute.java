@@ -18,11 +18,11 @@ import java.util.logging.Logger;
  * @author Kevin Paradis
  * @author Nathan Farrell
  */
-public class GetSpectateRoute {
+public class GetSpectateRoute implements Route{
     private static final Logger LOG = Logger.getLogger(GetSpectateRoute.class.getName());
 
     //FTL file which is responsible for rendering the page
-    static final String VIEW_NAME = "game.ftl";
+    static final String VIEW_NAME = "spectate.ftl";
     static final String MODE_ATTR = "viewMode";
     static final String RED_PLAYER_ATTR = "redPlayer";
     static final String WHITE_PLAYER_ATTR = "whitePlayer";
