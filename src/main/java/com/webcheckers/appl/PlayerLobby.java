@@ -135,4 +135,16 @@ public class PlayerLobby {
         return this.playerLobby.keySet();
     }
 
+    /**
+     * Toggles the flag within a player object to
+     * indicate that a given player is spectating or
+     * replaying a game.
+     *
+     * @param username the name of the player whose flag to toggle
+     */
+    public void toggleWatching(String username) {
+        Player player = playerLobby.get(username);
+        player.toggleWatching();
+    }
+
 }

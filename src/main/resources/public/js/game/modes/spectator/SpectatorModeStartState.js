@@ -40,7 +40,7 @@ define(function(require){
    * 
    * Build and begin the Spectator view mode.
    */
-  SpectatorModeStartState.prototype.onEntry = function onEntry() { };
+  //SpectatorModeStartState.prototype.onEntry = function onEntry() { };
   
   // export class constructor
   return SpectatorModeStartState;

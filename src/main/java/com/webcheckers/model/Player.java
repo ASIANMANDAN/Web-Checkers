@@ -10,6 +10,10 @@ package com.webcheckers.model;
  */
 public class Player {
 
+    //boolean flag for determining when a player is
+    //either spectating or replaying a game
+    private boolean isWatching = false;
+
     private final String username;
 
     /**
@@ -28,6 +32,24 @@ public class Player {
      */
     public String getUsername(){
         return this.username;
+    }
+
+    /**
+     * Toggles the flag within a player object to
+     * indicate that a given player is spectating or
+     * replaying a game.
+     */
+    public void toggleWatching() {
+        isWatching = !isWatching;
+    }
+
+    /**
+     * Get the status of a players isWatching flag.
+     *
+     * @return the status of the isWatching flag
+     */
+    public boolean getIsWatching() {
+        return isWatching;
     }
 
     /**
