@@ -193,7 +193,7 @@ public class GetGameRouteTest {
     @Test
     public void test_resign() throws Exception {
         Response response = mock(Response.class);
-        currentGames.removePlayer(player2);
+        currentGames.removePlayer(player2, player1);
         final MyModelAndView myModelView = new MyModelAndView();
         when(engine.render(any(ModelAndView.class))).thenAnswer(MyModelAndView.makeAnswer(myModelView));
         when(session.attribute(GetGameRoute.CURR_PLAYER)).thenReturn(player1);

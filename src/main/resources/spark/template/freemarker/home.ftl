@@ -42,6 +42,7 @@
         </form>
         <br />
 
+
         <form action="./spectate" method="GET">
             <#if numGames == 0 >
                 <p>No games are currently being played.</p>
@@ -53,6 +54,20 @@
             </#if>
         </form>
         <br />
+
+        <#if completedGames??>
+        <form action="./replay" method="GET">
+            <#if numOfCompletedGames == 0 >
+               <p>No replay available (you haven't played a game yet).</p>
+            <#else>
+               <#list completedGames as game>
+                   <input type="radio" name="replay" value=${game} /> ${game} <br />
+               </#list> <br />
+               <button type="submit">Replay!</button>
+            </#if>
+        </form>
+        <br />
+        </#if>
       
         <form action="./signout" method="GET">
           <button>Sign Out</button>

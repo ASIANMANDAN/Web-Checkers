@@ -6,6 +6,7 @@ import com.webcheckers.model.board.Piece;
 import com.webcheckers.model.board.Space;
 import com.webcheckers.ui.boardView.Move;
 
+import java.awt.image.AreaAveragingScaleFilter;
 import java.util.ArrayList;
 
 /**
@@ -56,6 +57,27 @@ public class Game {
 
         //Input the given board
         this.board = new Board(board, Board.ActiveColor.RED);
+    }
+
+    /**
+     * Constructor for a Game object which accepts a board configuration for
+     * ease of testing.
+     *
+     * @param red the player who initiated the game, i.e. who selected
+     *           an opponent and hit play
+     * @param white the player who was chosen and gets redirected from home
+     * @param board a board configuration
+     */
+    public Game(Player red, Player white, Space[][] board, ArrayList<Move> moveList) throws Exception {
+        this.red = red;
+        this.white = white;
+
+        //Input the given board
+        this.board = new Board(board, Board.ActiveColor.RED);
+
+        //Input the given list of moves
+        this.listOfMoves = moveList;
+
     }
 
     /**
@@ -201,5 +223,9 @@ public class Game {
      */
     public void addMove(Move move) {
         listOfMoves.add(move);
+    }
+
+    public ArrayList<Move> getListOfMoves(){
+        return listOfMoves;
     }
 }

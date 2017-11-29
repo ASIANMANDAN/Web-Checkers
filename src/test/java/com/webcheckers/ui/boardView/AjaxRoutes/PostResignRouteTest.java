@@ -62,7 +62,7 @@ public class PostResignRouteTest {
      * Tests the {@link PostResignRoute#equals(Object)} handle method.
      */
     @Test
-    public void test_resignPlayer(){
+    public void test_resignPlayer() throws Exception {
         //Mock Response
         Response response = mock(Response.class);
 

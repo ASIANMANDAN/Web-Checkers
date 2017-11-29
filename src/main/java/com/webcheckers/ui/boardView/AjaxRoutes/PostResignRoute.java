@@ -39,13 +39,14 @@ public class PostResignRoute implements Route{
      * @return GSON object which will be read by server
      */
     @Override
-    public Object handle(Request request, Response response) {
+    public Object handle(Request request, Response response) throws Exception {
         Session session = request.session();
 
         Player currPlayer = session.attribute(CURR_PLAYER);
+        Player opponent = session.attribute(OPPONENT_KEY);
         CurrentGames currentGames = session.attribute(CURRENTGAMES_KEY);
+        currentGames.removePlayer(currPlayer,opponent);
         session.removeAttribute(OPPONENT_KEY);
-        currentGames.removePlayer(currPlayer);
 
         //Remove the jump made flag which is used for detecting
         //consecutive jumps

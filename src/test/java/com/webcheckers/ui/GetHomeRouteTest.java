@@ -59,7 +59,7 @@ public class GetHomeRouteTest {
      * Test the view for when a player has not been signed in.
      */
     @Test
-    public void test_notSignedIn() {
+    public void test_notSignedIn() throws Exception {
         final Response response = mock(Response.class);
 
         final MyModelAndView myModelView = new MyModelAndView();
@@ -87,7 +87,7 @@ public class GetHomeRouteTest {
      * Test the view for when a player has been signed in.
      */
     @Test
-    public void test_signedIn_0() {
+    public void test_signedIn_0() throws Exception {
         Player player = mock(Player.class);
         when(session.attribute(GetHomeRoute.CURR_PLAYER)).thenReturn(player);
         final Response response = mock(Response.class);
@@ -117,7 +117,7 @@ public class GetHomeRouteTest {
      * Test the view for when a player is signed in and another player is online.
      */
     @Test
-    public void test_signedIn_1() {
+    public void test_signedIn_1() throws Exception {
         Player player = mock(Player.class);
         when(session.attribute(GetHomeRoute.CURR_PLAYER)).thenReturn(player);
         final Response response = mock(Response.class);
@@ -152,7 +152,7 @@ public class GetHomeRouteTest {
      * Test the view for when a player has been redirected back to home with an error.
      */
     @Test
-    public void test_message() {
+    public void test_message() throws Exception {
         Player player = mock(Player.class);
         when(session.attribute(GetHomeRoute.CURR_PLAYER)).thenReturn(player);
         String message = "Error";
@@ -185,7 +185,7 @@ public class GetHomeRouteTest {
      * Test that a player in a game is redirected to the game page.
      */
     @Test
-    public void test_inGame() {
+    public void test_inGame() throws Exception {
         //Mock two players, one of which will be used as current player
         Player player1 = mock(Player.class);
         Player player2 = mock(Player.class);

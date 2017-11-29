@@ -70,4 +70,12 @@ public class Player {
     public void addGame(Game game){
         this.gamesPlayed.add(game);
     }
+
+    /**
+     * Returns list of completed games.
+     * @return completed games
+     */
+    public ArrayList<Game> getGamesPlayed(){
+        return this.gamesPlayed;
+    }
 }

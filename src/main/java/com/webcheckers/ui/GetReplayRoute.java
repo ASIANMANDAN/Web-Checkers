@@ -7,7 +7,11 @@ import spark.*;
  */
 public class GetReplayRoute implements Route {
 
+    private final TemplateEngine templateEngine;
 
+    public GetReplayRoute(TemplateEngine template){
+        this.templateEngine = template;
+    }
 
     @Override
     public Object handle(Request request, Response response) throws Exception {

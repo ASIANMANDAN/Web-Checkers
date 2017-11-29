@@ -96,8 +96,9 @@ public class GetGameRoute implements Route{
             }
             httpSession.attribute(MESSAGE_KEY, message);
 
+
             //Set the player free so they may join another game
-            currentGames.removePlayer(currentPlayer);
+            currentGames.removePlayer(currentPlayer, opponent);
             httpSession.removeAttribute(MOVE_MADE_KEY);
             //httpSession.removeAttribute(OPPONENT_KEY);
             response.redirect(WebServer.HOME_URL);
@@ -127,7 +128,7 @@ public class GetGameRoute implements Route{
                 }
 
                 //Remove the game from the currentGames list and redirect player
-                currentGames.removePlayer(currentPlayer);
+                currentGames.removePlayer(currentPlayer, opponent);
                 httpSession.removeAttribute(OPPONENT_KEY);
                 response.redirect(WebServer.HOME_URL);
                 halt();

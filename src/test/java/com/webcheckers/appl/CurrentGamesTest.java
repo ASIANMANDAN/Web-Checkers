@@ -181,8 +181,8 @@ public class CurrentGamesTest {
      * Test that players can be removed from the correct Game object.
      */
     @Test
-    public void test_removePlayer_0() {
-        CuT.removePlayer(red);
+    public void test_removePlayer_0() throws Exception {
+        CuT.removePlayer(red, white);
         assertNull(CuT.getOpponent(white));
         assertNull(CuT.getRedPlayer(red));
     }
@@ -191,8 +191,8 @@ public class CurrentGamesTest {
      * Test that players can be removed from the correct Game object.
      */
     @Test
-    public void test_removePlayer_1() {
-        CuT.removePlayer(white);
+    public void test_removePlayer_1() throws Exception {
+        CuT.removePlayer(white, red);
         assertNull(CuT.getOpponent(red));
         assertNull(CuT.getWhitePlayer(white));
     }
@@ -260,7 +260,7 @@ public class CurrentGamesTest {
      * location on the board.
      */
     @Test
-    public void test_makeMove(){
+    public void test_makeMove() throws Exception {
         Space space = CuT.getBoard(red)[0][1];
         space.setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
 
@@ -268,7 +268,7 @@ public class CurrentGamesTest {
         assertTrue(CuT.makeMove(red, move));
         assertNull(space.getPiece());
 
-        CuT.removePlayer(red);
+        CuT.removePlayer(red, white);
         //Test a move cannot be made now that no player is in the game
         assertFalse(CuT.makeMove(red, move));
     }
@@ -323,8 +323,8 @@ public class CurrentGamesTest {
         Position end = new Position(0,1);
         move = new Move(start, end);
 
-        CuT.removePlayer(red);
-        CuT.removePlayer(white);
+        CuT.removePlayer(red, white);
+        CuT.removePlayer(white, red);
         CuT.addGame(red, white, board);
 
         assertNull(CuT.hasWon(red));
@@ -351,8 +351,8 @@ public class CurrentGamesTest {
         Position end = new Position(5,2);
         move = new Move(start, end);
 
-        CuT.removePlayer(red);
-        CuT.removePlayer(white);
+        CuT.removePlayer(red, white);
+        CuT.removePlayer(white, red);
         CuT.addGame(red, white, board);
 
         assertNull(CuT.hasWon(red));
@@ -380,8 +380,8 @@ public class CurrentGamesTest {
         Position end = new Position(5,2);
         move = new Move(start, end);
 
-        CuT.removePlayer(red);
-        CuT.removePlayer(white);
+        CuT.removePlayer(red, white);
+        CuT.removePlayer(white, red);
         CuT.addGame(red, white, board);
 
         assertNull(CuT.hasWon(red));
@@ -411,8 +411,8 @@ public class CurrentGamesTest {
         Position end = new Position(5,4);
         move = new Move(start, end);
 
-        CuT.removePlayer(red);
-        CuT.removePlayer(white);
+        CuT.removePlayer(red, white);
+        CuT.removePlayer(white, red);
         CuT.addGame(red, white, board);
 
         assertNull(CuT.hasWon(red));

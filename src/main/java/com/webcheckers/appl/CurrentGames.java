@@ -180,11 +180,13 @@ public class CurrentGames {
      *
      * @param player the player to be removed
      */
-    public void removePlayer(Player player) {
+    public void removePlayer(Player player, Player opponent) throws Exception {
         Game game = getGame(player);
         if (game != null) {
+            Game gameForReplay = new Game(player, opponent, game.getBoard(), game.getListOfMoves());
             game.removePlayer(player);
             //Remove this player from the map to represent their resignation
+            player.addGame(gameForReplay);
             currentGames.remove(player, game);
         }
     }
@@ -331,4 +333,6 @@ public class CurrentGames {
     public int size(){
         return currentGames.size();
     }
+
+    
 }

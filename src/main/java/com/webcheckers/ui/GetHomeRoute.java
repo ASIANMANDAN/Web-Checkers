@@ -4,6 +4,7 @@ import java.util.*;
 import java.util.logging.Logger;
 
 import com.webcheckers.appl.CurrentGames;
+import com.webcheckers.appl.Game;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
 import spark.*;
@@ -23,7 +24,8 @@ public class GetHomeRoute implements Route {
   static final String MESSAGE_ATTR = "message";
   static final String GAMES_IN_PROGRESS_ATTR = "allGames";
   static final String NUM_OF_GAMES_ATTR = "numGames";
-	static final String JUST_PLAYED = "justPlayed";
+    static final String COMPLETED_GAMES = "completedGames";
+    static final String NUM_OF_COMPLETED_GAMES = "numOfCompletedGames";
 
   //Key in the session attribute map for the playerLobby object
   static final String PLAYERLOBBY_KEY = "playerLobby";
@@ -69,24 +71,41 @@ public class GetHomeRoute implements Route {
    * @return the rendered HTML for the Home page
    */
   @Override
-  public Object handle(Request request, Response response) {
+  public Object handle(Request request, Response response) throws Exception {
 	LOG.finer("GetHomeRoute is invoked.");
 
 	//Retrieve the HTTP session
 	final Session httpSession = request.session();
+      Player currentPlayer = httpSession.attribute(CURR_PLAYER);
+
+      ArrayList<Game> completedGames;
+      int completedGamesSize;
+
+      if(currentPlayer != null){
+          completedGames = currentPlayer.getGamesPlayed();
+          completedGamesSize = completedGames.size();
+      }else{
+          completedGames = null;
+          completedGamesSize = 0;
+      }
+
 
 	//Start building the view-model
 	Map<String, Object> vm = new HashMap<>();
 	vm.put("title", "Welcome!");
 	vm.put(PLAYERS_ONLINE_ATTR, playerLobby.getNumOfUsers());
 	//Provide the current player to the view-model
-	vm.put(CURR_PLAYER, httpSession.attribute(CURR_PLAYER));
+	vm.put(CURR_PLAYER, currentPlayer);
 	//Provide the playerlobby to the view-model
 	vm.put(PLAYERS_LIST_ATTR, playerLobby.getUserList());
 	//Provide the list of ongoing games to the view-model
 	vm.put(GAMES_IN_PROGRESS_ATTR, currentGames.getGamesList());
 	//Provide the number of games being played to the view-model.
 	vm.put(NUM_OF_GAMES_ATTR, currentGames.size());
+      //Provide the list of completed Games to the view-model
+      vm.put(COMPLETED_GAMES, completedGames);
+      //Provide the number of completed Gamed to the view-model
+      vm.put(NUM_OF_COMPLETED_GAMES, completedGamesSize);
 
 	//Provide a message to the view-model if there has been an error
 	vm.put(MESSAGE_ATTR, httpSession.attribute(MESSAGE_KEY));
@@ -99,7 +118,7 @@ public class GetHomeRoute implements Route {
 	httpSession.attribute(CURRENTGAMES_KEY, currentGames);
 
 	//Checks if the current user has been selected upon each refresh
-	Player currentPlayer = httpSession.attribute(CURR_PLAYER);
+	//Player currentPlayer = httpSession.attribute(CURR_PLAYER);
 	if (currentPlayer != null) {
 
 		Player opponent = currentGames.getOpponent(currentPlayer);
@@ -107,7 +126,7 @@ public class GetHomeRoute implements Route {
 		if (currentGames.playerInGame(currentPlayer) && opponent != null) {
 			response.redirect("/game?opponent=" + opponent.getUsername());
 		} else {
-			currentGames.removePlayer(currentPlayer);
+			currentGames.removePlayer(currentPlayer, opponent);
 		}
 	}
 
