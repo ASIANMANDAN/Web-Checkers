@@ -10,6 +10,7 @@ import spark.ModelAndView;
 import spark.TemplateEngine;
 import spark.template.freemarker.FreeMarkerEngine;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map;
@@ -75,6 +76,8 @@ public class HomeViewTest {
         vm.put(GetHomeRoute.CURR_PLAYER, player);
         vm.put(GetHomeRoute.PLAYERS_LIST_ATTR, playersOnline);
         vm.put(GetHomeRoute.MESSAGE_ATTR, null);
+        vm.put(GetHomeRoute.NUM_OF_GAMES_ATTR, 0);
+        vm.put(GetHomeRoute.GAMES_IN_PROGRESS_ATTR, new ArrayList<String>());
 
         final String viewHtml = engine.render(modelAndView);
 
