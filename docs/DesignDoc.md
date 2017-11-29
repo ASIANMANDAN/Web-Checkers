@@ -48,7 +48,7 @@ The MVP is an application where users can sign in to the application, choose an 
 ### Roadmap of Enhancements
 To enhance our product, we intend on adding:
 *Spectator Mode - Being able to watch a game that is currently in progress.
-*Asynchronous Play - The players in a game can access and play a game over the course of 		   	 	multiple logins.
+*Asynchronous Play - The players in a game can access and play a game over the course of multiple logins.
 
 
 ## Application Domain
@@ -124,7 +124,7 @@ The Piece class serves as a way to determine the color and type of piece. The ty
 
 Outside of the board package, there is also a Player class that represents an individual Player. The Player class works with application tier services to perform actions like signing in/leaving a game/creating a game/picking an opponent. 
 
-A Validate class is also included outside of the board package. This class is a pure fabrication, with the responsibility of ensuring that proposed moves adhere to the rules of checkers before they are allowed to be made. The rational behind creating this class was to keep cohesion high within the Board class. Additionally, we did not feel that it was the responsibility of the Board class to enforce the rules, but to serve as a representation of the current game space.
+A Validate class is also included outside of the board package. This class is a pure fabrication, with the responsibility of ensuring that proposed moves adhere to the rules of checkers before they are allowed to be made. Another responsibility held by Validate is that it checks a given board configuration to see if a player has won the  game. While it can be argued that the class should not take on this responsibility, we chose to put it within the class as it allowed us to reuse code while keeping a high level of cohesion and single responsibility within our other classes. Additionally, we did not feel that it was the responsibility of the Board class to enforce the rules, but to serve as a representation of the current game space. 
 
 ### Tier: Application
 
