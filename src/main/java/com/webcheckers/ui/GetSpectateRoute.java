@@ -5,6 +5,7 @@ import com.webcheckers.appl.Game;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
 import com.webcheckers.model.board.Space;
+import com.webcheckers.ui.boardView.BoardView;
 import spark.*;
 
 import java.util.HashMap;
@@ -82,7 +83,6 @@ public class GetSpectateRoute implements Route{
 
         Player red = currentGames.getRedPlayer(new Player(request.queryParams(GAME_PARAM)));
         Player white = currentGames.getOpponent(red);
-        Space[][] board = currentGames.getBoard(red);
         Board.ActiveColor turn = currentGames.getTurn(red);
 
         //Start building the view-model
@@ -94,7 +94,7 @@ public class GetSpectateRoute implements Route{
         vm.put(RED_PLAYER_ATTR, red);
         vm.put(WHITE_PLAYER_ATTR, white);
         vm.put(ACTIVE_ATTR, turn);
-        vm.put(BOARD_ATTR, board);
+        vm.put(BOARD_ATTR, new BoardView(red, currentGames));
 
         return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }
