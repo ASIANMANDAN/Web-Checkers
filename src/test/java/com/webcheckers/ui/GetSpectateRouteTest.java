@@ -100,7 +100,7 @@ public class GetSpectateRouteTest {
 
         final Map<String, Object> vm = (Map<String, Object>) model;
         assertEquals("Game", vm.get("title"));
-        assertEquals(Board.ViewMode.SPECTATE, vm.get(GetSpectateRoute.MODE_ATTR));
+        assertEquals(Board.ViewMode.SPECTATOR, vm.get(GetSpectateRoute.MODE_ATTR));
         assertEquals(spectator, vm.get(GetSpectateRoute.CURR_PLAYER));
         assertEquals(red, vm.get(GetSpectateRoute.RED_PLAYER_ATTR));
         assertEquals(white, vm.get(GetSpectateRoute.WHITE_PLAYER_ATTR));
