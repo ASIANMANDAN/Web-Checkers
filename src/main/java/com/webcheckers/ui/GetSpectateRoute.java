@@ -86,7 +86,7 @@ public class GetSpectateRoute implements Route{
         Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Game");
 
-        vm.put(MODE_ATTR, Board.ViewMode.SPECTATE);
+        vm.put(MODE_ATTR, Board.ViewMode.SPECTATOR);
         vm.put(CURR_PLAYER, currentPlayer);
         vm.put(RED_PLAYER_ATTR, red);
         vm.put(WHITE_PLAYER_ATTR, white);
