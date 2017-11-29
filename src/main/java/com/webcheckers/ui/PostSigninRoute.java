@@ -71,6 +71,10 @@ public class PostSigninRoute implements Route{
                 mv = error(vm);
                 break;
 
+            case SPACE:
+                mv = space(vm);
+                break;
+
             case EMPTY:
                 mv = empty(vm);
                 break;
@@ -104,6 +108,14 @@ public class PostSigninRoute implements Route{
     private ModelAndView error(final Map<String, Object> vm) {
         String message = "The username you selected was invalid as it contains " +
                 "double quotation marks.";
+        vm.put(MESSAGE_ATTR, message);
+        vm.put("title", "Sign-in");
+        return new ModelAndView(vm, VIEW_NAME);
+    }
+
+    private ModelAndView space(final Map<String, Object> vm) {
+        String message = "The username you selected is invalid as it contains " +
+                "spaces.";
         vm.put(MESSAGE_ATTR, message);
         vm.put("title", "Sign-in");
         return new ModelAndView(vm, VIEW_NAME);

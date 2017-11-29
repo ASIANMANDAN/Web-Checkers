@@ -23,8 +23,6 @@ public class PostSubmitTurnRoute implements Route {
 
     private final Gson gson = new Gson();
 
-    //Key in the session attribute map for the last move verified
-    static final String MOVE_KEY = "move";
     //Key in the session attribute map for the hash of current players in a game
     static final String CURRENTGAMES_KEY = "currentGames";
     //Key in the session attribute map for the current user Player object
@@ -45,24 +43,13 @@ public class PostSubmitTurnRoute implements Route {
         Session httpSession = request.session();
         Player currentPlayer = httpSession.attribute(CURR_PLAYER);
         CurrentGames currentGames = httpSession.attribute(CURRENTGAMES_KEY);
-        Move move = httpSession.attribute(MOVE_KEY);
 
-        //Attempt to make move
-        if (currentGames.makeMove(currentPlayer, move)) {
-            currentGames.toggleTurn(currentPlayer);
+        currentGames.toggleTurn(currentPlayer);
 
-            //Toggle for next turn
-            httpSession.attribute(MOVE_MADE_KEY, false);
+        //Toggle for next turn
+        httpSession.attribute(MOVE_MADE_KEY, false);
 
-            //Text of Message is ignored
-            return gson.toJson(new Message("",Message.Type.info));
-        } else {
-
-            //Toggle for next turn
-            httpSession.attribute(MOVE_MADE_KEY, false);
-
-            //Text of Message is ignored
-            return gson.toJson(new Message("",Message.Type.error));
-        }
+        //Text of Message is ignored
+        return gson.toJson(new Message("",Message.Type.info));
     }
 }

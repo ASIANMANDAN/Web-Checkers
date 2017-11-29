@@ -4,6 +4,8 @@ import com.webcheckers.appl.CurrentGames;
 import com.webcheckers.appl.Game;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
+import com.webcheckers.model.board.Piece;
+import com.webcheckers.model.board.Space;
 import org.junit.Before;
 import org.junit.Test;
 import spark.*;
@@ -26,6 +28,11 @@ import static org.mockito.Mockito.when;
  */
 public class GetGameRouteTest {
 
+    private final String VICTORY = "Congratulations! You just beat player4 " +
+            " in a game of checkers.";
+    private final String DEFEAT = "player3 has just won the game. Better " +
+            "luck next time.";
+
     private GetGameRoute CuT;
 
     //Mock objects
@@ -47,7 +54,12 @@ public class GetGameRouteTest {
         player1 = new Player("player");
         player2 = new Player("player2");
 
-        Game mockGame = new Game(player1, player2);
+        //Create a valid gameboard that represents an ongoing game
+        Space[][] board = new Board().getBoard();
+        board[0][1].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
+        board[3][0].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
+
+        Game mockGame = new Game(player1, player2, board);
         HashMap<Player, Game> gameList = new HashMap<>();
         gameList.put(player1, mockGame);
         gameList.put(player2, mockGame);
@@ -145,9 +157,13 @@ public class GetGameRouteTest {
      */
     @Test
     public void test_opponent_redirect() throws Exception {
+        //Create a valid gameboard that represents an ongoing game
+        Space[][] board = new Board().getBoard();
+        board[0][1].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
+        board[3][0].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
         Player player3 = new Player("player3");
         Player player4 = new Player("player4");
-        currentGames.addGame(player3, player4);
+        currentGames.addGame(player3, player4, board);
 
         Response response = mock(Response.class);
         final MyModelAndView myModelView = new MyModelAndView();
@@ -194,6 +210,78 @@ public class GetGameRouteTest {
 
         String message = "player2 has resigned from the game.";
         assertEquals(message, session.attribute(GetGameRoute.MESSAGE_KEY));
+        assertNull(model);
+    }
+
+    /**
+     * Test that the proper view is created when the current player wins.
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
+     */
+    @Test
+    public void test_victory() throws Exception {
+        //Create a gameboard where player3 has won
+        Space[][] board = new Board().getBoard();
+        board[3][0].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
+        Player player3 = new Player("player3");
+        Player player4 = new Player("player4");
+        currentGames.addGame(player3, player4, board);
+
+        Response response = mock(Response.class);
+        final MyModelAndView myModelView = new MyModelAndView();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(MyModelAndView.makeAnswer(myModelView));
+        when(session.attribute(GetGameRoute.CURR_PLAYER)).thenReturn(player3);
+        when(session.attribute(GetGameRoute.OPPONENT_KEY)).thenReturn(player4);
+        when(session.attribute(GetGameRoute.MESSAGE_KEY)).thenReturn(VICTORY);
+
+        try{
+            CuT.handle(request, response);
+        }catch(HaltException e){
+            assertTrue(e instanceof HaltException);
+        }
+
+        //Because of there being no opponent, the page redirects and doesn't fill a model
+        final Object model = myModelView.model;
+
+        assertEquals(VICTORY, session.attribute(GetGameRoute.MESSAGE_KEY));
+        assertNull(model);
+    }
+
+    /**
+     * Test that the proper view is created when the current player loses.
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
+     */
+    @Test
+    public void test_defeat() throws Exception {
+        //Create a gameboard where player3 has won
+        Space[][] board = new Board().getBoard();
+        board[3][0].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
+        Player player3 = new Player("player3");
+        Player player4 = new Player("player4");
+        currentGames.addGame(player3, player4, board);
+
+        Response response = mock(Response.class);
+        final MyModelAndView myModelView = new MyModelAndView();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(MyModelAndView.makeAnswer(myModelView));
+        when(session.attribute(GetGameRoute.CURR_PLAYER)).thenReturn(player4);
+        when(session.attribute(GetGameRoute.OPPONENT_KEY)).thenReturn(player3);
+        when(session.attribute(GetGameRoute.MESSAGE_KEY)).thenReturn(DEFEAT);
+
+        try{
+            CuT.handle(request, response);
+        }catch(HaltException e){
+            assertTrue(e instanceof HaltException);
+        }
+
+        //Because of there being no opponent, the page redirects and doesn't fill a model
+        final Object model = myModelView.model;
+
+        assertEquals(DEFEAT, session.attribute(GetGameRoute.MESSAGE_KEY));
         assertNull(model);
     }
 }

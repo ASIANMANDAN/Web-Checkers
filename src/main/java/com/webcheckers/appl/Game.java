@@ -38,6 +38,23 @@ public class Game {
     }
 
     /**
+     * Constructor for a Game object which accepts a board configuration for
+     * ease of testing.
+     *
+     * @param red the player who initiated the game, i.e. who selected
+     *           an opponent and hit play
+     * @param white the player who was chosen and gets redirected from home
+     * @param board a board configuration
+     */
+    public Game(Player red, Player white, Space[][] board) throws Exception {
+        this.red = red;
+        this.white = white;
+
+        //Input the given board
+        this.board = new Board(board, Board.ActiveColor.RED);
+    }
+
+    /**
      * Gets the red player.
      *
      * @return the player object
@@ -104,6 +121,22 @@ public class Game {
      */
     protected void undoMove(Move move) {
         this.board.undoMove(move);
+    }
+
+    /**
+     * Return the piece color of a given player.
+     *
+     * @param player the player whose color to find
+     * @return the players piece color
+     */
+    protected Piece.Color getPlayerColor(Player player) {
+        if (player.equals(this.red)) {
+            return Piece.Color.RED;
+        }
+        if (player.equals(this.white)) {
+            return Piece.Color.WHITE;
+        }
+        return null;
     }
 
     /**
