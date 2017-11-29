@@ -23,6 +23,7 @@ public class GetHomeRoute implements Route {
   static final String MESSAGE_ATTR = "message";
   static final String GAMES_IN_PROGRESS_ATTR = "allGames";
   static final String NUM_OF_GAMES_ATTR = "numGames";
+	static final String JUST_PLAYED = "justPlayed";
 
   //Key in the session attribute map for the playerLobby object
   static final String PLAYERLOBBY_KEY = "playerLobby";

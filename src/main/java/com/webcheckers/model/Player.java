@@ -1,5 +1,10 @@
 package com.webcheckers.model;
 
+import com.webcheckers.appl.Game;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
 /**
  * PLayer instance. Contains username for the instance of that Player.
  *
@@ -11,6 +16,7 @@ package com.webcheckers.model;
 public class Player {
 
     private final String username;
+    private final ArrayList<Game> gamesPlayed;
 
     /**
      * Instantiates Player with a username.
@@ -19,6 +25,7 @@ public class Player {
      */
     public Player(String newUserName){
         this.username = newUserName;
+        this.gamesPlayed = new ArrayList<>();
     }
 
     /**
@@ -53,5 +60,14 @@ public class Player {
     @Override
     public int hashCode() {
         return username.hashCode();
+    }
+
+    /**
+     * Once the Player is done with a game, it is added to the list
+     * of completed games.
+     * @param game completed game to add to gamesPlayed
+     */
+    public void addGame(Game game){
+        this.gamesPlayed.add(game);
     }
 }

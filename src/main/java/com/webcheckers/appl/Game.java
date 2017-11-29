@@ -6,6 +6,8 @@ import com.webcheckers.model.board.Piece;
 import com.webcheckers.model.board.Space;
 import com.webcheckers.ui.boardView.Move;
 
+import java.util.ArrayList;
+
 /**
  * Application tier class which contains all needed information
  * for passing a game to the UI controller.
@@ -20,6 +22,7 @@ public class Game {
     Player red;
     Player white;
     Board board;
+    ArrayList<Move> listOfMoves;
 
     /**
      * Constructor for a Game object.
@@ -35,6 +38,7 @@ public class Game {
         //Create a new board and set it up for gameplay
         this.board = new Board();
         this.board.newGame();
+        this.listOfMoves = new ArrayList<>();
     }
 
     /**
@@ -121,6 +125,10 @@ public class Game {
      */
     protected void undoMove(Move move) {
         this.board.undoMove(move);
+
+        //Remove last move
+        int lastIndex = listOfMoves.size()-1;
+        listOfMoves.remove(lastIndex);
     }
 
     /**
@@ -185,5 +193,13 @@ public class Game {
             return null;
         }
         return getRedPlayer().getUsername() + " vs " + getWhitePlayer().getUsername();
+    }
+
+    /**
+     * Adds move to list of total moves in game.
+     * @param move move to be added.
+     */
+    public void addMove(Move move) {
+        listOfMoves.add(move);
     }
 }

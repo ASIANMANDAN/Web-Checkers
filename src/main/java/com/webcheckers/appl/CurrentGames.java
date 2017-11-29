@@ -243,6 +243,16 @@ public class CurrentGames {
     }
 
     /**
+     * Adds move to list of Moves in a Game.
+     * @param move move to be added
+     */
+    public void addMove(Player player, Move move){
+        Game game = getGame(player);
+        game.addMove(move);
+    }
+
+
+    /**
      * Checks if the move made is a winning move.
      *
      * @param player any player associated with the game in question

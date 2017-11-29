@@ -52,6 +52,9 @@ public class PostValidateMove implements Route {
             httpSession.attribute(MOVE_MADE_KEY, true);
             currentGames.makeMove(currentPlayer, move);
 
+            //Add move to the Game's list of moves for Replay Mode
+            currentGames.addMove(currentPlayer, move);
+
             //Save the valid move in case player chooses to undo the move
             httpSession.attribute(MOVE_KEY, move);
           
