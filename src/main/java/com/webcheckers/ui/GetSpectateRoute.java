@@ -7,8 +7,12 @@ import com.webcheckers.model.board.Board;
 import com.webcheckers.model.board.Space;
 import spark.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
+
+import static spark.Spark.halt;
 
 /**
  * The UI controller to get the Game page when spectating.
@@ -66,10 +70,32 @@ public class GetSpectateRoute implements Route{
         Player currentPlayer = httpSession.attribute(CURR_PLAYER);
         CurrentGames currentGames = httpSession.attribute(CURRENTGAMES_KEY);
 
+        //Case for when no game was selected to spectate
+        //Return to home with error message
+        if(request.queryParams(GAME_PARAM) == null){
+            String msg = "Please select an ongoing game before hitting spectate.";
+            httpSession.attribute(MESSAGE_KEY, msg);
+            response.redirect(WebServer.HOME_URL);
+            halt();
+            return null;
+        }
+
         Player red = currentGames.getRedPlayer(new Player(request.queryParams(GAME_PARAM)));
         Player white = currentGames.getOpponent(red);
         Space[][] board = currentGames.getBoard(red);
+        Board.ActiveColor turn = currentGames.getTurn(red);
 
-        return null;
+        //Start building the view-model
+        Map<String, Object> vm = new HashMap<>();
+        vm.put("title", "Game");
+
+        vm.put(MODE_ATTR, Board.ViewMode.SPECTATE);
+        vm.put(CURR_PLAYER, currentPlayer);
+        vm.put(RED_PLAYER_ATTR, red);
+        vm.put(WHITE_PLAYER_ATTR, white);
+        vm.put(ACTIVE_ATTR, turn);
+        vm.put(BOARD_ATTR, board);
+
+        return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }
 }
