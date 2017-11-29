@@ -94,6 +94,11 @@ public class WebServer {
   public static final String SUBMIT_URL = "/submitTurn";
   public static final String VALIDATE_URL = "/validateMove";
 
+  /**
+   * The URL pattern to submit a game,
+   */
+  public static final String SPECTATE_URL = "/spectate";
+
   //
   // Attributes
   //
@@ -196,6 +201,9 @@ public class WebServer {
 
     //Route for starting and playing a game
     get(GAME_URL, new GetGameRoute(templateEngine));
+
+    //Route for spectating a game.
+    get(SPECTATE_URL, new GetSpectateRoute(templateEngine));
 
     //Route for checking if it is a players turn
     post(CHECKTURN_URL, new PostCheckTurnRoute());

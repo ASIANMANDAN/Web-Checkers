@@ -7,6 +7,7 @@ import com.webcheckers.model.board.Piece;
 import com.webcheckers.model.board.Space;
 import com.webcheckers.ui.boardView.Move;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -304,11 +305,11 @@ public class CurrentGames {
      */
     public ArrayList<String> getGamesList(){
         ArrayList inProgress = new ArrayList();
-        for(Game game : currentGames){
-            if(game.toString() != null){
-                inProgress.add(game.toString());
+        currentGames.forEach((Player, Game) ->{
+            if(Game.toString() != null && !inProgress.contains(Game.toString())){
+                inProgress.add(Game.toString());
             }
-        }
+        } );
         return inProgress;
     }
 

@@ -1,14 +1,17 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.appl.CurrentGames;
-import com.webcheckers.appl.Game;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
-import com.webcheckers.model.board.Space;
+import com.webcheckers.ui.boardView.BoardView;
 import spark.*;
 
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Objects;
 import java.util.logging.Logger;
+
+import static spark.Spark.halt;
 
 /**
  * The UI controller to get the Game page when spectating.
@@ -18,11 +21,10 @@ import java.util.logging.Logger;
  * @author Kevin Paradis
  * @author Nathan Farrell
  */
-public class GetSpectateRoute {
-    private static final Logger LOG = Logger.getLogger(GetSpectateRoute.class.getName());
+public class GetSpectateRoute implements Route{
 
     //FTL file which is responsible for rendering the page
-    static final String VIEW_NAME = "game.ftl";
+    static final String VIEW_NAME = "spectate.ftl";
     static final String MODE_ATTR = "viewMode";
     static final String RED_PLAYER_ATTR = "redPlayer";
     static final String WHITE_PLAYER_ATTR = "whitePlayer";
@@ -66,10 +68,31 @@ public class GetSpectateRoute {
         Player currentPlayer = httpSession.attribute(CURR_PLAYER);
         CurrentGames currentGames = httpSession.attribute(CURRENTGAMES_KEY);
 
+        //Case for when no game was selected to spectate
+        //Return to home with error message
+        if(request.queryParams(GAME_PARAM) == null){
+            String msg = "Please select an ongoing game before hitting spectate.";
+            httpSession.attribute(MESSAGE_KEY, msg);
+            response.redirect(WebServer.HOME_URL);
+            halt();
+            return null;
+        }
+
         Player red = currentGames.getRedPlayer(new Player(request.queryParams(GAME_PARAM)));
         Player white = currentGames.getOpponent(red);
-        Space[][] board = currentGames.getBoard(red);
+        Board.ActiveColor turn = currentGames.getTurn(red);
 
-        return null;
+        //Start building the view-model
+        Map<String, Object> vm = new HashMap<>();
+        vm.put("title", "Game");
+
+        vm.put(MODE_ATTR, Board.ViewMode.SPECTATOR);
+        vm.put(CURR_PLAYER, currentPlayer);
+        vm.put(RED_PLAYER_ATTR, red);
+        vm.put(WHITE_PLAYER_ATTR, white);
+        vm.put(ACTIVE_ATTR, turn);
+        vm.put(BOARD_ATTR, new BoardView(red, currentGames));
+
+        return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }
 }
