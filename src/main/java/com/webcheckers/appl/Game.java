@@ -202,4 +202,6 @@ public class Game {
     public void addMove(Move move) {
         listOfMoves.add(move);
     }
+
+    public ArrayList<Move> getListOfMoves(){return listOfMoves;}
 }

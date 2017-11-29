@@ -89,15 +89,24 @@ public class WebServer {
   public static final String BACKUP_URL = "/backupMove";
 
   /**
-   * The URL pattern to submit a players move
+   * The URL pattern to submit a player's move
    */
   public static final String SUBMIT_URL = "/submitTurn";
+
+  /**
+   * The URL pattern to validate a move
+   */
   public static final String VALIDATE_URL = "/validateMove";
 
   /**
    * The URL pattern to submit a game,
    */
   public static final String SPECTATE_URL = "/spectate";
+
+  /**
+   * The URL pattern to replay a game,
+   */
+  public static final String REPLAY_URL = "/replay";
 
   //
   // Attributes
@@ -204,6 +213,9 @@ public class WebServer {
 
     //Route for spectating a game.
     get(SPECTATE_URL, new GetSpectateRoute(templateEngine));
+
+    //Route for replaying a game.
+    get(REPLAY_URL, new GetReplayRoute(templateEngine));
 
     //Route for checking if it is a players turn
     post(CHECKTURN_URL, new PostCheckTurnRoute());
