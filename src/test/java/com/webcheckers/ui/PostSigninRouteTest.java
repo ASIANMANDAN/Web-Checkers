@@ -26,6 +26,9 @@ import static org.mockito.Mockito.when;
  */
 public class PostSigninRouteTest {
 
+    private final String SPACE = "The username you selected is invalid as it " +
+            "contains spaces.";
+
     private PostSigninRoute CuT;
 
     //Objects to mock
@@ -72,6 +75,36 @@ public class PostSigninRouteTest {
         assertEquals("Sign-in", vm.get("title"));
         assertEquals("The username you selected was invalid as it contains double quotation marks.",
                 vm.get(PostSigninRoute.MESSAGE_ATTR));
+    }
+
+    /**
+     * Test the sign in page will display the correct error message when the
+     * submitted username has a space.
+     */
+    @Test
+    public void test_space_sign_in() {
+        //Create scenario for having a space in username
+        when(request.queryParams(PostSigninRoute.USERNAME_PARAM)).thenReturn("ab ba");
+        final Response response = mock(Response.class);
+        when(playerLobby.signIn("ab ba")).thenReturn(PlayerLobby.InputResult.SPACE);
+        when(session.attribute(GetHomeRoute.PLAYERLOBBY_KEY)).thenReturn(playerLobby);
+
+        final MyModelAndView myModelAndView = new MyModelAndView();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(MyModelAndView.makeAnswer(myModelAndView));
+
+        //Invoke the test
+        CuT.handle(request, response);
+
+        //Check the model is a non-null Map.
+        final Object model = myModelAndView.model;
+        assertNotNull(model);
+        assertTrue(model instanceof Map);
+
+        //Check that the correct title and message displays
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> vm = (Map<String, Object>) model;
+        assertEquals("Sign-in", vm.get("title"));
+        assertEquals(SPACE, vm.get(PostSigninRoute.MESSAGE_ATTR));
     }
 
     /**
