@@ -1,10 +1,8 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.appl.CurrentGames;
-import com.webcheckers.appl.Game;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
-import com.webcheckers.model.board.Space;
 import com.webcheckers.ui.boardView.BoardView;
 import spark.*;
 
@@ -24,7 +22,6 @@ import static spark.Spark.halt;
  * @author Nathan Farrell
  */
 public class GetSpectateRoute implements Route{
-    private static final Logger LOG = Logger.getLogger(GetSpectateRoute.class.getName());
 
     //FTL file which is responsible for rendering the page
     static final String VIEW_NAME = "spectate.ftl";
