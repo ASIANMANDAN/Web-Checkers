@@ -3,6 +3,7 @@ package com.webcheckers.appl;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.Validate;
 import com.webcheckers.model.board.Board;
+import com.webcheckers.model.board.Piece;
 import com.webcheckers.model.board.Space;
 import com.webcheckers.ui.boardView.Move;
 
@@ -71,6 +72,23 @@ public class CurrentGames {
      */
     public void addGame(Player red, Player white) throws Exception {
         Game game = new Game(red, white);
+        currentGames.put(red, game);
+        currentGames.put(white, game);
+    }
+
+    /**
+     * Creates a Game object and adds it to the list of
+     * all ongoing games.
+     *
+     * @param red the player to be assigned red
+     * @param white the player to be assigned white
+     * @param board a board configuration
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
+     */
+    public void addGame(Player red, Player white, Space[][] board) throws Exception {
+        Game game = new Game(red, white, board);
         currentGames.put(red, game);
         currentGames.put(white, game);
     }
@@ -146,6 +164,20 @@ public class CurrentGames {
     }
 
     /**
+     * Return the piece color of a given player.
+     *
+     * @param player the player whose color to find
+     * @return the players piece color
+     */
+    public Piece.Color getPlayerColor(Player player) {
+        Game game = getGame(player);
+        if (game != null) {
+            return game.getPlayerColor(player);
+        }
+        return null;
+    }
+
+    /**
      * Sets a given player to null in the Game object.
      * This represents a player who has resigned.
      *
@@ -194,7 +226,6 @@ public class CurrentGames {
 
         //Copy the board to pass to validator to avoid it making changes
         Board board = new Board(getBoard(player), getTurn(player));
-
         return validator.continueJump(move, board);
     }
 
@@ -212,6 +243,24 @@ public class CurrentGames {
             return true;
         }
         return false;
+    }
+
+    /**
+     * Checks if the move made is a winning move.
+     *
+     * @param player any player associated with the game in question
+     * @return the piece color of the victorious player, null if no winner
+     */
+    public Piece.Color hasWon(Player player) throws Exception {
+        Game game = getGame(player);
+
+        if (game != null){
+            //Copy the board to pass to validator to avoid it making changes
+            Board board = new Board(getBoard(player), getTurn(player));
+            return validator.hasWon(board);
+        }
+
+        return null;
     }
 
     /**

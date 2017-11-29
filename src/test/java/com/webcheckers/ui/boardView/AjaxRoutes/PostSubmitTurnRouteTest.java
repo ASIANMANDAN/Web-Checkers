@@ -43,7 +43,6 @@ public class PostSubmitTurnRouteTest {
         when(request.session()).thenReturn(session);
         when(session.attribute(PostSubmitTurnRoute.CURRENTGAMES_KEY)).thenReturn(currentGames);
         when(session.attribute(PostSubmitTurnRoute.CURR_PLAYER)).thenReturn(player);
-        when(session.attribute(PostSubmitTurnRoute.MOVE_KEY)).thenReturn(move);
 
         CuT = new PostSubmitTurnRoute();
     }
@@ -53,7 +52,7 @@ public class PostSubmitTurnRouteTest {
      * with no errors.
      */
     @Test
-    public void test_submitTurn_0() {
+    public void test_submitTurn() {
         final Response response = mock(Response.class);
 
         when(currentGames.makeMove(player, move)).thenReturn(true);
@@ -62,20 +61,5 @@ public class PostSubmitTurnRouteTest {
         Object message = CuT.handle(request, response);
 
         assertEquals("{\"text\":\"\",\"type\":\"info\"}", message);
-    }
-
-    /**
-     * Test that the Message returned is correct when a move cannot be made.
-     */
-    @Test
-    public void test_submitTurn_1() {
-        final Response response = mock(Response.class);
-
-        when(currentGames.makeMove(player, move)).thenReturn(false);
-
-        // Invoke the test
-        Object message = CuT.handle(request, response);
-
-        assertEquals("{\"text\":\"\",\"type\":\"error\"}", message);
     }
 }

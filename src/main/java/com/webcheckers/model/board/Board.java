@@ -4,6 +4,9 @@ import com.webcheckers.ui.boardView.Move;
 import com.webcheckers.ui.boardView.Position;
 import java.util.Stack;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  * Model tier class that represents the checkers board.
  *
@@ -22,6 +25,10 @@ public class Board {
 
     private Space[][] board;
     public ActiveColor currentTurn;
+
+    //Number of checker pieces on the board per color
+    private int numOfWhitePieces = 0;
+    private int numOfRedPieces = 0;
 
     //A stack to remember what pieces were captured in a given turn
     private Stack<Piece> capturedPieces = new Stack<>();
@@ -69,6 +76,26 @@ public class Board {
     public Board(Space[][] board, Board.ActiveColor turn) throws Exception {
         this.board = board;
         this.currentTurn = turn;
+
+        int red = 0;
+        int white = 0;
+        //Count the number of pieces on the passed in board
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+                Space space = this.board[i][j];
+                if (space.getPiece() != null) {
+                    if (space.getPiece().getColor() == Piece.Color.RED) {
+                        red++;
+                    }
+                    if (space.getPiece().getColor() == Piece.Color.WHITE) {
+                        white++;
+                    }
+                }
+
+            }
+        }
+        this.numOfRedPieces = red;
+        this.numOfWhitePieces = white;
     }
 
     /**
@@ -98,6 +125,8 @@ public class Board {
                 }
             }
         }
+        this.numOfRedPieces = 12;
+        this.numOfWhitePieces = 12;
     }
 
     /**
@@ -119,7 +148,16 @@ public class Board {
 
         //"Capture" an opponents Piece if a jump occurred
         if (middle != null) {
+
+            //Update the piece count
+            if(middle.getPiece().getColor() == Piece.Color.RED){
+                numOfRedPieces--;
+            }else{
+                numOfWhitePieces--;
+            }
+
             this.capturedPieces.push(middle.getPiece());
+
             board[middle.getRow()][middle.getCol()].removePiece();
         }
 
@@ -152,6 +190,13 @@ public class Board {
         //"Capture" an opponents Piece if a jump occurred
         if (middle != null) {
 
+            //Update the piece count
+            if(middle.getPiece().getColor() == Piece.Color.RED){
+                numOfRedPieces++;
+            }else{
+                numOfWhitePieces++;
+            }
+
             //Replace a piece if the middle space is null. This is in case
             //a player chooses to undo a jump
             if (middle.getPiece() == null && !this.capturedPieces.empty()) {
@@ -181,6 +226,37 @@ public class Board {
         //Create a new Stack so pieces captured in a previous
         //turn are not remembered
         this.capturedPieces = new Stack<>();
+    }
+
+    /**
+     * Finds the first instance of a players piece on the board.
+     *
+     * @param player the desired players piece color
+     * @return the coordinates for that piece as a Space
+     */
+    public Space findPiece(Piece.Color player) {
+
+        for (int i = 0; i < size; i++) {
+            for (int j = 0; j < size; j++) {
+
+                if (player == Piece.Color.RED) {
+                    Space space = board[i][j];
+
+                    if (space.getPiece() != null &&
+                            space.getPiece().getColor() == Piece.Color.RED) {
+                        return space;
+                    }
+                } else {
+                    Space space = board[i][j];
+
+                    if (space.getPiece() != null &&
+                            space.getPiece().getColor() == Piece.Color.WHITE) {
+                        return space;
+                    }
+                }
+            }
+        }
+        return null;
     }
 
     /**
@@ -241,6 +317,24 @@ public class Board {
             }
         }
         return board[rowMiddle][colMiddle];
+    }
+
+    /**
+     * Retrieves num of white pieces.
+     *
+     * @return # of white pieces
+     */
+    public int getNumOfWhitePieces(){
+        return numOfWhitePieces;
+    }
+
+    /**
+     * Retrieves num of red pieces
+     *
+     * @return # of red pieces
+     */
+    public int getNumOfRedPieces(){
+        return numOfRedPieces;
     }
 
     /**
