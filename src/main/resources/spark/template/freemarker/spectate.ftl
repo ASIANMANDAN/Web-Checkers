@@ -14,6 +14,7 @@
     "whitePlayer" : "${whitePlayer.username}",
     "activeColor" : "${activeColor}"
   };
+  window.alert = function() {};
   </script>
 </head>
 <body>

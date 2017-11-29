@@ -205,7 +205,7 @@ public class BoardTest {
     public void test_viewEnum(){
         assertEquals(Board.ViewMode.PLAY, Board.ViewMode.valueOf("PLAY"));
         assertEquals(Board.ViewMode.REPLAY, Board.ViewMode.valueOf("REPLAY"));
-        assertEquals(Board.ViewMode.SPECTATE, Board.ViewMode.valueOf("SPECTATE"));
+        assertEquals(Board.ViewMode.SPECTATOR, Board.ViewMode.valueOf("SPECTATOR"));
     }
 
     /**
