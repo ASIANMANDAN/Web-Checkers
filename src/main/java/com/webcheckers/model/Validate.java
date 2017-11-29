@@ -28,7 +28,7 @@ public class Validate {
      * @return a message stating either that a move is valid or why
      *         one isn't
      */
-    public String isValid(Move move, Board board) {
+    public static String isValid(Move move, Board board) {
         String message = null;
 
         ArrayList<Move> validJumps = isJumpPresent(move, board);
@@ -62,7 +62,7 @@ public class Validate {
      * @return a message stating either that a move is valid or why
      *         one isn't
      */
-    public String continueJump(Move move, Board board) {
+    public static String continueJump(Move move, Board board) {
         String message = null;
 
         //Get the Space where the moving piece currently stands
@@ -93,7 +93,7 @@ public class Validate {
      * @param move the proposed move to make
      * @return whether or not the move is diagonal
      */
-    private boolean isDiagonal(Move move) {
+    private static boolean isDiagonal(Move move) {
       
         Position start = move.getStart();
         Position end = move.getEnd();
@@ -150,7 +150,7 @@ public class Validate {
      * @param move Move to be checked.
      * @return bool if adjacent
      */
-    private boolean isAdjacent(Move move){
+    private static boolean isAdjacent(Move move){
 
         // Get Positions
         Position initialPosition = move.getStart();
@@ -184,7 +184,7 @@ public class Validate {
      * @return whether or not the proposed move is backwards for the
      *         given piece
      */
-    private boolean isBackwards(Move move, Board board) {
+    private static boolean isBackwards(Move move, Board board) {
 
         Position start = move.getStart();
         Position end = move.getEnd();
@@ -217,7 +217,7 @@ public class Validate {
      * @param validJumps a list of all valid jumps that can currently be made
      * @return whether or not the Move mad was a jump or not
      */
-    private boolean didJump(Move move, ArrayList<Move> validJumps) {
+    private static boolean didJump(Move move, ArrayList<Move> validJumps) {
         return validJumps.contains(move);
     }
 
@@ -230,7 +230,7 @@ public class Validate {
      * @return an ArrayList of valid jumps. If the list is empty then no jump
      *         is present.
      */
-    private ArrayList<Move> isJumpPresent(Move move, Board board) {
+    private static ArrayList<Move> isJumpPresent(Move move, Board board) {
         ArrayList<Move> validJumps = new ArrayList<>();
 
         int row = move.getStart().getRow();
@@ -267,7 +267,7 @@ public class Validate {
      * @param board the game Board
      * @return whether or not an opponents piece is adjacent to the given Space
      */
-    private boolean opponentNearby(Space space, Board board) {
+    private static boolean opponentNearby(Space space, Board board) {
 
         int row = space.getRow();
         int col = space.getCol();
@@ -337,7 +337,7 @@ public class Validate {
      * @param board the game board
      * @return a collection of all valid jump Moves
      */
-    private ArrayList<Move> getJumps(Space space, Board board) {
+    private static ArrayList<Move> getJumps(Space space, Board board) {
         ArrayList<Move> jumps = new ArrayList<>();
 
         int row = space.getRow();

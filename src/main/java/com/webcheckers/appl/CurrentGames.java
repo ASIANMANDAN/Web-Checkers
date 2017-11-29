@@ -24,14 +24,11 @@ public class CurrentGames {
     //private static ArrayList<Game> currentGames;
     private static HashMap<Player, Game> currentGames;
 
-    private static Validate validator;
-
     /**
      * Default constructor, creates an empty list of games.
      */
     public CurrentGames() {
         currentGames = new HashMap<>();
-        validator = new Validate();
     }
 
     /**
@@ -41,7 +38,6 @@ public class CurrentGames {
      */
     public CurrentGames(HashMap<Player, Game> cg) {
         currentGames = cg;
-        validator = new Validate();
     }
 
     /**
@@ -176,7 +172,7 @@ public class CurrentGames {
 
         //Copy the board to pass to validator to avoid it making changes
         Board board = new Board(getBoard(player), getTurn(player));
-        return validator.isValid(move, board);
+        return Validate.isValid(move, board);
     }
 
     /**
@@ -195,7 +191,7 @@ public class CurrentGames {
         //Copy the board to pass to validator to avoid it making changes
         Board board = new Board(getBoard(player), getTurn(player));
 
-        return validator.continueJump(move, board);
+        return Validate.continueJump(move, board);
     }
 
     /**
