@@ -42,7 +42,7 @@
         </form>
         <br />
 
-        <form action="./game" method="GET">
+        <form action="./spectate" method="GET">
             <#if numGames == 0 >
                 <p>No games are currently being played.</p>
             <#else>
