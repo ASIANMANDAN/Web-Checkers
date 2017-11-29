@@ -28,7 +28,7 @@ public class Validate {
      * @return a message stating either that a move is valid or why
      *         one isn't
      */
-    public String isValid(Move move, Board board) {
+    public static String isValid(Move move, Board board) {
         String message = null;
 
         ArrayList<Move> validJumps = isJumpPresent(move, board);
@@ -62,7 +62,7 @@ public class Validate {
      * @return a message stating either that a move is valid or why
      *         one isn't
      */
-    public String continueJump(Move move, Board board) {
+    public static String continueJump(Move move, Board board) {
         String message = null;
 
         //Get the Space where the moving piece currently stands
@@ -93,7 +93,7 @@ public class Validate {
      * @param move the proposed move to make
      * @return whether or not the move is diagonal
      */
-    private boolean isDiagonal(Move move) {
+    private static boolean isDiagonal(Move move) {
       
         Position start = move.getStart();
         Position end = move.getEnd();
@@ -150,7 +150,7 @@ public class Validate {
      * @param move Move to be checked.
      * @return bool if adjacent
      */
-    private boolean isAdjacent(Move move){
+    private static boolean isAdjacent(Move move){
 
         // Get Positions
         Position initialPosition = move.getStart();
@@ -184,7 +184,7 @@ public class Validate {
      * @return whether or not the proposed move is backwards for the
      *         given piece
      */
-    private boolean isBackwards(Move move, Board board) {
+    private static boolean isBackwards(Move move, Board board) {
 
         Position start = move.getStart();
         Position end = move.getEnd();
@@ -217,7 +217,7 @@ public class Validate {
      * @param validJumps a list of all valid jumps that can currently be made
      * @return whether or not the Move mad was a jump or not
      */
-    private boolean didJump(Move move, ArrayList<Move> validJumps) {
+    private static boolean didJump(Move move, ArrayList<Move> validJumps) {
         return validJumps.contains(move);
     }
 
@@ -230,7 +230,7 @@ public class Validate {
      * @return an ArrayList of valid jumps. If the list is empty then no jump
      *         is present.
      */
-    private ArrayList<Move> isJumpPresent(Move move, Board board) {
+    private static ArrayList<Move> isJumpPresent(Move move, Board board) {
         ArrayList<Move> validJumps = new ArrayList<>();
 
         int row = move.getStart().getRow();
@@ -267,7 +267,7 @@ public class Validate {
      * @param board the game Board
      * @return whether or not an opponents piece is adjacent to the given Space
      */
-    private boolean opponentNearby(Space space, Board board) {
+    private static boolean opponentNearby(Space space, Board board) {
 
         int row = space.getRow();
         int col = space.getCol();
@@ -330,6 +330,80 @@ public class Validate {
     }
 
     /**
+     * Check the current board configuration to see if a player has won.
+     *
+     * @param board the current board configuration
+     * @return the piece color of the victorious player or null if no one has won
+     */
+    public static Piece.Color hasWon(Board board) {
+
+        if (board.getNumOfRedPieces() == 0) {
+            return Piece.Color.WHITE;
+        }
+
+        if (board.getNumOfWhitePieces() == 0) {
+            return Piece.Color.RED;
+        }
+
+        //Construct the list of all viable moves
+        ArrayList<Move> redMoves = getAllMoves(Piece.Color.RED, board);
+
+        //Construct the list of all viable moves
+        ArrayList<Move> whiteMoves = getAllMoves(Piece.Color.WHITE, board);
+
+        //List size of 0 indicates that the player has either no remaining
+        //pieces or all remaining pieces are blocked by opponent
+        if (redMoves != null && redMoves.size() == 0) {
+            return Piece.Color.WHITE;
+        }
+
+        //List size of 0 indicates that the player has either no remaining
+        //pieces or all remaining pieces are blocked by opponent
+        if (whiteMoves != null && whiteMoves.size() == 0) {
+            return Piece.Color.RED;
+        }
+        return null;
+    }
+
+    /**
+     * Get a collection of all valid movements that can be made by a
+     * given player.
+     *
+     * @param color the players piece color
+     * @param board a configuration of the gameboard
+     * @return a collection of all valid moves
+     */
+    private static ArrayList<Move> getAllMoves(Piece.Color color, Board board) {
+        ArrayList<Move> validMoves = new ArrayList<>();
+
+        Space[][] gameboard = board.getBoard();
+
+        //Iterate through the board model
+        for (int i=0; i < Board.size; i++) {
+            for (int j=0; j < Board.size; j++) {
+
+                Space space = gameboard[i][j];
+                Piece piece = space.getPiece();
+
+                //Determine if a piece belongs to the active players
+                if (piece != null && piece.getColor() == color) {
+                    ArrayList<Move> temp = new ArrayList<>();
+
+                    //Check if an opponent is nearby, if one is,
+                    //determine if it can be jumped
+                    if (opponentNearby(space, board)) {
+                        temp = getJumps(space, board);
+                    } else {
+                        temp = getMoves(space, board);
+                    }
+                    validMoves.addAll(temp);
+                }
+            }
+        }
+        return validMoves;
+    }
+
+    /**
      * Get a collection of all valid jump movements that can be made from
      * a given Space on the Board.
      *
@@ -337,8 +411,12 @@ public class Validate {
      * @param board the game board
      * @return a collection of all valid jump Moves
      */
-    private ArrayList<Move> getJumps(Space space, Board board) {
+    private static ArrayList<Move> getJumps(Space space, Board board) {
         ArrayList<Move> jumps = new ArrayList<>();
+
+        if (space == null) {
+            return null;
+        }
 
         int row = space.getRow();
         int col = space.getCol();
@@ -452,5 +530,114 @@ public class Validate {
             }
         }
         return jumps;
+    }
+
+    /**
+     * Get a collection of all valid non-jump movements that can be made from
+     * a given Space on the Board.
+     *
+     * @param space the Space where possible jumps will start from
+     * @param board the game board
+     * @return a collection of all valid Moves
+     */
+    private static ArrayList<Move> getMoves(Space space, Board board) {
+        ArrayList<Move> moves = new ArrayList<>();
+
+        if (space == null) {
+            return null;
+        }
+
+        int row = space.getRow();
+        int col = space.getCol();
+
+        Space[][] gameBoard = board.getBoard();
+
+        Piece piece = space.getPiece();
+        Piece.Color color = piece.getColor();
+
+        //Ensure that a move upwards can be made by the piece and won't be out
+        //of bounds
+        if (((row - 1) >= 0 && color == Piece.Color.RED) ||
+                ((row - 1) >= 0 && piece.getType() == Piece.Type.KING)) {
+
+            //Ensure that a move in the upper left direction won't be out of bounds
+            if ((col - 1) >= 0) {
+
+                Space end = gameBoard[row - 1][col - 1];
+                Piece pieceEnd = end.getPiece();
+
+                //Check that the Space in question is not taken
+                if (pieceEnd == null) {
+
+                    Position pStart = new Position(row, col);
+                    Position pEnd = new Position(end.getRow(), end.getCol());
+                    Move move = new Move(pStart, pEnd);
+
+                    //Add move to list of valid moves
+                    moves.add(move);
+                }
+            }
+
+            //Ensure that a move in the upper right direction won't be out of bounds
+            if ((col + 1) <= Board.size - 1) {
+
+                Space end = gameBoard[row - 1][col + 1];
+                Piece pieceEnd = end.getPiece();
+
+                //Check that the Space in question is not taken
+                if (pieceEnd == null) {
+
+                    Position pStart = new Position(row, col);
+                    Position pEnd = new Position(end.getRow(), end.getCol());
+                    Move move = new Move(pStart, pEnd);
+
+                    //Add move to list of valid moves
+                    moves.add(move);
+                }
+            }
+        }
+
+        //Ensure that a move downwards can be made by the piece and won't be out
+        //of bounds
+        if (((row + 1) <= Board.size - 1 && color == Piece.Color.WHITE) ||
+                ((row + 1) <= Board.size - 1 && piece.getType() == Piece.Type.KING)) {
+
+            //Ensure that a move in the lower left direction won't be out of bounds
+            if ((col - 1) >= 0) {
+
+                Space end = gameBoard[row + 1][col - 1];
+                Piece pieceEnd = end.getPiece();
+
+                //Check that the Space in question is not taken
+                if (pieceEnd == null) {
+
+                    Position pStart = new Position(row, col);
+                    Position pEnd = new Position(end.getRow(), end.getCol());
+                    Move move = new Move(pStart, pEnd);
+
+                    //Add move to list of valid moves
+                    moves.add(move);
+                }
+            }
+
+            //Ensure that a jump in the lower right direction won't be out of bounds
+            if ((col + 1) <= Board.size - 1) {
+
+                Space end = gameBoard[row + 1][col + 1];
+                Piece pieceEnd = end.getPiece();
+
+                //Check that the Space in question is not taken
+                if (pieceEnd == null) {
+
+                    Position pStart = new Position(row, col);
+                    Position pEnd = new Position(end.getRow(), end.getCol());
+                    Move move = new Move(pStart, pEnd);
+
+                    //Add move to list of valid moves
+                    moves.add(move);
+                }
+            }
+        }
+        return moves;
     }
 }
