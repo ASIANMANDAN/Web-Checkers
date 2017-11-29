@@ -82,6 +82,14 @@ public class GetSpectateRoute implements Route{
         Player white = currentGames.getOpponent(red);
         Board.ActiveColor turn = currentGames.getTurn(red);
 
+        if(red == null || white == null){
+            String msg = "The game has ended.";
+            httpSession.attribute(MESSAGE_KEY, msg);
+            response.redirect(WebServer.HOME_URL);
+            halt();
+            return null;
+        }
+
         //Start building the view-model
         Map<String, Object> vm = new HashMap<>();
         vm.put("title", "Game");
