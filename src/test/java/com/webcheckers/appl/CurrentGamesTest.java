@@ -369,7 +369,7 @@ public class CurrentGamesTest {
      * game board
      */
     @Test
-    public  void test_hasWon_2() throws Exception{
+    public void test_hasWon_2() throws Exception{
         Space[][] board = new Board().getBoard();
         //Set up a scenario where winning a win is not present
         board[7][6].setPiece(new Piece(Piece.Color.RED, Piece.Type.KING));
@@ -378,6 +378,37 @@ public class CurrentGamesTest {
         board[4][3].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
         Position start = new Position(4,3);
         Position end = new Position(5,2);
+        move = new Move(start, end);
+
+        CuT.removePlayer(red);
+        CuT.removePlayer(white);
+        CuT.addGame(red, white, board);
+
+        assertNull(CuT.hasWon(red));
+        assertTrue(CuT.makeMove(red, move));
+        assertNull(CuT.hasWon(red));
+    }
+
+    /**
+     * Test that a game continues when one piece is trapped but another
+     * can continue moving. Made to target a specific edge case.
+     *
+     * @throws Exception occurs if the given column or row of a space
+     * is greater or less than the bounds established by a standard
+     * game board
+     */
+    @Test
+    public void test_hasWon_3() throws Exception {
+        Space[][] board = new Board().getBoard();
+        //Set up a scenario where winning a win is not present
+        board[1][6].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
+        board[2][5].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
+        board[2][7].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
+        board[6][5].setPiece(new Piece(Piece.Color.RED, Piece.Type.SINGLE));
+        board[0][7].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
+        board[4][5].setPiece(new Piece(Piece.Color.WHITE, Piece.Type.SINGLE));
+        Position start = new Position(4,5);
+        Position end = new Position(5,4);
         move = new Move(start, end);
 
         CuT.removePlayer(red);
