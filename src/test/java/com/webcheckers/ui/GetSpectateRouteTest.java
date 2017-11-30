@@ -172,4 +172,47 @@ public class GetSpectateRouteTest {
         assertTrue(spectator.getWatching());
         assertFalse(lobby.inLobby(spectator));
     }
+
+    /**
+     * Test that a message pops up for the spectator when they have been challenged to a game.
+     */
+    @Test
+    public void test_message() throws Exception {
+        Response response = mock(Response.class);
+        final MyModelAndView myModelView = new MyModelAndView();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(MyModelAndView.makeAnswer(myModelView));
+
+        //Setup the test scenario.
+        when(session.attribute(GetSpectateRoute.CURR_PLAYER)).thenReturn(spectator);
+        when(session.attribute(GetSpectateRoute.CURRENTGAMES_KEY)).thenReturn(currentGames);
+        when(session.attribute(GetSpectateRoute.PLAYERLOBBY_KEY)).thenReturn(lobby);
+        when(lobby.getWatching(spectator.getUsername())).thenReturn(Boolean.FALSE);
+        when(request.queryParams(GetSpectateRoute.GAME_PARAM)).thenReturn("red vs white");
+        when(request.queryParams(GetSpectateRoute.GAME_PARAM)).thenReturn("red");
+        when(lobby.getSelected(spectator.getUsername())).thenReturn(Boolean.TRUE);
+
+        //Invoke the test.
+        CuT.handle(request, response);
+
+        //Check the model is a non null Map
+        final Object model = myModelView.model;
+        assertNotNull(model);
+        assertTrue(model instanceof Map);
+
+        //Check all needed view model data is present
+        final Map<String, Object> vm = (Map<String, Object>) model;
+        assertEquals("Game", vm.get("title"));
+        assertEquals(Board.ViewMode.SPECTATOR, vm.get(GetSpectateRoute.MODE_ATTR));
+        assertEquals(spectator, vm.get(GetSpectateRoute.CURR_PLAYER));
+        assertEquals(red, vm.get(GetSpectateRoute.RED_PLAYER_ATTR));
+        assertEquals(white, vm.get(GetSpectateRoute.WHITE_PLAYER_ATTR));
+        assertEquals(Board.ActiveColor.RED, vm.get(GetSpectateRoute.ACTIVE_ATTR));
+        assertNotNull(vm.get(GetSpectateRoute.BOARD_ATTR));
+        assertEquals("Another player has challenged you to a game! Return to the Home Page if you wish" +
+                " to connect.", vm.get(GetSpectateRoute.SELECTED_ATTR));
+
+        //Player boolean flags updated
+        assertTrue(spectator.getWatching());
+        assertFalse(lobby.inLobby(spectator));
+    }
 }
