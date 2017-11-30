@@ -62,7 +62,7 @@
             <#else>
                <#assign x = 0>
                <#list completedGames as game>
-                   <input type="radio" name="replay" value=x /> ${game} <br />
+                   <input type="radio" name="replay" value=${x} /> ${game} <br />
                    <#assign x += 1>
                </#list> <br />
                <button type="submit">Replay!</button>

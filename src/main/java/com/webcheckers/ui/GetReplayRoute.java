@@ -1,7 +1,6 @@
 package com.webcheckers.ui;
 import com.webcheckers.appl.Game;
 import com.webcheckers.model.Player;
-import com.webcheckers.model.board.Piece;
 import spark.*;
 
 import java.util.ArrayList;
@@ -43,11 +42,10 @@ public class GetReplayRoute implements Route {
         final Session httpSession = request.session();
 
         Player currentPlayer = httpSession.attribute(CURR_PLAYER);
-        HashMap<String, Game> completedGames = httpSession.attribute(COMPLETED_GAMES);
+        ArrayList<Game> completedGames = httpSession.attribute(COMPLETED_GAMES);
         String completedGameName = request.queryParams(COMPLETED_GAME_PARAM);
 
-        Game gameToReplay = completedGames.get(completedGameName);
-        //Piece.Color = currentPlayer.ge
+        Game gameToReplay = completedGames.get(Integer.parseInt(completedGameName));
 
 
         Map<String, Object> vm = new HashMap<>();

@@ -78,18 +78,15 @@ public class GetHomeRoute implements Route {
 	final Session httpSession = request.session();
       Player currentPlayer = httpSession.attribute(CURR_PLAYER);
 
-      HashMap<String, Game> completedGames;
+      ArrayList<Game> completedGames;
       int completedGamesSize;
-      Set<String> completedGameStrings;
 
       if(currentPlayer != null){
           completedGames = currentPlayer.getGamesPlayed();
           completedGamesSize = completedGames.size();
-          completedGameStrings = completedGames.keySet();
       }else{
           completedGames = null;
           completedGamesSize = 0;
-          completedGameStrings = null;
       }
 
 
@@ -106,7 +103,7 @@ public class GetHomeRoute implements Route {
 	//Provide the number of games being played to the view-model.
 	vm.put(NUM_OF_GAMES_ATTR, currentGames.size());
 	//Provide the list of completed Games to the view-model
-      vm.put(COMPLETED_GAMES, completedGameStrings);
+      vm.put(COMPLETED_GAMES, completedGames);
       //Provide the number of completed Gamed to the view-model
       vm.put(NUM_OF_COMPLETED_GAMES, completedGamesSize);
 

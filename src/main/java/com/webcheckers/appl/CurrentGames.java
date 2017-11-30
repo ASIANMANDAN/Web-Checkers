@@ -186,7 +186,7 @@ public class CurrentGames {
             Game gameForReplay = new Game(player, opponent, game.getBoard(), game.getListOfMoves());
             game.removePlayer(player);
             //Remove this player from the map to represent their resignation
-            player.addGame(gameForReplay, gameForReplay.toString());
+            player.addGame(gameForReplay);
             currentGames.remove(player, game);
         }
     }
