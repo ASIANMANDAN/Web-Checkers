@@ -82,6 +82,8 @@ public class GetSpectateRoute implements Route{
         Player white = currentGames.getOpponent(red);
         Board.ActiveColor turn = currentGames.getTurn(red);
 
+        //Case for when a game has ended
+        //Spectators should be redirected to the home page and be told the game ended.
         if(red == null || white == null){
             String msg = "The game has ended.";
             httpSession.attribute(MESSAGE_KEY, msg);
