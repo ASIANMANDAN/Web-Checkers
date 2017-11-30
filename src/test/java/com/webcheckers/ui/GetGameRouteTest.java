@@ -35,13 +35,15 @@ public class GetGameRouteTest {
 
     private GetGameRoute CuT;
 
+    //Friendly object
+    private CurrentGames currentGames;
+
     //Mock objects
     private Request request;
     private Session session;
     private TemplateEngine engine;
     private Player player1;
     private Player player2;
-    private CurrentGames currentGames;
 
     @Before
     public void setup() throws Exception {
