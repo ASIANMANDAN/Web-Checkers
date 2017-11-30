@@ -182,4 +182,14 @@ public class PlayerLobby {
         playerLobby.put(player.getUsername(), player);
     }
 
+    /**
+     * Check if a player is in the lobby
+     *
+     * @param player the player to check
+     * @return true if they are in the lobby, false if they are not.
+     */
+    public boolean inLobby(Player player){
+        return playerLobby.containsKey(player.getUsername());
+    }
+
 }
