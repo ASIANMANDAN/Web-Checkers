@@ -14,6 +14,7 @@
     "whitePlayer" : "${whitePlayer.username}",
     "activeColor" : "${activeColor}"
   };
+  window.alert = function() {};
   </script>
 </head>
 <body>
@@ -31,7 +32,9 @@
 
     <div class="body">
 
-      <p id="help_text"></p>
+      <#if selected??>
+        <p>${selected}</p>
+      </#if>
 
       <div>
         <div id="game-controls">

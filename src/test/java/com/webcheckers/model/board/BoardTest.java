@@ -205,7 +205,7 @@ public class BoardTest {
     public void test_viewEnum(){
         assertEquals(Board.ViewMode.PLAY, Board.ViewMode.valueOf("PLAY"));
         assertEquals(Board.ViewMode.REPLAY, Board.ViewMode.valueOf("REPLAY"));
-        assertEquals(Board.ViewMode.SPECTATE, Board.ViewMode.valueOf("SPECTATE"));
+        assertEquals(Board.ViewMode.SPECTATOR, Board.ViewMode.valueOf("SPECTATOR"));
     }
 
     /**
@@ -256,5 +256,43 @@ public class BoardTest {
         assertTrue(CuT.makeKing(space2));
         assertFalse(CuT.makeKing(space3));
         assertFalse(CuT.makeKing(space4));
+    }
+
+    /**
+     * Test the {@link Board#findPiece(Piece.Color)} method for a red piece.
+     */
+    @Test
+    public void test_find_red(){
+        Space space = CuT.getBoard()[0][1];
+        Piece piece = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
+        space.setPiece(piece);
+        assertEquals(space, CuT.findPiece(Piece.Color.RED));
+    }
+
+    /**
+     * Test the {@link Board#findPiece(Piece.Color)} method for a white piece.
+     */
+    @Test
+    public void test_find_white(){
+        Space space = CuT.getBoard()[0][1];
+        Piece piece = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
+        space.setPiece(piece);
+        assertEquals(space, CuT.findPiece(Piece.Color.WHITE));
+    }
+
+    /**
+     * Test the {@link Board#getMiddle(Move)} method for a piece moving "downward"
+     */
+    @Test
+    public void test_get_middle_down(){
+        Position p1 = new Position(0, 3);
+        Position p2 = new Position(2, 5);
+        Position p3 = new Position(2, 1);
+        Move m1 = new Move(p1, p2);
+        Move m2 = new Move(p1, p3);
+        Space space1 = CuT.getBoard()[1][4];
+        Space space2 = CuT.getBoard()[1][2];
+        assertEquals(space1, CuT.getMiddle(m1));
+        assertEquals(space2, CuT.getMiddle(m2));
     }
 }

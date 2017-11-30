@@ -119,7 +119,7 @@ public class GetReplayRoute implements Route {
 
         vm.put("title", "Replay");
         vm.put(MODE_ATTR, Board.ViewMode.REPLAY);
-        vm.put(MOVELISTSIZE_ATTR, (gameToReplay.getListOfMoves().size()-1));
+        vm.put(MOVELISTSIZE_ATTR, gameToReplay.getListOfMoves().size());
         vm.put(MOVEINDEX_ATTR, currentIndex);
         vm.put(CURR_PLAYER, currentPlayer);
         vm.put(RED_PLAYER_ATTR, gameToReplay.getRedPlayer().getUsername());

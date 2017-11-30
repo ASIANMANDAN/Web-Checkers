@@ -21,7 +21,7 @@ public class Board {
     public enum ActiveColor {RED, WHITE}
 
     //The mode of the Game View
-    public enum ViewMode {PLAY, SPECTATE, REPLAY}
+    public enum ViewMode {PLAY, SPECTATOR, REPLAY}
 
     private Space[][] board;
     public ActiveColor currentTurn;
@@ -265,7 +265,7 @@ public class Board {
      * @param move the Move being made
      * @return the Space that was jumped over (if a jump occurred)
      */
-    private Space getMiddle(Move move) {
+    public Space getMiddle(Move move) {
         Position start = move.getStart();
         Position end = move.getEnd();
 

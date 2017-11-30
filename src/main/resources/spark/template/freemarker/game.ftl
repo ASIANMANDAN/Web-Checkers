@@ -29,8 +29,12 @@
     </div>
     
     <div class="body">
-      
-      <p id="help_text"></p>
+
+      <#if selected??>
+        <p>${selected}</p>
+      <#else>
+        <p id="help_text"></p>
+      </#if>
       
       <div>
         <div id="game-controls">

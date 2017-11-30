@@ -62,4 +62,23 @@ public class PlayerTest {
 
         assertFalse(player.equals(playerString));
     }
+
+    /**
+     * Test the {@Link Player#toggleSelected()} method.
+     */
+    @Test
+    public void test_toggle_selected(){
+        Player CuT = new Player(userName);
+        CuT.toggleSelected();
+        assertTrue(CuT.getSelected());
+    }
+
+    /**
+     * Test the {@Link Player#getSelected()} method.
+     */
+    @Test
+    public void test_get_selected(){
+        Player CuT = new Player(userName);
+        assertFalse(CuT.getSelected());
+    }
 }

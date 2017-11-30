@@ -57,6 +57,7 @@ public class Game {
 
         //Input the given board
         this.board = new Board(board, Board.ActiveColor.RED);
+        this.listOfMoves = new ArrayList<>();
     }
 
     /**

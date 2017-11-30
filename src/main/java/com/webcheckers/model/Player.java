@@ -15,6 +15,14 @@ import java.util.HashMap;
  */
 public class Player {
 
+    //boolean flag for determining when a player is
+    //either spectating or replaying a game
+    private boolean isWatching = false;
+
+    //boolean flag for determining when another player
+    //has chosen this player as an opponent
+    private boolean isSelected = false;
+
     private final String username;
     private final ArrayList<Game> gamesPlayed;
 
@@ -35,6 +43,42 @@ public class Player {
      */
     public String getUsername(){
         return this.username;
+    }
+
+    /**
+     * Toggles the flag within a player object to
+     * indicate that a given player is spectating or
+     * replaying a game.
+     */
+    public void toggleWatching() {
+        isWatching = !isWatching;
+    }
+
+    /**
+     * Get the status of a players isWatching flag.
+     *
+     * @return the status of the isWatching flag
+     */
+    public boolean getWatching() {
+        return isWatching;
+    }
+
+    /**
+     * Toggle the flag within a player object to
+     * indicate that another player has selected to
+     * play a game with the current player.
+     */
+    public void toggleSelected() {
+        isSelected = !isSelected;
+    }
+
+    /**
+     * Get the status of a players isSelected flag.
+     *
+     * @return the status of the isSelected flag
+     */
+    public boolean getSelected() {
+        return isSelected;
     }
 
     /**

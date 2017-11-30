@@ -208,4 +208,35 @@ public class GetHomeRouteTest {
         verify(response).redirect(WebServer.GAME_URL + "?opponent=opponent");
     }
 
+    /**
+     * Test that a spectating or replaying player has their booleans toggled
+     */
+    @Test
+    public void test_busy_opponent(){
+        //Mock two players, one of which will be used as current player
+        Player player1 = new Player("player1");
+        Player player2 = mock(Player.class);
+        when(session.attribute(GetHomeRoute.CURR_PLAYER)).thenReturn(player1);
+        when(player2.getUsername()).thenReturn("opponent");
+        player1.toggleWatching();
+        player1.toggleSelected();
+
+        try {
+            currentGames.addGame(player1, player2);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        final Response response = mock(Response.class);
+
+        // Invoke the test
+        try {
+            CuT.handle(request, response);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        assertFalse(player1.getSelected());
+        assertFalse(player1.getWatching());
+    }
 }

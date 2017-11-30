@@ -35,9 +35,9 @@ public class CurrentGamesTest {
     @Before
     public void test_setUp() throws Exception {
         HashMap<Player, Game> cg = new HashMap<>();
-        Game game1 = mock(Game.class);
-        Game game2 = mock(Game.class);
-        Game game3 = mock(Game.class);
+        Game game1 = new Game(red, white);
+        Game game2 = new Game(red, white);
+        Game game3 = new Game(red, white);
 
         red = mock(Player.class);
         when(red.getUsername()).thenReturn("player");
