@@ -279,4 +279,20 @@ public class BoardTest {
         space.setPiece(piece);
         assertEquals(space, CuT.findPiece(Piece.Color.WHITE));
     }
+
+    /**
+     * Test the {@link Board#getMiddle(Move)} method for a piece moving "downward"
+     */
+    @Test
+    public void test_get_middle_down(){
+        Position p1 = new Position(0, 3);
+        Position p2 = new Position(2, 5);
+        Position p3 = new Position(2, 1);
+        Move m1 = new Move(p1, p2);
+        Move m2 = new Move(p1, p3);
+        Space space1 = CuT.getBoard()[1][4];
+        Space space2 = CuT.getBoard()[1][2];
+        assertEquals(space1, CuT.getMiddle(m1));
+        assertEquals(space2, CuT.getMiddle(m2));
+    }
 }
