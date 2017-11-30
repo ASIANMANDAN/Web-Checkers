@@ -225,6 +225,7 @@ public class Game {
         listOfMoves.add(move);
     }
 
+
     public ArrayList<Move> getListOfMoves(){
         return listOfMoves;
     }
