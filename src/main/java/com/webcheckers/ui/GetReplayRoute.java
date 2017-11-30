@@ -1,6 +1,7 @@
 package com.webcheckers.ui;
 import com.webcheckers.appl.CurrentGames;
 import com.webcheckers.appl.Game;
+import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
 import com.webcheckers.ui.boardView.BoardView;
@@ -38,7 +39,10 @@ public class GetReplayRoute implements Route {
     static final String ACTIVE_ATTR = "activeColor";
     static final String MOVEINDEX_ATTR = "moveIndex";
     static final String MOVELISTSIZE_ATTR = "moveListSize";
+    static final String SELECTED_ATTR = "selected";
 
+    //Key in the session attribute map for the playerLobby object
+    static final String PLAYERLOBBY_KEY = "playerLobby";
     //Key in the session attribute map for a String to be shown in case of error
     static final String MESSAGE_KEY = "message";
     //Key in the session attribute map for the current game being replayed
@@ -69,6 +73,7 @@ public class GetReplayRoute implements Route {
         final Session httpSession = request.session();
 
         Player currentPlayer = httpSession.attribute(CURR_PLAYER);
+        PlayerLobby playerLobby = httpSession.attribute(PLAYERLOBBY_KEY);
         ArrayList<Game> completedGames = httpSession.attribute(COMPLETED_GAMES);
         String gameIndex = request.queryParams(COMPLETED_GAME_PARAM);
 
@@ -81,6 +86,23 @@ public class GetReplayRoute implements Route {
             response.redirect(WebServer.HOME_URL);
             halt();
             return null;
+        }
+
+        //Set the isWatching to true so others know that the
+        //current play is replaying a game
+        if (!playerLobby.getWatching(currentPlayer.getUsername())) {
+            currentPlayer.toggleWatching();
+            playerLobby.updateLobby(currentPlayer);
+        }
+
+        String selectedMessage = null;
+        if (playerLobby.getSelected(currentPlayer.getUsername())) {
+            selectedMessage = "Another player has challenged you to a game! " +
+                    "Return to the Home Page if you wish to connect.";
+            //Change selected to false as the current player would have
+            //already been given the message
+            currentPlayer.toggleSelected();
+            playerLobby.updateLobby(currentPlayer);
         }
 
         //Case for when user has chosen a game to replay
@@ -127,6 +149,7 @@ public class GetReplayRoute implements Route {
         vm.put(ACTIVE_ATTR, gameToReplay.getTurn());
         vm.put(COMPLETED_GAMES, completedGames);
         vm.put(BOARD_ATTR, new BoardView(currentPlayer, gameToReplay));
+        vm.put(SELECTED_ATTR, selectedMessage);
 
         return templateEngine.render(new ModelAndView(vm, VIEW_NAME));
     }
