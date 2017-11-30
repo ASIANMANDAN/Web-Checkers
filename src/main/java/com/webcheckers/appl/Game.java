@@ -137,6 +137,7 @@ public class Game {
      * @param move the move to make
      */
     protected void makeMove(Move move) {
+        addMove(move);
         this.board.makeMove(move);
     }
 
@@ -221,9 +222,7 @@ public class Game {
      * Adds move to list of total moves in game.
      * @param move move to be added.
      */
-    public void addMove(Move move) {
-        listOfMoves.add(move);
-    }
+    public void addMove(Move move) {listOfMoves.add(move);}
 
 
     public ArrayList<Move> getListOfMoves(){

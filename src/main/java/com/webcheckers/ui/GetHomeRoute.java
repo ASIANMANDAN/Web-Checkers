@@ -78,15 +78,18 @@ public class GetHomeRoute implements Route {
 	final Session httpSession = request.session();
       Player currentPlayer = httpSession.attribute(CURR_PLAYER);
 
-      ArrayList<Game> completedGames;
+      HashMap<String, Game> completedGames;
       int completedGamesSize;
+      Set<String> completedGameStrings;
 
       if(currentPlayer != null){
           completedGames = currentPlayer.getGamesPlayed();
           completedGamesSize = completedGames.size();
+          completedGameStrings = completedGames.keySet();
       }else{
           completedGames = null;
           completedGamesSize = 0;
+          completedGameStrings = null;
       }
 
 
@@ -102,8 +105,8 @@ public class GetHomeRoute implements Route {
 	vm.put(GAMES_IN_PROGRESS_ATTR, currentGames.getGamesList());
 	//Provide the number of games being played to the view-model.
 	vm.put(NUM_OF_GAMES_ATTR, currentGames.size());
-      //Provide the list of completed Games to the view-model
-      vm.put(COMPLETED_GAMES, completedGames);
+	//Provide the list of completed Games to the view-model
+      vm.put(COMPLETED_GAMES, completedGameStrings);
       //Provide the number of completed Gamed to the view-model
       vm.put(NUM_OF_COMPLETED_GAMES, completedGamesSize);
 
@@ -116,6 +119,8 @@ public class GetHomeRoute implements Route {
 	httpSession.attribute(PLAYERLOBBY_KEY, playerLobby);
 	//Add currentGames object to session attribute map
 	httpSession.attribute(CURRENTGAMES_KEY, currentGames);
+	//Add completedGames object to session attribute map
+	httpSession.attribute(COMPLETED_GAMES, completedGames);
 
 	//Checks if the current user has been selected upon each refresh
 	//Player currentPlayer = httpSession.attribute(CURR_PLAYER);

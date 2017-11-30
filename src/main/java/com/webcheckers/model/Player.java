@@ -16,7 +16,7 @@ import java.util.HashMap;
 public class Player {
 
     private final String username;
-    private final ArrayList<Game> gamesPlayed;
+    private final HashMap<String, Game> gamesPlayed;
 
     /**
      * Instantiates Player with a username.
@@ -25,7 +25,7 @@ public class Player {
      */
     public Player(String newUserName){
         this.username = newUserName;
-        this.gamesPlayed = new ArrayList<>();
+        this.gamesPlayed = new HashMap<>();
     }
 
     /**
@@ -67,15 +67,16 @@ public class Player {
      * of completed games.
      * @param game completed game to add to gamesPlayed
      */
-    public void addGame(Game game){
-        this.gamesPlayed.add(game);
+    public void addGame(Game game, String gameKey){
+
+        this.gamesPlayed.put(gameKey, game);
     }
 
     /**
      * Returns list of completed games.
      * @return completed games
      */
-    public ArrayList<Game> getGamesPlayed(){
+    public HashMap<String, Game> getGamesPlayed(){
         return this.gamesPlayed;
     }
 }
