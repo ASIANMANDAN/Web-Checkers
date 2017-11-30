@@ -1,8 +1,6 @@
 package com.webcheckers.ui;
 import com.webcheckers.appl.Game;
-import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
-import com.webcheckers.ui.boardView.Move;
 import spark.*;
 
 import java.util.ArrayList;
