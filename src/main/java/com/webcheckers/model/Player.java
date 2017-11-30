@@ -14,6 +14,10 @@ public class Player {
     //either spectating or replaying a game
     private boolean isWatching = false;
 
+    //boolean flag for determining when another player
+    //has chosen this player as an opponent
+    private boolean isSelected = false;
+
     private final String username;
 
     /**
@@ -48,8 +52,26 @@ public class Player {
      *
      * @return the status of the isWatching flag
      */
-    public boolean getIsWatching() {
+    public boolean getWatching() {
         return isWatching;
+    }
+
+    /**
+     * Toggle the flag within a player object to
+     * indicate that another player has selected to
+     * play a game with the current player.
+     */
+    public void toggleSelected() {
+        isSelected = !isSelected;
+    }
+
+    /**
+     * Get the status of a players isSelected flag.
+     *
+     * @return the status of the isSelected flag
+     */
+    public boolean getSelected() {
+        return isSelected;
     }
 
     /**

@@ -101,6 +101,19 @@ public class GetHomeRoute implements Route {
 	Player currentPlayer = httpSession.attribute(CURR_PLAYER);
 	if (currentPlayer != null) {
 
+		//Toggle the current players watching flag if it is true
+		if (currentPlayer.getWatching()) {
+			currentPlayer.toggleWatching();
+			playerLobby.updateLobby(currentPlayer);
+		}
+
+		//Toggle the current players selected flag if it is true
+		//As returning home will cause them to be redirected to a
+		//game, thus, the current player isn't
+		if (currentPlayer.getSelected()) {
+			currentPlayer.toggleSelected();
+		}
+
 		Player opponent = currentGames.getOpponent(currentPlayer);
 
 		if (currentGames.playerInGame(currentPlayer) && opponent != null) {

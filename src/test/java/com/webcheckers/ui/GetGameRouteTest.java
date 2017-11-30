@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 import com.webcheckers.appl.CurrentGames;
 import com.webcheckers.appl.Game;
+import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
 import com.webcheckers.model.board.Piece;
@@ -42,6 +43,7 @@ public class GetGameRouteTest {
     private Player player1;
     private Player player2;
     private CurrentGames currentGames;
+    private PlayerLobby playerLobby;
 
     @Before
     public void setup() throws Exception {
@@ -50,6 +52,7 @@ public class GetGameRouteTest {
         when(request.session()).thenReturn(session);
 
         engine = mock(TemplateEngine.class);
+        playerLobby = mock(PlayerLobby.class);
 
         player1 = new Player("player");
         player2 = new Player("player2");
@@ -67,6 +70,8 @@ public class GetGameRouteTest {
         currentGames = new CurrentGames(gameList);
 
         when(session.attribute(GetGameRoute.CURRENTGAMES_KEY)).thenReturn(currentGames);
+        when(session.attribute(GetGameRoute.PLAYERLOBBY_KEY)).thenReturn(playerLobby);
+        when(playerLobby.getSelected(player2.getUsername())).thenReturn(false);
 
         CuT = new GetGameRoute(engine);
     }
