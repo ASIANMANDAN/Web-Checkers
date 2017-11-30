@@ -1,6 +1,7 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.appl.CurrentGames;
+import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
 import com.webcheckers.model.board.Piece;
@@ -34,7 +35,10 @@ public class GetGameRoute implements Route{
     static final String ACTIVE_ATTR = "activeColor";
     static final String OPPONENT_PARAM = "opponent";
     static final String BOARD_ATTR = "board";
+    static final String SELECTED_ATTR = "selected";
 
+    //Key in the session attribute map for the playerLobby object
+    static final String PLAYERLOBBY_KEY = "playerLobby";
     //Key in the session attribute map for the current user Player object
     static final String CURR_PLAYER = "currentPlayer";
     //Key in the session attribute map for the hash of current players in a game
@@ -74,6 +78,7 @@ public class GetGameRoute implements Route{
         final Session httpSession = request.session();
         Player currentPlayer = httpSession.attribute(CURR_PLAYER);
         CurrentGames currentGames = httpSession.attribute(CURRENTGAMES_KEY);
+        PlayerLobby playerLobby = httpSession.attribute(PLAYERLOBBY_KEY);
 
         //Case for player winning/losing an ongoing game
         Piece.Color winner = currentGames.hasWon(currentPlayer);
@@ -142,6 +147,9 @@ public class GetGameRoute implements Route{
             Map<String, Object> vm = new HashMap<>();
             vm.put("title", "Game");
 
+            //The redirected player would never have to see the selected
+            //message since they were not the one to select an opponent
+            vm.put(SELECTED_ATTR, null);
             //This is hardcoded in for now
             vm.put(MODE_ATTR, Board.ViewMode.PLAY);
             vm.put(CURR_PLAYER, currentPlayer);
@@ -181,6 +189,7 @@ public class GetGameRoute implements Route{
 
         //Case for when a player successfully initializes a game
         else {
+
             LOG.fine(currentPlayer.getUsername() + " has selected " +
                     opponent.getUsername() + " as an opponent!");
 
@@ -193,6 +202,17 @@ public class GetGameRoute implements Route{
             Map<String, Object> vm = new HashMap<>();
             vm.put("title", "Game");
 
+            String selectMessage = null;
+            if (playerLobby.getWatching(opponent.getUsername())) {
+                selectMessage = "The opponent you selected is currently either " +
+                        "spectating a game or replaying one of their older " +
+                        "games. " + "They have been notified that a match has " +
+                        "started. If you do not wish to wait press the Resign button.";
+
+                playerLobby.toggleSelected(opponent.getUsername());
+            }
+
+            vm.put(SELECTED_ATTR, selectMessage);
             //This is hardcoded in for now
             vm.put(MODE_ATTR, Board.ViewMode.PLAY);
             vm.put(CURR_PLAYER, currentPlayer);

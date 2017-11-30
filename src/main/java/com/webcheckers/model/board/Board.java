@@ -21,7 +21,7 @@ public class Board {
     public enum ActiveColor {RED, WHITE}
 
     //The mode of the Game View
-    public enum ViewMode {PLAY, SPECTATE, REPLAY}
+    public enum ViewMode {PLAY, SPECTATOR, REPLAY}
 
     private Space[][] board;
     public ActiveColor currentTurn;

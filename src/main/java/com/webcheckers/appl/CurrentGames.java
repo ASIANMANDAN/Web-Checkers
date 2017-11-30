@@ -7,6 +7,7 @@ import com.webcheckers.model.board.Piece;
 import com.webcheckers.model.board.Space;
 import com.webcheckers.ui.boardView.Move;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 /**
@@ -295,5 +296,29 @@ public class CurrentGames {
      */
     private Game getGame(Player player) {
         return currentGames.get(player);
+    }
+
+    /**
+     * Make an array list of the names of each game.
+     *
+     * @return array list of game names
+     */
+    public ArrayList<String> getGamesList(){
+        ArrayList inProgress = new ArrayList();
+        currentGames.forEach((Player, Game) ->{
+            if(Game.toString() != null && !inProgress.contains(Game.toString())){
+                inProgress.add(Game.toString());
+            }
+        } );
+        return inProgress;
+    }
+
+    /**
+     * Get the number of games in current games
+     *
+     * @return number of elements in currentGames.
+     */
+    public int size(){
+        return currentGames.size();
     }
 }

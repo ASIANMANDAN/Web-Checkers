@@ -21,6 +21,8 @@ public class GetHomeRoute implements Route {
   static final String PLAYERS_ONLINE_ATTR = "numPlayersOnline";
   static final String PLAYERS_LIST_ATTR = "allPlayers";
   static final String MESSAGE_ATTR = "message";
+  static final String GAMES_IN_PROGRESS_ATTR = "allGames";
+  static final String NUM_OF_GAMES_ATTR = "numGames";
 
   //Key in the session attribute map for the playerLobby object
   static final String PLAYERLOBBY_KEY = "playerLobby";
@@ -80,6 +82,10 @@ public class GetHomeRoute implements Route {
 	vm.put(CURR_PLAYER, httpSession.attribute(CURR_PLAYER));
 	//Provide the playerlobby to the view-model
 	vm.put(PLAYERS_LIST_ATTR, playerLobby.getUserList());
+	//Provide the list of ongoing games to the view-model
+	vm.put(GAMES_IN_PROGRESS_ATTR, currentGames.getGamesList());
+	//Provide the number of games being played to the view-model.
+	vm.put(NUM_OF_GAMES_ATTR, currentGames.size());
 
 	//Provide a message to the view-model if there has been an error
 	vm.put(MESSAGE_ATTR, httpSession.attribute(MESSAGE_KEY));
@@ -94,6 +100,19 @@ public class GetHomeRoute implements Route {
 	//Checks if the current user has been selected upon each refresh
 	Player currentPlayer = httpSession.attribute(CURR_PLAYER);
 	if (currentPlayer != null) {
+
+		//Toggle the current players watching flag if it is true
+		if (currentPlayer.getWatching()) {
+			currentPlayer.toggleWatching();
+			playerLobby.updateLobby(currentPlayer);
+		}
+
+		//Toggle the current players selected flag if it is true
+		//As returning home will cause them to be redirected to a
+		//game, thus, the current player isn't
+		if (currentPlayer.getSelected()) {
+			currentPlayer.toggleSelected();
+		}
 
 		Player opponent = currentGames.getOpponent(currentPlayer);
 
