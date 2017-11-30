@@ -48,7 +48,7 @@ The MVP is an application where users can sign in to the application, choose an 
 ### Roadmap of Enhancements
 To enhance our product, we intend on adding:
 *Spectator Mode - Being able to watch a game that is currently in progress.
-*Asynchronous Play - The players in a game can access and play a game over the course of multiple logins.
+*Replay Mode - Watch games you have previously played.
 
 
 ## Application Domain
@@ -81,7 +81,7 @@ The WebCheckers webapp uses a Java-based web server. The Spark web micro framewo
 
 
 ### Overview of User Interface
-The application's user interface is comprised of three main states: Home, Sign-In, and Game.  Upon establishing an HTTP connection, it renders the home page, which displays the number of players online and provides a link to sign-in. Users can then sign-in on the sign-in screen. Signing-in with a unique username leads them back to the home page. This page now displays a selectable list of players, which does not include the current user.  The current user can then select a player to challenge to a game. If that player is not available, then the user is returned to the home page. Otherwise, both players are taken into the game view. The players remain in the in-game state until the game is terminated, whether it be by resignation, sign-out, or a player winning. The players are then returned to the home view.
+The application's user interface is comprised of three main states: Home, Sign-In, and Game.  Upon establishing an HTTP connection, it renders the home page, which displays the number of players online and provides a link to sign-in. Users can then sign-in on the sign-in screen. Signing-in with a unique username leads them back to the home page. This page now displays a selectable list of players, which does not include the current user.  The current user can then select a player to challenge to a game. If that player is not available, then the user is returned to the home page. Otherwise, both players are taken into the game view. The players remain in the in-game state until the game is terminated, whether it be by resignation, sign-out, or a player winning. The players are then returned to the home view. Alternatively, the player can choose to spectate an ongoing game from a list of games being played. The player is sent to the game view of the red player in that match, however they are unable to interact with the board in any way. If the game ends, they are sent back to the home screen. If they are challenged to a game while spectating, they can return to home to be sent to that game.
 
 ![UI State Chart](https://lh3.googleusercontent.com/-_YCHddV_aq4/WgGoHEpH8PI/AAAAAAAAADU/FcVOFqJaSR0pzopn1hjhlKtJo4fsmK2mACLcBGAs/s0/Sprint+2+State+Diagram+-+Page+1+%25282%2529.png "Sprint 2 State Diagram.png")
 *Fig 3. State chart illustrating the different views and their HTTP Routes*
@@ -110,11 +110,12 @@ The UI Tier of the WebCheckers project consists of several packages.
 	 - GetHomeRoute
 	 - GetSigninRoute
 	 - GetSignoutRoute
+	 - GetSpectateRoute
 	 - PostSigninRoute
 	 - WebServer
 
 ### Tier: Model
-The Model tier contains the the board components. This tier is responsible for rendering the internal representation of the Board, Piece, and Space components. All of these components are located within the board package within the model (com.webcheckers.model.board)
+The Model tier contains the the board components. This tier is responsible for rendering the internal representation of the Board, Piece, and Space components. All of these components are located within the board package within the model (com.webcheckers.model.board).
 
 Within the Board class, we have implemented our own custom way of representing the checker board such that the logic can be performed with ease by the validation checks we're implementing in the future. With this representation of the board, each area on the board is represented by a space.
 
