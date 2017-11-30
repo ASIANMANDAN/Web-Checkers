@@ -7,8 +7,7 @@
  <link rel="stylesheet" href="/css/game.css">
  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
  <script>
- window.gameState = {
- };
+ window.gameState = { };
  window.alert = function() {};
  </script>
 </head>
@@ -16,7 +15,7 @@
  <div class="page">
    <h1>Web Checkers</h1>
 
-  <div class="navigation">
+   <div class="navigation">
    <#if currentPlayer??>
      <a href="/">My Home</a>
      <a href="/signout">Sign out [${currentPlayer.username}]</a>
@@ -30,30 +29,38 @@
     <p id="help_text"></p>
 
     <div>
-       <div id="game-controls">
+        <div id="game-controls">
+
+            <#assign x = moveIndex>
+            <#if x < moveListSize>
+                <form action="./replay" method="GET">
+                    <input type="hidden" name="index" value=${x + 1} />
+                    <button type="submit">Next Move</button>
+                </form>
+            </#if>
 
         <fieldset id="game-info">
            <legend>Info</legend>
 
           <#if message??>
-           <div id="message" class="${message.type}">${message.text}</div>
-           <#else>
-           <div id="message" class="info" style="display:none">
+            <div id="message" class="${message.type}">${message.text}</div>
+          <#else>
+            <div id="message" class="info" style="display:none">
              <!-- keep here for client-side messages -->
            </div>
-           </#if>
+          </#if>
 
           <div>
              <table data-color='RED'>
                <tr>
                  <td><img src="../img/single-piece-red.svg" /></td>
-                 <td class="name">Red</td>
+                 <td class="name">${redPlayer}</td>
                </tr>
              </table>
              <table data-color='WHITE'>
                <tr>
                  <td><img src="../img/single-piece-white.svg" /></td>
-                 <td class="name">White</td>
+                 <td class="name">${whitePlayer}</td>
                </tr>
              </table>
            </div>

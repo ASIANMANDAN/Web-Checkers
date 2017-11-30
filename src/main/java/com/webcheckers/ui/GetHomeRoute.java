@@ -24,8 +24,8 @@ public class GetHomeRoute implements Route {
   static final String MESSAGE_ATTR = "message";
   static final String GAMES_IN_PROGRESS_ATTR = "allGames";
   static final String NUM_OF_GAMES_ATTR = "numGames";
-    static final String COMPLETED_GAMES = "completedGames";
-    static final String NUM_OF_COMPLETED_GAMES = "numOfCompletedGames";
+  static final String COMPLETED_GAMES = "completedGames";
+  static final String NUM_OF_COMPLETED_GAMES = "numOfCompletedGames";
 
   //Key in the session attribute map for the playerLobby object
   static final String PLAYERLOBBY_KEY = "playerLobby";
@@ -35,6 +35,9 @@ public class GetHomeRoute implements Route {
   static final String CURRENTGAMES_KEY = "currentGames";
   //Key in the session attribute map for a String to be shown in case of error
   static final String MESSAGE_KEY = "message";
+  //Key in the session attribute map for a boolean indicating that the
+  //current player should not be redirected to home
+  static final String REPLAYING_KEY = "replaying";
 
   private final TemplateEngine templateEngine;
   private final PlayerLobby playerLobby;
@@ -122,6 +125,9 @@ public class GetHomeRoute implements Route {
 	//Player currentPlayer = httpSession.attribute(CURR_PLAYER);
 	if (currentPlayer != null) {
 
+	    //Set the replaying flag to false since the current player
+        //returned to home
+	    httpSession.removeAttribute(REPLAYING_KEY);
 		Player opponent = currentGames.getOpponent(currentPlayer);
 
 		if (currentGames.playerInGame(currentPlayer) && opponent != null) {

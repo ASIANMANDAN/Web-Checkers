@@ -68,7 +68,10 @@ public class Player {
      * @param game completed game to add to gamesPlayed
      */
     public void addGame(Game game){
-        this.gamesPlayed.add(game);
+        //Games with no moves made should not be replayable
+        if (game.getListOfMoves().size() > 0) {
+            this.gamesPlayed.add(game);
+        }
     }
 
     /**

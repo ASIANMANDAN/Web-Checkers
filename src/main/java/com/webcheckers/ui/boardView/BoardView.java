@@ -1,6 +1,7 @@
 package com.webcheckers.ui.boardView;
 
 import com.webcheckers.appl.CurrentGames;
+import com.webcheckers.appl.Game;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
 import com.webcheckers.model.board.Space;
@@ -75,6 +76,63 @@ public class BoardView implements Iterable {
             }
         }
     }
+
+    /**
+     * Creates a boardView using a Board model which satisfies the conditions
+     * needed in Game.ftl to display the board and pieces.
+     *
+     * @param player the player whose view is to be created
+     * @param game a game object from which the board can be gotten from
+     * @throws Exception occurs in the Space class if the column index
+     *                   used to create the space is greater than the
+     */
+    public BoardView(Player player, Game game) throws Exception {
+
+        //Constructs view for the red player
+        if (game.getRedPlayer().equals(player)) {
+            this.board = new ArrayList<>();
+            //Represents the model board
+            Space[][] currentGameBoard = game.getBoard();
+
+            for (int row = 0; row < size; row++) {
+                Row newRow = new Row(row);
+                for (int col = 0; col < size; col++) {
+                    //Space within the board model
+                    Space gameSpace = currentGameBoard[row][col];
+
+                    //Create copy to avoid overwrites in future
+                    Space displaySpace = new Space(row, col, gameSpace.getColor());
+                    displaySpace.setPiece(gameSpace.getPiece());
+                    newRow.addSpace(displaySpace);
+                }
+                this.board.add(row, newRow);
+            }
+        }
+
+        //Constructs view for the white player
+        else if (game.getWhitePlayer().equals(player)){
+            this.board = new ArrayList<>();
+            //Represents the model board
+            Space[][] currentGameBoard = game.getBoard();
+
+            //Create the opponents view
+            for (int row = size-1; row >= 0; row--){
+                Row newRow = new Row(row);
+                for (int col = size-1; col >= 0; col--){
+                    //Space within the board model
+                    Space gameSpace = currentGameBoard[row][col];
+
+                    //Create copy to avoid overwrites in future
+                    Space displaySpace = new Space(row, col, gameSpace.getColor());
+                    displaySpace.setPiece(gameSpace.getPiece());
+                    newRow.addSpace(displaySpace);
+                }
+                this.board.add(newRow);
+            }
+        }
+    }
+
+
 
     /**
      * Retruns the iterable boardView.

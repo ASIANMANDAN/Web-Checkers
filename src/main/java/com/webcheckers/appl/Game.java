@@ -68,7 +68,9 @@ public class Game {
      * @param white the player who was chosen and gets redirected from home
      * @param board a board configuration
      */
-    public Game(Player red, Player white, Space[][] board, ArrayList<Move> moveList) throws Exception {
+    public Game(Player red, Player white, Space[][] board, ArrayList<Move> moveList)
+            throws Exception {
+
         this.red = red;
         this.white = white;
 
@@ -182,7 +184,7 @@ public class Game {
      *
      * @return the board model
      */
-    protected Space[][] getBoard() {
+    public Space[][] getBoard() {
         return board.getBoard();
     }
 
@@ -191,7 +193,7 @@ public class Game {
      *
      * @return the turn
      */
-    protected Board.ActiveColor getTurn() {
+    public Board.ActiveColor getTurn() {
         return board.currentTurn;
     }
 
@@ -230,5 +232,18 @@ public class Game {
      */
     public ArrayList<Move> getListOfMoves(){
         return listOfMoves;
+    }
+
+    /**
+     * Makes all the moves from a given move set
+     * up until the given index is reached.
+     *
+     * @param index the number of moves to make
+     */
+    public void makeMoves(int index) {
+        for (int i=0; i < index; i++) {
+            this.board.makeMove(this.listOfMoves.get(i));
+            toggleTurn();
+        }
     }
 }
