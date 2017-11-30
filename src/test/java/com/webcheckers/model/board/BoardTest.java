@@ -295,4 +295,32 @@ public class BoardTest {
         assertEquals(space1, CuT.getMiddle(m1));
         assertEquals(space2, CuT.getMiddle(m2));
     }
+
+    /**
+     * Test undo move
+     */
+    @Test
+    public void test_undo_move_red_cap(){
+        Position p1 = new Position(0, 3);
+        Position p2 = new Position(2, 5);
+        Move m = new Move(p1, p2);
+        Space middle = CuT.getMiddle(m);
+        Piece piece = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
+        middle.setPiece(piece);
+        assertEquals(0, CuT.getNumOfRedPieces());
+    }
+
+    /**
+     * Test undo move
+     */
+    @Test
+    public void test_undo_move_white_cap(){
+        Position p1 = new Position(0, 3);
+        Position p2 = new Position(2, 5);
+        Move m = new Move(p1, p2);
+        Space middle = CuT.getMiddle(m);
+        Piece piece = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
+        middle.setPiece(piece);
+        assertEquals(0, CuT.getNumOfWhitePieces());
+    }
 }
