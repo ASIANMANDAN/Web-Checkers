@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 import com.webcheckers.appl.CurrentGames;
 import com.webcheckers.appl.Game;
+import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
 import com.webcheckers.model.board.Piece;
@@ -41,12 +42,14 @@ public class GetSpectateRouteTest {
     private Request request;
     private Session session;
     private TemplateEngine engine;
+    private PlayerLobby lobby;
 
     @Before
     public void setup() throws Exception {
         request = mock(Request.class);
         session = mock(Session.class);
         when(request.session()).thenReturn(session);
+        lobby = mock(PlayerLobby.class);
 
         engine = mock(TemplateEngine.class);
 
@@ -109,7 +112,9 @@ public class GetSpectateRouteTest {
         //Setup test scenario
         when(session.attribute(GetSpectateRoute.CURR_PLAYER)).thenReturn(spectator);
         when(session.attribute(GetSpectateRoute.CURRENTGAMES_KEY)).thenReturn(cg);
+        when(session.attribute(GetSpectateRoute.PLAYERLOBBY_KEY)).thenReturn(lobby);
         when(request.queryParams(GetSpectateRoute.GAME_PARAM)).thenReturn("player1 vs player2");
+        when(lobby.getWatching(spectator.getUsername())).thenReturn(Boolean.FALSE);
         when(cg.getRedPlayer(new Player(request.queryParams(GetSpectateRoute.GAME_PARAM)))).thenReturn(player1);
         when(cg.getOpponent(player1)).thenReturn(null);
 
@@ -123,6 +128,9 @@ public class GetSpectateRouteTest {
         //Because the game has ended, the page redirects and doesn't fill a model.
         final Object model = myModelView.model;
         assertNull(model);
+        //Player boolean flags updated
+        assertTrue(spectator.getWatching());
+        assertFalse(lobby.inLobby(spectator));
     }
 
     /**
@@ -137,6 +145,8 @@ public class GetSpectateRouteTest {
         //Setup the test scenario.
         when(session.attribute(GetSpectateRoute.CURR_PLAYER)).thenReturn(spectator);
         when(session.attribute(GetSpectateRoute.CURRENTGAMES_KEY)).thenReturn(currentGames);
+        when(session.attribute(GetSpectateRoute.PLAYERLOBBY_KEY)).thenReturn(lobby);
+        when(lobby.getWatching(spectator.getUsername())).thenReturn(Boolean.FALSE);
         when(request.queryParams(GetSpectateRoute.GAME_PARAM)).thenReturn("red vs white");
         when(request.queryParams(GetSpectateRoute.GAME_PARAM)).thenReturn("red");
 
@@ -157,5 +167,9 @@ public class GetSpectateRouteTest {
         assertEquals(white, vm.get(GetSpectateRoute.WHITE_PLAYER_ATTR));
         assertEquals(Board.ActiveColor.RED, vm.get(GetSpectateRoute.ACTIVE_ATTR));
         assertNotNull(vm.get(GetSpectateRoute.BOARD_ATTR));
+
+        //Player boolean flags updated
+        assertTrue(spectator.getWatching());
+        assertFalse(lobby.inLobby(spectator));
     }
 }
