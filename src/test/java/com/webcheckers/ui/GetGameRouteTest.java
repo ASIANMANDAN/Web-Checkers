@@ -193,12 +193,14 @@ public class GetGameRouteTest {
      * Test game route redirects to home when opponent resigns.
      */
     @Test
-    public void test_resign() throws Exception {
+    public void test_resign() throws Exception{
         Response response = mock(Response.class);
         currentGames.removePlayer(player2);
         final MyModelAndView myModelView = new MyModelAndView();
         when(engine.render(any(ModelAndView.class))).thenAnswer(MyModelAndView.makeAnswer(myModelView));
         when(session.attribute(GetGameRoute.CURR_PLAYER)).thenReturn(player1);
+
+        when(session.attribute(GetGameRoute.OPPONENT_KEY)).thenReturn(player2);
         when(session.attribute(GetGameRoute.MESSAGE_KEY)).thenReturn("player2 has resigned from the game.");
 
         try{
