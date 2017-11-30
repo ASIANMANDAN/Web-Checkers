@@ -76,6 +76,28 @@ public class GetSpectateRouteTest {
     }
 
     /**
+     * Test GetSpectateRoute will redirect to the home page when the game has ended.
+     */
+    @Test
+    public void test_game_end() throws Exception{
+        Response response = mock(Response.class);
+        final MyModelAndView myModelView = new MyModelAndView();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(MyModelAndView.makeAnswer(myModelView));
+
+        when(session.attribute(GetSpectateRoute.CURR_PLAYER)).thenReturn(null);
+
+        try{
+            CuT.handle(request, response);
+        }catch (HaltException e){
+            assertTrue(e instanceof HaltException);
+        }
+
+        //Because the game has ended, the page redirects and doesn't fill a model.
+        final Object model = myModelView.model;
+        assertNull(model);
+    }
+
+    /**
      * Test spectate route generates correctly
      */
     @Test
