@@ -74,7 +74,7 @@ public class PlayerTest {
     }
 
     /**
-     *
+     * Test the {@Link Player#getSelected()} method.
      */
     @Test
     public void test_get_selected(){
