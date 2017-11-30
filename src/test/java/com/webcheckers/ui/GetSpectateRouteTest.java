@@ -78,10 +78,12 @@ public class GetSpectateRouteTest {
         final MyModelAndView myModelView = new MyModelAndView();
         when(engine.render(any(ModelAndView.class))).thenAnswer(MyModelAndView.makeAnswer(myModelView));
 
+        //Setup test scenario.
         when(session.attribute(GetSpectateRoute.CURR_PLAYER)).thenReturn(spectator);
         when(session.attribute(GetSpectateRoute.CURRENTGAMES_KEY)).thenReturn(currentGames);
         when(request.queryParams(GetSpectateRoute.GAME_PARAM)).thenReturn(null);
 
+        //Invoke test
         try{
             CuT.handle(request, response);
         }catch (HaltException e){
@@ -103,13 +105,15 @@ public class GetSpectateRouteTest {
         when(engine.render(any(ModelAndView.class))).thenAnswer(MyModelAndView.makeAnswer(myModelView));
         CurrentGames cg = mock(CurrentGames.class);
         Player player1 = mock(Player.class);
+
+        //Setup test scenario
         when(session.attribute(GetSpectateRoute.CURR_PLAYER)).thenReturn(spectator);
         when(session.attribute(GetSpectateRoute.CURRENTGAMES_KEY)).thenReturn(cg);
-
         when(request.queryParams(GetSpectateRoute.GAME_PARAM)).thenReturn("player1 vs player2");
         when(cg.getRedPlayer(new Player(request.queryParams(GetSpectateRoute.GAME_PARAM)))).thenReturn(player1);
         when(cg.getOpponent(player1)).thenReturn(null);
 
+        //Invoke the test.
         try{
             CuT.handle(request, response);
         }catch (HaltException e){
@@ -130,18 +134,21 @@ public class GetSpectateRouteTest {
         final MyModelAndView myModelView = new MyModelAndView();
         when(engine.render(any(ModelAndView.class))).thenAnswer(MyModelAndView.makeAnswer(myModelView));
 
+        //Setup the test scenario.
         when(session.attribute(GetSpectateRoute.CURR_PLAYER)).thenReturn(spectator);
         when(session.attribute(GetSpectateRoute.CURRENTGAMES_KEY)).thenReturn(currentGames);
-
         when(request.queryParams(GetSpectateRoute.GAME_PARAM)).thenReturn("red vs white");
-
         when(request.queryParams(GetSpectateRoute.GAME_PARAM)).thenReturn("red");
+
+        //Invoke the test.
         CuT.handle(request, response);
 
+        //Check the model is a non null Map
         final Object model = myModelView.model;
         assertNotNull(model);
         assertTrue(model instanceof Map);
 
+        //Check all needed view model data is present
         final Map<String, Object> vm = (Map<String, Object>) model;
         assertEquals("Game", vm.get("title"));
         assertEquals(Board.ViewMode.SPECTATOR, vm.get(GetSpectateRoute.MODE_ATTR));
