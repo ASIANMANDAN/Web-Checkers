@@ -101,8 +101,12 @@ public class GetSpectateRouteTest {
         Response response = mock(Response.class);
         final MyModelAndView myModelView = new MyModelAndView();
         when(engine.render(any(ModelAndView.class))).thenAnswer(MyModelAndView.makeAnswer(myModelView));
+        CurrentGames cg = mock(CurrentGames.class);
+        Player player1 = mock(Player.class);
 
-        when(session.attribute(GetSpectateRoute.CURR_PLAYER)).thenReturn(null);
+        when(request.queryParams(GetSpectateRoute.GAME_PARAM)).thenReturn("player1 vs player2");
+        when(cg.getRedPlayer(new Player(request.queryParams(GetSpectateRoute.GAME_PARAM)))).thenReturn(player1);
+        when(cg.getOpponent(player1)).thenReturn(null);
 
         try{
             CuT.handle(request, response);
