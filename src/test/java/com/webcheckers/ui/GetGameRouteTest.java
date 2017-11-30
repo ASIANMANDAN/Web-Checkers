@@ -135,12 +135,10 @@ public class GetGameRouteTest {
         Player player3 = new Player("player3");
         Player player4 = new Player("player4");
 
-
         final MyModelAndView myModelView = new MyModelAndView();
         when(engine.render(any(ModelAndView.class))).thenAnswer(MyModelAndView.makeAnswer(myModelView));
         when(session.attribute(GetGameRoute.CURR_PLAYER)).thenReturn(player3);
         when(request.queryParams(GetGameRoute.OPPONENT_PARAM)).thenReturn("player4");
-        //when(currentGames.getRedPlayer(player)).thenReturn(player);
 
         CuT.handle(request, response);
 
@@ -292,5 +290,45 @@ public class GetGameRouteTest {
 
         assertEquals(DEFEAT, session.attribute(GetGameRoute.MESSAGE_KEY));
         assertNull(model);
+    }
+
+    /**
+     * Test the correct message appears when opponent spectating or replaying.
+     */
+    @Test
+    public void test_opponent_busy() throws Exception {
+        Response response = mock(Response.class);
+
+        Player player3 = new Player("player3");
+        Player player4 = new Player("player4");
+
+        final MyModelAndView myModelView = new MyModelAndView();
+        when(engine.render(any(ModelAndView.class))).thenAnswer(MyModelAndView.makeAnswer(myModelView));
+        when(session.attribute(GetGameRoute.CURR_PLAYER)).thenReturn(player3);
+        when(request.queryParams(GetGameRoute.OPPONENT_PARAM)).thenReturn("player4");
+        when(playerLobby.getWatching(player4.getUsername())).thenReturn(Boolean.TRUE);
+        String selectMessage = "The opponent you selected is currently either " +
+                "spectating a game or replaying one of their older " +
+                "games. " + "They have been notified that a match has " +
+                "started. If you do not wish to wait press the Resign button.";
+
+        CuT.handle(request, response);
+
+        final Object model = myModelView.model;
+        assertNotNull(model);
+        assertTrue(model instanceof Map);
+
+        @SuppressWarnings("unchecked")
+        final Map<String, Object> vm = (Map<String, Object>) model;
+        assertEquals("Game", vm.get("title"));
+        assertEquals(Board.ViewMode.PLAY, vm.get(GetGameRoute.MODE_ATTR));
+        assertEquals(player3, vm.get(GetGameRoute.CURR_PLAYER));
+        assertEquals(player3, vm.get(GetGameRoute.RED_PLAYER_ATTR));
+        assertEquals(player4, vm.get(GetGameRoute.WHITE_PLAYER_ATTR));
+        assertEquals(Board.ActiveColor.RED, vm.get(GetGameRoute.ACTIVE_ATTR));
+        assertNotNull(vm.get(GetGameRoute.BOARD_ATTR));
+        assertEquals(selectMessage, vm.get(GetGameRoute.SELECTED_ATTR));
+
+        assertFalse(player4.getSelected());
     }
 }
