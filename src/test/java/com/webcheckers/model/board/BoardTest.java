@@ -257,4 +257,26 @@ public class BoardTest {
         assertFalse(CuT.makeKing(space3));
         assertFalse(CuT.makeKing(space4));
     }
+
+    /**
+     * Test the {@link Board#findPiece(Piece.Color)} method for a red piece.
+     */
+    @Test
+    public void test_find_red(){
+        Space space = CuT.getBoard()[0][1];
+        Piece piece = new Piece(Piece.Color.RED, Piece.Type.SINGLE);
+        space.setPiece(piece);
+        assertEquals(space, CuT.findPiece(Piece.Color.RED));
+    }
+
+    /**
+     * Test the {@link Board#findPiece(Piece.Color)} method for a white piece.
+     */
+    @Test
+    public void test_find_white(){
+        Space space = CuT.getBoard()[0][1];
+        Piece piece = new Piece(Piece.Color.WHITE, Piece.Type.SINGLE);
+        space.setPiece(piece);
+        assertEquals(space, CuT.findPiece(Piece.Color.WHITE));
+    }
 }
