@@ -19,14 +19,14 @@ define(function(require){
    */
   function SpectatorController() {
     // Add the StatePattern mixin
-    StatePatternMixin.call(this);
+    //StatePatternMixin.call(this);
     
     // create states and a lookup map
-    this.addStateDefinition(SpectatorModeConstants.SPECTATOR_MODE_STARTING,
-            new SpectatorModeStartState(this));
+    //this.addStateDefinition(SpectatorModeConstants.SPECTATOR_MODE_STARTING,
+    //        new SpectatorModeStartState(this));
     
     // Add the ModeControls mixin
-    ControlsToolbarMixin.call(this);
+    //ControlsToolbarMixin.call(this);
     // TODO: create mode control buttons
 
     // Public (internal) methods
@@ -36,7 +36,7 @@ define(function(require){
      */
     this.startup = function startup() {
       // start Spectator mode
-      this.setState(SpectatorModeConstants.SPECTATOR_MODE_STARTING);
+      //this.setState(SpectatorModeConstants.SPECTATOR_MODE_STARTING);
     }
     
   };

@@ -135,4 +135,61 @@ public class PlayerLobby {
         return this.playerLobby.keySet();
     }
 
+    /**
+     * Toggle the flag within a player object to
+     * indicate that another player has selected to
+     * play a game with the current player.
+     *
+     * @param username the name of the player whose flag to toggle
+     */
+    public void toggleSelected(String username) {
+        Player player = playerLobby.get(username);
+        player.toggleSelected();
+        updateLobby(player);
+    }
+
+    /**
+     * Determine whether or not a given player is spectating
+     * or replaying a game.
+     *
+     * @param username the name of the player to find
+     * @return whether or not a player is in spectate/replay
+     */
+    public boolean getWatching(String username) {
+        Player player = playerLobby.get(username);
+        return player.getWatching();
+    }
+
+    /**
+     * Determine whether or not a given player has been
+     * selected for a game by another player.
+     *
+     * @param username the name of the player to find
+     * @return whether or not a player has been selected
+     */
+    public boolean getSelected(String username) {
+        Player player = playerLobby.get(username);
+        return player.getSelected();
+    }
+
+    /**
+     * Update the information stored in the playerLobby for a
+     * given player.
+     *
+     * @param player the player whose information to update
+     */
+    public void updateLobby(Player player) {
+        playerLobby.put(player.getUsername(), player);
+    }
+
+    /**
+     * Check if a player is in the lobby
+     *
+     * @param player the player to check
+     * @return true if they are in the lobby, false if they are not.
+     */
+    public boolean inLobby(Player player){
+        return playerLobby.containsKey(player.getUsername());
+    }
+
 }

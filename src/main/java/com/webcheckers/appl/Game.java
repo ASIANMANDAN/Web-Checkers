@@ -173,4 +173,17 @@ public class Game {
     public boolean playerInGame(Player player) {
         return player.equals(this.red) || player.equals(this.white);
     }
+
+    /**
+     * Tells which players are playing against each other.
+     *
+     * @return red player name vs white player name
+     */
+    @Override
+    public String toString(){
+        if(getRedPlayer() == null || getWhitePlayer() == null){
+            return null;
+        }
+        return getRedPlayer().getUsername() + " vs " + getWhitePlayer().getUsername();
+    }
 }

@@ -2,6 +2,7 @@ package com.webcheckers.ui;
 
 import com.webcheckers.appl.CurrentGames;
 import com.webcheckers.appl.Game;
+import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
 import com.webcheckers.model.board.Piece;
@@ -35,13 +36,16 @@ public class GetGameRouteTest {
 
     private GetGameRoute CuT;
 
+    //Friendly object
+    private CurrentGames currentGames;
+
     //Mock objects
     private Request request;
     private Session session;
     private TemplateEngine engine;
     private Player player1;
     private Player player2;
-    private CurrentGames currentGames;
+    private PlayerLobby playerLobby;
 
     @Before
     public void setup() throws Exception {
@@ -50,6 +54,7 @@ public class GetGameRouteTest {
         when(request.session()).thenReturn(session);
 
         engine = mock(TemplateEngine.class);
+        playerLobby = mock(PlayerLobby.class);
 
         player1 = new Player("player");
         player2 = new Player("player2");
@@ -67,6 +72,8 @@ public class GetGameRouteTest {
         currentGames = new CurrentGames(gameList);
 
         when(session.attribute(GetGameRoute.CURRENTGAMES_KEY)).thenReturn(currentGames);
+        when(session.attribute(GetGameRoute.PLAYERLOBBY_KEY)).thenReturn(playerLobby);
+        when(playerLobby.getSelected(player2.getUsername())).thenReturn(false);
 
         CuT = new GetGameRoute(engine);
     }
@@ -191,12 +198,14 @@ public class GetGameRouteTest {
      * Test game route redirects to home when opponent resigns.
      */
     @Test
-    public void test_resign() throws Exception {
+    public void test_resign() throws Exception{
         Response response = mock(Response.class);
         currentGames.removePlayer(player2);
         final MyModelAndView myModelView = new MyModelAndView();
         when(engine.render(any(ModelAndView.class))).thenAnswer(MyModelAndView.makeAnswer(myModelView));
         when(session.attribute(GetGameRoute.CURR_PLAYER)).thenReturn(player1);
+
+        when(session.attribute(GetGameRoute.OPPONENT_KEY)).thenReturn(player2);
         when(session.attribute(GetGameRoute.MESSAGE_KEY)).thenReturn("player2 has resigned from the game.");
 
         try{

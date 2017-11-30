@@ -40,9 +40,7 @@ define(function(require){
    * 
    * Build and begin the Spectator view mode.
    */
-  SpectatorModeStartState.prototype.onEntry = function onEntry() {
-    alert('View mode not yet implemented: SPECTATOR');
-  };
+  //SpectatorModeStartState.prototype.onEntry = function onEntry() { };
   
   // export class constructor
   return SpectatorModeStartState;

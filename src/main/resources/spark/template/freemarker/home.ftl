@@ -41,6 +41,18 @@
         	<button type="submit">Play!</button>
         </form>
         <br />
+
+        <form action="./spectate" method="GET">
+            <#if numGames == 0 >
+                <p>No games are currently being played.</p>
+            <#else>
+                <#list allGames as game>
+                    <input type="radio" name="spectate" value=${game} /> ${game} <br />
+                </#list> <br />
+                <button type="submit">Spectate!</button>
+            </#if>
+        </form>
+        <br />
       
         <form action="./signout" method="GET">
           <button>Sign Out</button>
