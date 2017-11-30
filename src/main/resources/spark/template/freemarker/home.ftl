@@ -60,8 +60,10 @@
             <#if numOfCompletedGames == 0 >
                <p>No replay available (you haven't played a game yet).</p>
             <#else>
+               <#assign x = 0>
                <#list completedGames as game>
-                   <input type="radio" name="replay" value=${game} /> ${game} <br />
+                   <input type="radio" name="replay" value=x /> ${game} <br />
+                   <#assign x += 1>
                </#list> <br />
                <button type="submit">Replay!</button>
             </#if>
