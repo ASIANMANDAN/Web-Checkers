@@ -22,6 +22,7 @@ public class PlayerLobbyTest {
 
     private PlayerLobby CuT;
 
+    //mock objects
     private Player player;
 
     @Before
@@ -179,5 +180,48 @@ public class PlayerLobbyTest {
         assertEquals(PlayerLobby.InputResult.INVALID, PlayerLobby.InputResult.valueOf("INVALID"));
         assertEquals(PlayerLobby.InputResult.EMPTY, PlayerLobby.InputResult.valueOf("EMPTY"));
         assertEquals(PlayerLobby.InputResult.TAKEN, PlayerLobby.InputResult.valueOf("TAKEN"));
+    }
+
+    /**
+     * Test the {@Link PlayerLobby#toggleSelected()} method.
+     */
+    @Test
+    public void test_toggle_selected(){
+        Player player = new Player("player");
+        CuT.signIn(player.getUsername());
+        CuT.toggleSelected(player.getUsername());
+        assertFalse(player.getSelected());
+        assertTrue(CuT.inLobby(player));
+    }
+
+    /**
+     * Test the {@Link PlayerLobby#getWatching()} method.
+     */
+    @Test
+    public void test_get_watching(){
+        Player player = new Player("player");
+        CuT.signIn(player.getUsername());
+        assertFalse(CuT.getWatching(player.getUsername()));
+    }
+
+    /**
+     * Test the {@Link PlayerLobby#getSelected()} method.
+     */
+    @Test
+    public void test_get_selected(){
+        Player player = new Player("player");
+        CuT.signIn(player.getUsername());
+        assertFalse(CuT.getSelected(player.getUsername()));
+    }
+
+    /**
+     * Test the {@Link PlayerLobby#updateLobby()} method.
+     */
+    @Test
+    public void test_update_lobby(){
+        Player player = new Player("player");
+        CuT.signIn(player.getUsername());
+        CuT.updateLobby(player);
+        assertTrue(CuT.inLobby(player));
     }
 }
