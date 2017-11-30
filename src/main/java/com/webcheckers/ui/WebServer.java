@@ -104,11 +104,8 @@ public class WebServer {
   public static final String SPECTATE_URL = "/spectate";
 
   /**
-<<<<<<< HEAD
    * The URL pattern for Replaying a game
-=======
-   * The URL pattern to replay a game,
->>>>>>> d06677cd78752458c184e43eb8bb6883124988bb
+   * The URL pattern to replay a game.
    */
   public static final String REPLAY_URL = "/replay";
 

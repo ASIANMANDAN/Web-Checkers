@@ -79,14 +79,13 @@ public class GetHomeRoute implements Route {
       Player currentPlayer = httpSession.attribute(CURR_PLAYER);
 
       ArrayList<Game> completedGames;
-      int completedGamesSize;
+      int completedGamesSize = 0;
 
       if(currentPlayer != null){
           completedGames = currentPlayer.getGamesPlayed();
           completedGamesSize = completedGames.size();
       }else{
           completedGames = null;
-          completedGamesSize = 0;
       }
 
 

@@ -224,7 +224,10 @@ public class Game {
      */
     public void addMove(Move move) {listOfMoves.add(move);}
 
-
+    /**
+     * Returns the list of moves for the game
+     * @return ArrayList list of moves
+     */
     public ArrayList<Move> getListOfMoves(){
         return listOfMoves;
     }
