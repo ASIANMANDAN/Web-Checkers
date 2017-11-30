@@ -1,18 +1,15 @@
 package com.webcheckers.ui;
 
 import com.webcheckers.appl.CurrentGames;
-import com.webcheckers.appl.Game;
 import com.webcheckers.appl.PlayerLobby;
 import com.webcheckers.model.Player;
 import com.webcheckers.model.board.Board;
-import com.webcheckers.model.board.Space;
 import com.webcheckers.ui.boardView.BoardView;
 import spark.*;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.logging.Logger;
 
 import static spark.Spark.halt;
 
@@ -25,7 +22,6 @@ import static spark.Spark.halt;
  * @author Nathan Farrell
  */
 public class GetSpectateRoute implements Route{
-    private static final Logger LOG = Logger.getLogger(GetSpectateRoute.class.getName());
 
     //FTL file which is responsible for rendering the page
     static final String VIEW_NAME = "spectate.ftl";
@@ -96,6 +92,16 @@ public class GetSpectateRoute implements Route{
         Player red = currentGames.getRedPlayer(new Player(request.queryParams(GAME_PARAM)));
         Player white = currentGames.getOpponent(red);
         Board.ActiveColor turn = currentGames.getTurn(red);
+
+        //Case for when a game has ended
+        //Spectators should be redirected to the home page and be told the game ended.
+        if(red == null || white == null){
+            String msg = "The game has ended.";
+            httpSession.attribute(MESSAGE_KEY, msg);
+            response.redirect(WebServer.HOME_URL);
+            halt();
+            return null;
+        }
 
         String selectedMessage = null;
         if (playerLobby.getSelected(currentPlayer.getUsername())) {
