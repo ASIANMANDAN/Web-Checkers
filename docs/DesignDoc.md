@@ -47,15 +47,16 @@ The MVP is an application where users can sign in to the application, choose an 
 
 ### Roadmap of Enhancements
 To enhance our product, we intend on adding:
-*Spectator Mode - Being able to watch a game that is currently in progress.
-*Replay Mode - Watch games you have previously played.
 
+ - Spectator Mode: The user will choose from a list of ongoing games. Upon selecting a game, the user will be able to view the games progress in real-time
+ - Replay Mode: The user will choose from a list of their previously played games to re-watch. During the replay, the user can iterate through each move made by them and their opponent, with the option of going backwards and forwards through the moves
 
 ## Application Domain
 
 This section describes the application domain.
 
 ###Overview of Major Domain Areas
+
 ![Domain Analysis](https://lh3.googleusercontent.com/--WYhHesJGOA/WgGIojUN2EI/AAAAAAAAADA/1NbjWNeL9cwiF4wTF-sD5jSmR5bsjPiwACLcBGAs/s0/Domain+Analysis+-+Page+1.png "Domain Analysis.png")
 *Fig 1. Domain Analysis of the WebCheckers project*
 
@@ -63,7 +64,7 @@ Some key domain areas to mention include the Game Board, Rule Set, and Game enti
 
 ### Details of each Domain Area
 
-The Game Board entity is tasked with keeping track of the current state of the game such as whose turn it currently is. The board itself must accurately reflect changes made to it through player moves. The Board contains all 64 Squares and the starting configuration of a new checkers game, places 24 total Pieces (12 of each color) in the proper start position. As the Game is played, more Pieces will be removed until either one of the Players has no Pieces left, or none of that Players Pieces can move.
+The Game Board entity is tasked with keeping track of the current state of the game such as whose turn it currently is. The board is where the physical game takes place; where Squares are organized and where Pieces sit. This entity is perhaps the most important in our domain as it details vital information about the state of the Game, such as where Pieces are in relation to one another. This information helps the Player to decide what is the best Move to make during the Game. The Board contains all 64 Squares (8 rows of 8 Squares) and the starting configuration of a new checkers game places 24 total Pieces (12 of each color) in the proper start position. As the Game is played, more Pieces will be removed until either one of the Players has no Pieces left, or none of that Players Pieces can move.
 
 The Rule Set entity serves to ensure that the Game is played according to standard American rules. As such, this entity is responsible for stopping Players from making Moves which do not adhere to those rules.
 
@@ -73,14 +74,14 @@ The Rule Set entity serves to ensure that the Game is played according to standa
 This section describes the application architecture.
 
 ### Summary
-The WebCheckers webapp uses a Java-based web server. The Spark web micro framework and the Freemarker template engine are utilized to handle HTTP requests and generate HTML responses. The architecture of the project is formed in the Tiers and Layers pattern, and consists of UI, Application, and Model tiers. The User of the webapp interacts with the UI tier, which in turn interacts with the Application and Model tiers. The Application tier contains the logic that controls the application flow, while the Model tier contains the business logic.
+The WebCheckers webapp uses a Java-based web server. The Spark web micro framework and the Freemarker template engine are utilized to handle HTTP requests and generate HTML responses. The architecture of the project is formed in the Tiers and Layers pattern, and consists of UI, Application, and Model tiers. The User of the webapp interacts with the UI tier, which in turn interacts with the Application and Model tiers. The Application tier contains the logic that controls the application flow, while the Model tier contains business logic and data associated with the application.
 
-![Arch Model](https://lh3.googleusercontent.com/-0lhWO-ppJys/WgF1H8IgA9I/AAAAAAAAABs/hlBFifip6P8oA8b5F14SLDnlDiWmqV19ACLcBGAs/s0/Arch+Model+-+Page+1+%25282%2529.png "Arch Model.png")
+![Architectural Model](https://lh3.googleusercontent.com/-B8mAliA3WZg/WiWNnLxW-iI/AAAAAAAAAFE/vxFoCe1B-SEGoOSvIGikZ3AA1IDOlN3AgCLcBGAs/s0/Arch+model+New+-+Page+1.png "Architectural model")
 
-*Fig 2. Diagram detailing what tier each component is part of*
+*Fig 2. Diagram of the WebCheckers architectural structure with examples of each component*
 
 
-### Overview of User Interface
+### Overview of the User Interface
 The application's user interface is comprised of three main states: Home, Sign-In, and Game.  Upon establishing an HTTP connection, it renders the home page, which displays the number of players online and provides a link to sign-in. Users can then sign-in on the sign-in screen. Signing-in with a unique username leads them back to the home page. This page now displays a selectable list of players, which does not include the current user.  The current user can then select a player to challenge to a game. If that player is not available, then the user is returned to the home page. Otherwise, both players are taken into the game view. The players remain in the in-game state until the game is terminated, whether it be by resignation, sign-out, or a player winning. The players are then returned to the home view. Alternatively, the player can choose to spectate an ongoing game from a list of games being played. The player is sent to the game view of the red player in that match, however they are unable to interact with the board in any way. If the game ends, they are sent back to the home screen. If they are challenged to a game while spectating, they can return to home to be sent to that game.
 
 ![UI State Chart](https://lh3.googleusercontent.com/-_YCHddV_aq4/WgGoHEpH8PI/AAAAAAAAADU/FcVOFqJaSR0pzopn1hjhlKtJo4fsmK2mACLcBGAs/s0/Sprint+2+State+Diagram+-+Page+1+%25282%2529.png "Sprint 2 State Diagram.png")
@@ -115,23 +116,27 @@ The UI Tier of the WebCheckers project consists of several packages.
 	 - WebServer
 
 ### Tier: Model
-The Model tier contains the the board components. This tier is responsible for rendering the internal representation of the Board, Piece, and Space components. All of these components are located within the board package within the model (com.webcheckers.model.board).
+The Model tier contains the components which make up the Board entity. Unlike the aforementioned BoardView components, entities in this tier actually hold data, in order to maintain the state of the game as well as to effect change based on user input. This tier is responsible for rendering the internal representation of the Board, Piece, and Space components. All of these components are located within the board package within the model (com.webcheckers.model.board).
 
-Within the Board class, we have implemented our own custom way of representing the checker board such that the logic can be performed with ease by the validation checks we're implementing in the future. With this representation of the board, each area on the board is represented by a space.
+![Structural Class Model](https://lh3.googleusercontent.com/-yJi1anB6FbA/WiWaDA2ClcI/AAAAAAAAAFY/ANNLF31B6foushqBaGIpq-A3brpvg2vzwCLcBGAs/s0/Board+Class+Structure+-+Page+1.png "Board Class Structure")
+*Fig 4. Structural Class Model of a Board*
 
-The Space class is what is used for representing an area on a board. Each Space contains information like the row/column location, the color of the space, and the piece that sits on the space (if there is a piece). The piece itself is represented in the Model tier as well. 
+The Space class is what is used for representing an area on a board. Each Space contains information like the row/column location, the color of the Space, and the Piece that sits on the Space (if present). The Piece itself is represented in the Model tier as well. 
 
-The Piece class serves as a way to determine the color and type of piece. The types of a pieces include a single piece or a king piece. This later gives the ability for a validation to determine the legality of a move based off what type of piece it is. 
+The Piece class serves as a way to determine the color and type of a Piece. The types of a pieces include a single Piece or a king Piece. This later gives the ability for a validation to determine the legality of a move based off what type of piece it is. 
 
-Outside of the board package, there is also a Player class that represents an individual Player. The Player class works with application tier services to perform actions like signing in/leaving a game/creating a game/picking an opponent. 
+The Piece class has little functionality, but holds data regarding what type of Piece it is or to what color Player it belongs to. This information is used to determine how a Piece can be moved across the Board.
 
-A Validate class is also included outside of the board package. This class is a pure fabrication, with the responsibility of ensuring that proposed moves adhere to the rules of checkers before they are allowed to be made. Another responsibility held by Validate is that it checks a given board configuration to see if a player has won the  game. While it can be argued that the class should not take on this responsibility, we chose to put it within the class as it allowed us to reuse code while keeping a high level of cohesion and single responsibility within our other classes. Additionally, we did not feel that it was the responsibility of the Board class to enforce the rules, but to serve as a representation of the current game space. 
+Outside of the board package, there is also a Player class that represents an individual Player. The Player class works with application tier services to perform actions like such as signing-in and selecting an opponent to play against.
+
+A Validate class is also included outside of the board package. This class is assigned the responsibility of ensuring that proposed moves adhere to the rules of checkers before they are allowed to be made. Another responsibility held by Validate is that it checks a given board configuration to see if a player has won the  game. While it can be argued that this class should not take on that responsibility, we chose to put it within this class as it allowed us to maintain a high level of cohesion and single responsibility within our other classes. Additionally, we did not feel that it was the responsibility of the Board class to enforce the rules, but rather to serve as a representation of the current game space. 
 
 ### Tier: Application
 
 The components of the Application tier work to manage information and logic which span the entirety of the application. Additionally, these components are responsible for providing client specific services needed by the UI tier.
 
-The Application Tier consists of the CurrentGames, Game, and PlayerLobby component. The first two components are responsible for managing information associated with all ongoing games such as the players within a given game, as well as the current configuration of the board. These components provide services related to starting and ending a game. The PlayerLobby component is responsible for keeping a list of every signed-in user and has services which log-in and log-out users. All of the mentioned components have a shared responsibility of providing information to the UI tier in order to generate the appropriate view.
+The Application Tier consists of the CurrentGames, Game, and PlayerLobby component. The first two components are responsible for managing information associated with all ongoing games such as the players within a given game, as well as the current configuration of the board. These components provide services related to starting and ending a game as well as spectating. The PlayerLobby component is responsible for keeping a list of every signed-in user and has services which log-in and log-out users. All of the mentioned components have a shared responsibility of providing information to the UI tier in order to generate the appropriate view.
+
 
 ##Sub-system: CurrentGames
 
@@ -141,11 +146,11 @@ The CurrentGames sub-system is a system within our WebCheckers application that 
 ### Static model
 
 ![CurrentGames Class](https://lh3.googleusercontent.com/-VshS1RFQmS0/WgF_sN5ay8I/AAAAAAAAACs/HcyTfw0HLCM9S1EJEO9XKbEhdDsSE9w5gCLcBGAs/s0/CurrentGames+Sub+System+-+Page+1.png "CurrentGames Sub System.png")
-*Fig 4. Class diagram of the CurrentGames sub system*
+*Fig 5. Class diagram of the CurrentGames sub system*
 
 ### Dynamic model
 ![CurrentGames State Chart](https://lh3.googleusercontent.com/-M0STlyMncko/WgF5-3yy4GI/AAAAAAAAACU/9vYFxr0ztHcA-a6VifUtr-vLPDfij4EUACLcBGAs/s0/CurrentGamesStateChart+-+Page+1.png "CurrentGamesStateChart.png")
-*Fig 5. State chart diagram of the CurrentGames sub system*
+*Fig 6. State chart diagram of the CurrentGames sub system*
 
 ## Sub-system: Player Sign-in/Sign-out
 
@@ -158,12 +163,12 @@ The Player Sign-in/Sign-out sub system delivers the functionality needed to sign
 ### Static models
 
 ![Signin/Signout Class](https://lh3.googleusercontent.com/-JN6AK3Au1xo/WgE_z8IvncI/AAAAAAAAAAM/rDWrEKmhHxkPPAwakf8Qkg_afwIeq3C3gCLcBGAs/s0/SigninSignout+Sub+System+-+Page+1.png "SigninSignout Sub System.png")
-*Fig 6. Class diagram of the Player Signin/Signout sub system*
+*Fig 7. Class diagram of the Player Signin/Signout sub system*
 
 ### Dynamic models
 
 ![Signin/Signout Sub System Dynamic](https://lh3.googleusercontent.com/-SFpSnHwJYCU/WgFREFVdzmI/AAAAAAAAAAg/S5iz0MtOQCApko98uVpaq3JKJRsWQFhDgCLcBGAs/s0/SignInSignOutDynamic+-+Page+1.png "SignInSignOutDynamic.png")
-*Fig 7. State chart diagram of the Player Signin/Signout sub system*
+*Fig 8. State chart diagram of the Player Signin/Signout sub system*
 
 ## Sub-system: Start a Game
 
@@ -177,11 +182,11 @@ The Start a Game sub system contains the functionality required to connect two p
 
 ### Static models
 ![StartGame Class](https://lh3.googleusercontent.com/-FZ7VRx_1Hgs/WgFk4w5vnBI/AAAAAAAAABE/j5D7ER0TpR471Qh-GuOLhLTtfadV4a3jACLcBGAs/s0/Create+Game+System+-+Page+1.png "Create Game System.png")
-*Fig 8. Class diagram of the Start a Game sub system*
+*Fig 9. Class diagram of the Start a Game sub system*
 
 ### Dynamic models
 ![StartGame dynamic](https://lh3.googleusercontent.com/-qMelZA2Sth8/WgFjKffivQI/AAAAAAAAAA0/Mx5zDPva0lgsKDNTxfTUM21dPpm8jKMiwCLcBGAs/s0/StartGame+sub+system+dynamic+-+Page+1.png "StartGame sub system dynamic.png")
-*Fig 9. State chart diagram of the Start a Game sub system*
+*Fig 10. State chart diagram of the Start a Game sub system*
 
 ## Sub-system: Validate a Move
 
@@ -195,8 +200,8 @@ The Validate component contains a series of checks that enforce different rules.
 
 ### Static models
 ![Validate Class](https://lh3.googleusercontent.com/-oaQTpndHosA/WgzGvfZ7AuI/AAAAAAAAADs/Zoakc1k6evYOEiF5E1X170RV9-G8R6LUACLcBGAs/s0/Validate+Move+System+-+Page+1+%25282%2529.png "Validate Move System.png")
-*Fig 10. Class diagram of the Validate sub system*
+*Fig 11. Class diagram of the Validate sub system*
 
 ### Dynamic models
 ![Validate Sequence](https://lh3.googleusercontent.com/-qu-Cwxd8iGQ/WhjShqy1MKI/AAAAAAAAAEk/brp0CMVaucAK5oSwUNm2E3AANYIukgb1QCLcBGAs/s0/Validate+Sub+System+Sequence+-+Page+1+%25281%2529.png "Validate Sub System Sequence.png")
-*Fig 11. Sequence diagram of the Validate sub system*
+*Fig 12. Sequence diagram of the Validate sub system*
