@@ -13,10 +13,10 @@ geometry: margin=1in
 
 ## Executive Summary
 
-WebCheckers, as the name suggests, is a web based application which allows users to play a fully functional game of checkers with other signed-in players. The project utilizes the Spark micro web framework and FreeMarker Template Engine to circumvent the burden of writing boilerplate code, which allows functionality to be the primary focus. The high level architecture chosen for the project is a multi-tier pattern which consists of the UI, Model, and Application tiers to provide a logical separation of class responsibility. The Agile development cycle was used to incrementally implement the different functionalities of the MVP and additional features.
+WebCheckers, as the name suggests, is a web based application which allows users to play a fully functional game of checkers with other signed-in players. The project utilizes the Spark micro web framework and FreeMarker Template Engine to circumvent the burden of writing boilerplate code, which allows functionality to be the primary focus. The high level architecture of the project is a multi-tier pattern which consists of the UI, Model, and Application tiers. These tiers provide a logical separation of class responsibility. The Agile development cycle was used to incrementally implement the different functionalities of the MVP and related enhancements.
 
 #### Purpose
-The WebCheckers application aims to create a browser based environment where users can play a game of checkers with their peers. The gameplay must adhere to the standard American rules.
+The WebCheckers application aims to create a browser based environment where users can play games of checkers with their peers. Gameplay adheres to the standard American rules of checkers.
 
 ### Glossary and Acronyms
 
@@ -36,20 +36,20 @@ This section describes the features of the application.
 The MVP is an application where users can sign in to the application, choose an opponent, and then play a fully functional game of Web Checkers in accordance with the standard American Rules of Checkers. At any time, a user currently in a game may choose to resign, thus ending the game early.
 
 ### MVP Features
- - Sign In: Players can enter the application with a username. The system will reserve their name until the user chooses to sign-out
- - Resignation: Resign from an active game, the user who resigns forfeits the match
- - Start a Game: The user will choose an opponent from a list of signed-in players. Once chosen, if the selected opponent is not currently in a game, then the two players will be redirected to the Game View and a game of checkers will start
- - Validating Moves: This epic details the validation of moves given by a player to ensure that they do not contradict the rules of the game
- - Moving Pieces: This epic covers the functionality required to move a piece, capture pieces, and make jumps
- - Ending a Game: Another epic, this one details the conditions for which a game would end, whether by player resignation or by a player victory
+ - **Sign In**: Players can enter the application with a username. The system will reserve their name until the user chooses to sign-out
+ - **Resignation**: Players can resign from an active game. The user who resigns forfeits the match
+ - **Start a Game**: The user will choose an opponent from a list of signed-in players. If the selected opponent is not currently in a game, then the two players will be redirected to the Game View and a game of checkers will start
+ - **Validating Moves**: This epic details the validation of moves given by a player to ensure that they do not contradict the rules of the game
+ - **Moving Pieces**: This epic covers the functionality required to move a piece, capture pieces, and make jumps
+ - **Ending a Game**: An epic which details the conditions for which a game would end, whether by player resignation or by a player victory
 
 
 
 ### Roadmap of Enhancements
 To enhance our product, we intend on adding:
 
- - Spectator Mode: The user will choose from a list of ongoing games. Upon selecting a game, the user will be able to view the games progress in real-time
- - Replay Mode: The user will choose from a list of their previously played games to re-watch. During the replay, the user can iterate through each move made by them and their opponent, with the option of going backwards and forwards through the moves
+ - **Spectator Mode**: The user will choose from a list of ongoing games. Upon selecting a game, the user will be able to view the game's progress in real-time
+ - **Replay Mode**: The user will choose from a list of their previously played games to re-watch. During the replay, the user can iterate forwards and backwards through each move made
 
 ## Application Domain
 
@@ -64,7 +64,7 @@ Some key domain areas to mention include the Game Board, Rule Set, and Game enti
 
 ### Details of each Domain Area
 
-The Game Board entity is tasked with keeping track of the current state of the game such as whose turn it currently is. The board is where the physical game takes place; where Squares are organized and where Pieces sit. This entity is perhaps the most important in our domain as it details vital information about the state of the Game, such as where Pieces are in relation to one another. This information helps the Player to decide what is the best Move to make during the Game. The Board contains all 64 Squares (8 rows of 8 Squares) and the starting configuration of a new checkers game places 24 total Pieces (12 of each color) in the proper start position. As the Game is played, more Pieces will be removed until either one of the Players has no Pieces left, or none of that Players Pieces can move.
+The Game Board entity is tasked with keeping track of the current state of the game such as whose turn it currently is. The board is where the physical game takes place; where Squares are organized and where Pieces sit. This entity is perhaps the most important in our domain as it details vital information about the state of the Game, such as where Pieces are in relation to one another. This information helps the Player to decide what is the best Move to make during the Game. The Board contains all 64 Squares (8 rows of 8 Squares) and the starting configuration of a new checkers game places 24 total Pieces (12 of each color) in the proper start position. As the Game is played, more Pieces will be removed until either one of the Players has no Pieces left, or none of that Player's Pieces can move.
 
 The Rule Set entity serves to ensure that the Game is played according to standard American rules. As such, this entity is responsible for stopping Players from making Moves which do not adhere to those rules.
 
@@ -81,7 +81,7 @@ The WebCheckers webapp uses a Java-based web server. The Spark web micro framewo
 
 
 ### Overview of the User Interface
-The application's user interface is comprised of three main states: Home, Sign-In, and Game.  Upon establishing an HTTP connection, it renders the home page, which displays the number of players online and provides a link to sign-in. Users can then sign-in on the sign-in screen. Signing-in with a unique username leads them back to the home page. This page now displays a selectable list of players, which does not include the current user.  The current user can then select a player to challenge to a game. If that player is not available, then the user is returned to the home page. Otherwise, both players are taken into the game view. The players remain in the in-game state until the game is terminated, whether it be by resignation, sign-out, or a player winning. The players are then returned to the home view. Alternatively, the player can choose to spectate an ongoing game from a list of games being played. The player is sent to the game view of the red player in that match, however they are unable to interact with the board in any way. If the game ends, they are sent back to the home screen. If they are challenged to a game while spectating, they can return to home to be sent to that game.
+The application's user interface is comprised of three main states: Home, Sign-In, and Game.  Upon establishing an HTTP connection, it renders the home page, which displays the number of players online and provides a link to sign-in. Users can then sign-in on the sign-in screen. Signing-in with a valid, unique username leads them back to the home page. This page now displays a selectable list of players, which does not include the current user.  The current user can then select a player to challenge to a game. If that player is not available, then the user is returned to the home page. Otherwise, both players are taken into the game view. The players remain in the in-game state until the game is terminated, whether it be by resignation, sign-out, or a player winning. The players are then returned to the home view. Alternatively, the player can choose to spectate an ongoing game from a list of games being played. The player is shown the game view of the red player in that match; however they are unable to interact with the board in any way. If the game ends, they are sent back to the home screen. If they are challenged to a game while spectating, they will return to home before entering that game.
 
 ![User Interface State Chart](https://lh3.googleusercontent.com/-6tT6jnjV6xg/WiYKdxM_XyI/AAAAAAAAAJQ/SUEaMZeluOY-HOnMy7QQyIKM8KHxFTc6ACLcBGAs/s0/User+Interface+%25281%2529.png "User Interface")
 *Fig 3. State chart illustrating the different UI Views*
@@ -105,7 +105,7 @@ The UI Tier of the WebCheckers project consists of several packages.
 	 - Move
 	 - Row
 	 
- - Routes: The HTTP request routes are responsible for displaying views (a GET request) as well as for exchanging data from the client (a POST request). Unlike the Ajax routes, these require a new view to be generated each time. An example of this would be in the GetGameRoute which gathers all of the information the server has about a players game from other tiers and turns that into the GameView which is where the player would see the graphical interface of a checkers game.
+ - Routes: The HTTP request routes are responsible for displaying views (a GET request) as well as for exchanging data from the client (a POST request). Unlike the Ajax routes, these require a new view to be generated each time. An example of this would be the GetGameRoute, which gathers all of the information the server has about a player's game from other tiers. It then converts that information into the GameView which is where the player sees the graphical interface of a checkers game.
 	 - GetGameRoute
 	 - GetHomeRoute
 	 - GetSigninRoute
@@ -138,7 +138,7 @@ The Application Tier consists of the CurrentGames, Game, and PlayerLobby compone
 ##Sub-system: CurrentGames
 
 ### Purpose of the sub-system
-The CurrentGames sub-system is a system within our WebCheckers application that is responsible for the collection of all ongoing games. This system is responsible for many services throughout the application like providing the GetHomeRoute with the information to deny users from entering games with players who are already in a game, as well as provide all information necessary to carry out the functionality of playing a game.  With the total collection of Games, you can keep track of the states of all games at once. Any sort of move made or player action is both carried out and recorded by the CurrentGames sub-system. 
+The CurrentGames subsystem is a system within our WebCheckers application that is responsible for the collection of all ongoing games. This system is responsible for many services throughout the application, such as providing the GetHomeRoute with the information to deny users from entering games with players who are already in a game, as well as providing all information necessary to carry out the functionality of playing a game.  With the total collection of Games, you can keep track of the states of all games at once. Any sort of move made or player action is both carried out and recorded by the CurrentGames subsystem. 
 
 ### Static model
 
@@ -156,7 +156,7 @@ The CurrentGames sub-system is a system within our WebCheckers application that 
 *Fig 8. Sequence diagram detailing how CurrentGames works in the case for when a player selects an opponent who is not in a game*
 
 ###Other Designs Considered
-While not a radically different design, one of the other means of gaining the same functionality we considered was to have Players track their own ongoing games instead of CurrentGames doing it. This would mean getting rid of CurrentGames entirely. The benefits of this approach would be that we didn't have to increase the amount of dependencies by creating an additional class. The downside to this approach is that the functionality of PlayerLobby would have to be extended in order to get the needed information from a player to start a game. In the end, we decided to create create CurrentGames to promote high cohesion between both the Player and PlayerLobby classes. We decided that it was also not the responsibility of the PlayerLobby class to retrieve all of the information needed by the GameView and that it should be focused on tracking signed-in Players and handling sign-in/sign-out requests.
+While not a radically different design, one of the other means of gaining the same functionality we considered was to have Players track their own ongoing games. This would eliminate the need for CurrentGames. The benefit of this approach is that we didn't have to increase the amount of dependencies by creating an additional class. The downside to this approach is that the functionality of PlayerLobby would have to be extended in order to get the needed information from a player to start a game. In the end, we decided to create create CurrentGames to promote high cohesion between both the Player and PlayerLobby classes. We decided that it was also not the responsibility of the PlayerLobby class to retrieve all of the information needed by the GameView and that it should be focused on tracking signed-in Players and handling sign-in/sign-out requests.
 
 ## Sub-system: Player Sign-in/Sign-out
 
@@ -191,7 +191,7 @@ This section describes the detail design of the Start a Game sub system.
 
 >This sub system is composed of two smaller sub systems, Player Sign-in/Sign-out and CurrentGames. For more detailed information of those sub systems, checkout their dedicated sections of this document.
 
-The Start a Game sub system contains the functionality required to connect two players together in a new game of checkers. One player, at the home page, will select from a list of opponents which is generated by the PlayerLobby component of the Sign-in/Sign-out sub system. Assuming the selected opponent is not already in a game, the CurrentGames component of the CurrentGames sub system will create a new Game object consisting of the two players and a newly configured Board component. The Game View is created using information from CurrentGames and a reformatted representation of the Board data which is created by the BoardView and Row components. Once all of the necessary information is entered and the correct Game View is generated, both players are redirected to the game, thus starting the match.
+The Start a Game sub system contains the functionality required to connect two players together in a new game of checkers. One player, who is on the home page, will select another player from a list of opponents which is generated by the PlayerLobby component of the Sign-in/Sign-out sub system. Assuming the selected opponent is not already in a game, the CurrentGames component of the CurrentGames subsystem will create a new Game object consisting of the two players and a newly configured Board component. The Game View is created using information from CurrentGames and a reformatted representation of the Board data which is created by the BoardView and Row components. Once all of the necessary information is entered and the correct Game View is generated, both players are redirected to the game, thus starting the match.
 
 ### Static models
 ![Start a Game Class Structure](https://lh3.googleusercontent.com/-tFAMX61VGDA/WiXdIjae5II/AAAAAAAAAHk/a1ICCnzAdXMcAtWy7oIdca7JojGljWEjwCLcBGAs/s0/Start+a+Game+Class+Structure+-+Page+1.png "Start a Game Class Structure")
@@ -213,7 +213,7 @@ This section describes the detail design of the Validate a Move sub system.
 
 ### Purpose of the sub-system
 
-The Validate a Move sub system allows a user generated move to be passed in through an AJAX route in order for the model to determine if the move is legal given the standard, American rules of checkers. Within the PostValidateMoveRoute, a Move object is gotten from the client before it is passed into the CurrentGames service. From here, CurrentGames finds the game associated with that client and then creates a copy of the current board configuration to pass to the Validate model tier component. This class, given a move and a board config, checks that the proposed move does not violate the rules of checkers. Should the move be declared invalid, the Validate component will return a message indicating what rule has been broken. This message gets returned to the PostValidateRoute so that the system can display it to the user, allowing them to understand why they are unable to make said move. 
+The Validate a Move sub system allows a user generated move to be passed in through an AJAX route in order for the model to determine if the move is legal given the standard American rules of checkers. Within the PostValidateMoveRoute, a Move object is gotten from the client before it is passed into the CurrentGames service. From here, CurrentGames finds the game associated with that client and then creates a copy of the current board configuration to pass to the Validate model tier component. This class, given a move and a board config, checks that the proposed move does not violate the rules of checkers. Should the move be declared invalid, the Validate component will return a message indicating what rule has been broken. This message gets returned to the PostValidateRoute so that the system can display it to the user, which then allows them to understand why they are unable to make said move. 
 
 The Validate component contains a series of checks that enforce different rules. An example of this is the check that is performed for if a jump can be made. The system iterates through the board model, finding each piece that belongs to the player whose turn it is. When a piece is encountered, that has an opponent adjacent to it, it then sees if a jump can be made. Valid jump moves are saved and then used to determine if the player has made a jump. If the jump isn't in the list, the Validate component will return a message stating that no valid jumps currently exist.
 
@@ -260,7 +260,7 @@ The UI and AjaxRoutes’ high efferent coupling can be easily explained by their
 The Validate, GetGameRoute, Board, PostCheckTurnRoute, and GetHomeRoute classes all crossed over the average operation complexity threshold. Validate, Board, and CurrentGames also break the weighted method complexity threshold.
 
 <br/>
-Validate breaks these thresholds because it does the checking for validity of moves made during the checkers game. Because of this, it needs access to information about the board, its spaces, and pieces to determine what is a legal move or not. The Validate class is also heavily comprised of loops and if statements necessary for determining if a move can be made according to the rules of Checkers. As such, we did expect this class to be above the threshold for complexity even though we went through multiple iterations of the methods to ensure that each statement, check, and loop had to be there in order to gain the necessary functionality. 
+Validate breaks these thresholds because it does the checking for validity of moves made during the checkers game. Because of this, it needs access to information about the board, its spaces, and pieces to determine what is a legal move or not. The Validate class is also heavily comprised of loops and conditional statements necessary for determining if a move can be made according to the rules of Checkers. As such, we did expect this class to be above the threshold for complexity even though we went through multiple iterations of the methods to ensure that each statement, check, and loop had to be there in order to gain the necessary functionality. 
 
 Within the Validate class, the specific methods that passed the threshold were:
 
@@ -287,10 +287,10 @@ Within Board, the specific methods that passed the threshold were:
  - getMiddle(Move)
  - findPiece(Color)
 
-We were surprised to see that getMiddle shows up as being overly complex given that it simply returns the Piece that was jumped over within a Move. This is most likely due to some repetition in the lines of code since it has to check different directions depending on if a Piece is moving North or South on the Board. We could improve on this by finding a more generalized means of getting the Middle Piece. findPiece is complex due to looping through each Space on the Board in order to find the first instance of a Player's Piece. There isn't much we can do to improve on that.
+We were surprised to see that getMiddle shows up as being overly complex given that it simply returns the Piece that was jumped over within a Move. This is most likely due to some repetition in the lines of code since it has to check different directions depending on if a Piece is moving North or South on the Board. We could improve on this by finding a more generalized means of getting the Middle Piece. findPiece is complex due to looping through each Space on the Board in order to find the first instance of a Player's Piece. At the moment, there isn't much we can do to improve on that.
 
 <br/>
-PostCheckTurnRoute needs to know about CurrentGames in order to get the ActiveColor. It is possible that the few conditional statements in this class could be condensed, however we aren't too sure how this class crossed the threshold as it is only 70 lines long and rather minimal.
+PostCheckTurnRoute needs to know about CurrentGames in order to get the ActiveColor. It is possible that the few conditional statements in this class could be condensed. However, we aren't too sure how this class crossed the threshold as it is only 70 lines long and rather minimal.
 
 <br/>
 GetHomeRoute accesses CurrentGames, Game, PlayerLobby and Player. This is because this route needs to get a list of all signed-in Players as well as a list of all ongoing Games so that that information can be displayed to the user. While this class may need to know about a lot of other classes, we don't feel that there is anything in there which is unnecessarily adding to the complexity and as such, we have decided that this class does not need to be revisited to address this.
@@ -308,15 +308,15 @@ Space.equals(Object)
 
 
 ##Recommendations for Future Improvements
-Based on what we have experienced working on the project and our analysis of code metrics, we recommend that the following areas be revisited; either to fix flawed design or address code metrics hot spots:
+Based on what we have experienced working on the project and our analysis of code metrics, we recommend that the following areas be revisited to either fix flawed design or address code metrics hot spots:
 
 ##Validate
-One of the other designs that we considered for this class was to create an interface called RuleBook and then have our current Validate class implement said interface. This would allow us to extend our system further down the road to include additional rule sets if that is something the product owner wanted. While this would not necessarily fix hot spots identified by the metrics, it was something that we had wanted to do but was out of scope of the MVP. 
+One of the other designs that we considered for this class was to create an interface called RuleBook and then have our current Validate class implement said interface. This would allow us to extend our system further down the road to include additional rule sets. While this would not necessarily fix hot spots identified by the metrics, it was something that we had wanted to include, but was out of scope of the MVP. 
 
-In order to address the high complexity highlighted by the metrics, we would most likely need to scrap the entire Validate class and instead utilize inheritance within the Piece class so that it's children classes can validate their own movements based on their color and type. That way the checks within the child classes are more specific to that Pieces status. However, we are unsure if this would reduce complexity or if it would simply shift the code smell to the Piece class.
+In order to address the high complexity highlighted by the metrics, we would most likely need to scrap the entire Validate class and instead utilize inheritance within the Piece class so that its children classes can validate their own movements based on their color and type. That way the checks within the child classes are more specific to that Pieces status. However, we are unsure if this would reduce complexity or if it would simply shift the code smell to the Piece class.
 
 ##CurrentGames
-While we feel that CurrentGames certainly solved our initial need to track ongoing Games, we have since realized that one of our previously considered approaches would be more suited to the task. We can remove the dependencies between classes which rely on CurrentGames by having Players track the Games which they are a part of. We were initially worried that doing this would break single responsibility and force unrelated tasks on the Player and PlayerLobby classes. However since there is no need in our current implementation for the system to check the information of a Game that the current Player is not a part of, storing a Player's ongoing Games would have been a better solution. Additionally this would drastically lower the coupling as any time a route needed to know about CurrentGames, it already had knowledge of the current Player and could use that component to gain the same functionality. We still feel that it is not the responsibility of the Player to track Games they are a part of, however we would accept that drawback for a system with far less coupling now that we have seen the metrics.
+While we feel that CurrentGames certainly solved our initial need to track ongoing Games, we have since realized that one of our previously considered approaches would be more suited to the task. We can remove the dependencies between classes which rely on CurrentGames by having Players track the Games which they are a part of. We were initially worried that doing this would break single responsibility and force unrelated tasks on the Player and PlayerLobby classes. However, since there is no need in our current implementation for the system to check the information of a Game that the current Player is not a part of, storing a Player's ongoing Games would have been a better solution. Additionally this would drastically lower the coupling as any time a route needed to know about CurrentGames, it already had knowledge of the current Player and could use that component to gain the same functionality. We still feel that it is not the responsibility of the Player to track Games they are a part of, however we would accept that drawback for a system with far less coupling now that we have seen the metrics.
 
 ##GetGameRoute
-GetGameRoute has been revisited numerous times across these 4 sprints, each time, we have tried to condense the amount of logic within the class that is needed to create the proper view. While we have been working to reduce the amount of work that a UI tier route is doing, it still seems cluttered and could be revisited. This class serves as the one place in our entire project where we choose to take on technical debt, as rebuilding the way we match the current Player with their opponent would have been more work in the short term, it would have solved the issue once and for all, meaning less work in the long term. Also, if the project were to expand and more types of Games or other functionality were to be added, the route would only get more and more cluttered with each different case. Thus, finding a more generalized way of connecting Player and building the GameView would make additional features easier to implement.
+GetGameRoute has been revisited numerous times across these 4 sprints, each time, we have tried to condense the amount of logic within the class that is needed to create the proper view. While we have been working to reduce the amount of work that a UI tier route is doing, it is still cluttered and could be revisited. This class serves as the one place in our entire project where we choose to take on technical debt. Rebuilding the way we match the current Player with their opponent would have been more work in the short term; however it would have solved the issue once and for all in the long term. Also, if the project were to expand in functionality, the route would only get more and more complex with each different case. Thus, finding a more generalized way of connecting Player and building the GameView would make additional features easier to implement.
