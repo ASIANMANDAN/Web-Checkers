@@ -55,7 +55,7 @@ To enhance our product, we intend on adding:
 
 This section describes the application domain.
 
-###Overview of Major Domain Areas
+### Overview of Major Domain Areas
 
 ![Domain Analysis](https://lh3.googleusercontent.com/--WYhHesJGOA/WgGIojUN2EI/AAAAAAAAADA/1NbjWNeL9cwiF4wTF-sD5jSmR5bsjPiwACLcBGAs/s0/Domain+Analysis+-+Page+1.png "Domain Analysis.png")
 *Fig 1. Domain Analysis of the WebCheckers project*
@@ -135,7 +135,7 @@ The components of the Application tier work to manage information and logic whic
 The Application Tier consists of the CurrentGames, Game, and PlayerLobby component. The first two components are responsible for managing information associated with all ongoing games such as the players within a given game, as well as the current configuration of the board. These components provide services related to starting and ending a game as well as spectating. The PlayerLobby component is responsible for keeping a list of every signed-in user and has services which log-in and log-out users. All of the mentioned components have a shared responsibility of providing information to the UI tier in order to generate the appropriate view.
 
 
-##Sub-system: CurrentGames
+## Sub-system: CurrentGames
 
 ### Purpose of the sub-system
 The CurrentGames subsystem is a system within our WebCheckers application that is responsible for the collection of all ongoing games. This system is responsible for many services throughout the application, such as providing the GetHomeRoute with the information to deny users from entering games with players who are already in a game, as well as providing all information necessary to carry out the functionality of playing a game.  With the total collection of Games, you can keep track of the states of all games at once. Any sort of move made or player action is both carried out and recorded by the CurrentGames subsystem. 
@@ -155,7 +155,7 @@ The CurrentGames subsystem is a system within our WebCheckers application that i
 ![CurrentGames Sequence Diagram](https://lh3.googleusercontent.com/-HMH4Xcwl3XM/WiXSRnU238I/AAAAAAAAAGg/YMhf0K-xiTE9yFpYhb71S_6fHzU3vkSXACLcBGAs/s0/CurrentGames+Sequence+-+Page+1+%25281%2529.png "CurrentGames Sequence Diagram")
 *Fig 8. Sequence diagram detailing how CurrentGames works in the case for when a player selects an opponent who is not in a game*
 
-###Other Designs Considered
+### Other Designs Considered
 While not a radically different design, one of the other means of gaining the same functionality we considered was to have Players track their own ongoing games. This would eliminate the need for CurrentGames. The benefit of this approach is that we didn't have to increase the amount of dependencies by creating an additional class. The downside to this approach is that the functionality of PlayerLobby would have to be extended in order to get the needed information from a player to start a game. In the end, we decided to create create CurrentGames to promote high cohesion between both the Player and PlayerLobby classes. We decided that it was also not the responsibility of the PlayerLobby class to retrieve all of the information needed by the GameView and that it should be focused on tracking signed-in Players and handling sign-in/sign-out requests.
 
 ## Sub-system: Player Sign-in/Sign-out
@@ -228,38 +228,37 @@ The Validate component contains a series of checks that enforce different rules.
 ![Validate Sequence](https://lh3.googleusercontent.com/-qu-Cwxd8iGQ/WhjShqy1MKI/AAAAAAAAAEk/brp0CMVaucAK5oSwUNm2E3AANYIukgb1QCLcBGAs/s0/Validate+Sub+System+Sequence+-+Page+1+%25281%2529.png "Validate Sub System Sequence.png")
 *Fig 19. Sequence diagram of the Validate sub system*
 
-###Other Designs Considered
+### Other Designs Considered
 There were numerous designs considered for implementing the functionality gained by the Validate subsystem. One such design would be to remove our Validate class entirely and turn the Piece class into an interface. Then create a Single and King class which implements the Piece interface. Each class would then have their own methods for validating since different Pieces can move in different ways. This approach makes great use of inheritance and would have less coupling than is in our system. While this was certainly a smart way of handling move validation, it would require a very timely overhaul of our system and how Pieces are tracked on a board. In the end we decided against it as we did not have the time nor did we want to risk breaking other, previously implemented functionality by refactoring our code.
 
 Another approach would have been to create an interface called RuleBook and then rename Validate to AmericanRuleSet which would implement RuleBook. Then, when CurrentGames is instantiated at the servers run time, we can inject the rule set into the constructor. This method would allow other rule sets to be easily added to the system later down line. We could also extend the system so that Players can choose which rule set to start a game with but that is out of scope. Unlike the first alternative design, this one did not require other components to be refactored. The drawback to this approach is that injecting a rule set brought up some architectural complexities that we simply did not have the time to explore. Had there been more time, we would have gone with this approach. 
 
 
-##Code Metrics Analysis
+## Code Metrics Analysis
 
 This section details our analysis of code metrics generated by MetricsReloaded
 
-###Chidamber-Kemerer Metrics
+### Chidamber-Kemerer Metrics
 During the previous sprints, adherence to Object Oriented design principles was a concern when designing the system. As such, we tried to obey principles like low coupling and high cohesion. According to the code metrics test we ran, our design did not exceed the default Metrics Reloaded threshold. However, Player, CurrentGames, and Board should be noted in future development because their coupling was significantly higher than average, ranging in the high twenties to low thirties while the average was 8.59. 
 
 We contribute the high coupling within those three classes to their role as components of the CurrentGames subsystem. Nearly every route in our project uses CurrentGames and by extension, Player and Board, for gathering the necessary information to build the view model. We also make copies of a given Board each time they have to be passed between methods in order to maintain encapsulation. This may be a contributing factor for the higher than average coupling of the Board class.
 
-###Javadoc Coverage Metrics
+### Javadoc Coverage Metrics
 Unit testing was not a major issue for the project. For the most part, the team stayed on top of unit testing throughout the development cycle. As such, no areas of major concern arose during our analysis.
 
-###Lines of Code Metrics
+### Lines of Code Metrics
 Lines of code were heavily contained in the UI tier, with 2.3 thousand lines of code, followed by the model tier with two thousand lines of code, and the application tier with 1.4 thousand lines of code. No areas were highlighted by the metrics as needing to be reworked. 
 
-###Martin Package Metrics
+### Martin Package Metrics
 None of the packages in our project surpass the expected threshold. However, the Board package’s afferent coupling is at a 34, which is noticeably greater than the average of 13. The UI and Ajax Route packages should also be monitored as their efferent couplings are at 61 and 35 respectively while the average is 21.14.
 
 In regards to the Board package’s high afferent coupling we have identified that the Board class contributes most to this metric.Similar to the Chidamber-Kemerer metrics, we attribute this high coupling to the creation of new Board objects when a passing information around the system as well as the component’s role in CurrentGames. Interestingly, the CurrentGames and Player class don’t show up as having high afferent coupling. The Board class is however, used in areas where Player and CurrentGames are not, which we believe to be the reason why they are not listed as being above the threshold.
 
 The UI and AjaxRoutes’ high efferent coupling can be easily explained by their reliance on application tier services to gather the information necessary for building the view model. 
 
-###Complexity Metrics
+### Complexity Metrics
 The Validate, GetGameRoute, Board, PostCheckTurnRoute, and GetHomeRoute classes all crossed over the average operation complexity threshold. Validate, Board, and CurrentGames also break the weighted method complexity threshold.
 
-<br/>
 Validate breaks these thresholds because it does the checking for validity of moves made during the checkers game. Because of this, it needs access to information about the board, its spaces, and pieces to determine what is a legal move or not. The Validate class is also heavily comprised of loops and conditional statements necessary for determining if a move can be made according to the rules of Checkers. As such, we did expect this class to be above the threshold for complexity even though we went through multiple iterations of the methods to ensure that each statement, check, and loop had to be there in order to gain the necessary functionality. 
 
 Within the Validate class, the specific methods that passed the threshold were:
@@ -272,7 +271,6 @@ Within the Validate class, the specific methods that passed the threshold were:
 
 Addressing these hot spots will prove to be difficult as we have already removed unnecessary lines of code on more than one occasion. It may be the case that we have to completely redesign some methods or even the class structure as a whole to find a less complex means of validating moves. Because of this, we aren't sure on the steps that can be taken to reduce complexity since we have deemed the code in there necessary for functionality.   
 
-<br/>
 GetGameRoute generates the GameView, so it needs to have access to the Players within a Game object as well as the Board. This information is accessed through CurrentGames.
 Within the GetGameRoute, the specific method that passed the threshold was:
 
@@ -280,7 +278,6 @@ Within the GetGameRoute, the specific method that passed the threshold was:
 
 We were surprised to see routes be outliers for complexity as we had figured the model tier components where most of the business logic is would be the only ones to cross the threshold. Still, GetGameRoute contains conditional statements to determine the type of response to generate. We can improve on this by redesigning CurrentGames as well as the GetGameRoute class itself so that there are only two possible responses to starting a game with someone, either you successfully connect, or the selected opponent is in a game and you get redirected to the Home page. 
 
-<br/>
 Board needs access to Spaces, the pieces and subsequently, the moves they make and the positions that they then occupy.
 Within Board, the specific methods that passed the threshold were:
 
@@ -289,34 +286,29 @@ Within Board, the specific methods that passed the threshold were:
 
 We were surprised to see that getMiddle shows up as being overly complex given that it simply returns the Piece that was jumped over within a Move. This is most likely due to some repetition in the lines of code since it has to check different directions depending on if a Piece is moving North or South on the Board. We could improve on this by finding a more generalized means of getting the Middle Piece. findPiece is complex due to looping through each Space on the Board in order to find the first instance of a Player's Piece. At the moment, there isn't much we can do to improve on that.
 
-<br/>
 PostCheckTurnRoute needs to know about CurrentGames in order to get the ActiveColor. It is possible that the few conditional statements in this class could be condensed. However, we aren't too sure how this class crossed the threshold as it is only 70 lines long and rather minimal.
 
-<br/>
 GetHomeRoute accesses CurrentGames, Game, PlayerLobby and Player. This is because this route needs to get a list of all signed-in Players as well as a list of all ongoing Games so that that information can be displayed to the user. While this class may need to know about a lot of other classes, we don't feel that there is anything in there which is unnecessarily adding to the complexity and as such, we have decided that this class does not need to be revisited to address this.
 
-<br/>
 CurrentGames is a Controller class. Any method or class that needs to get some information about a Game object has to interact with CurrentGames. Otherwise, with our current implementation, there would be no way of locating the correct Game in the system. CurrentGames also has a lot of methods to help the components that interact with it locate the necessary information. 
 
 We can address this by removing the need for a CurrentGames class. This can be achieved by shifting the responsibility of tracking in-progress Games to Player. Even though we previously considered this approach in Sprint 1, we did not have the metric data or knowledge of the project that we do now. 
 
-<br/>
 Some methods passed the complexity threshold without their class breaking the threshold. These methods are:
-PlayerLobby.signIn(String)
-Space.equals(Object)
 
+ - PlayerLobby.signIn(String)
+ - Space.equals(Object)
 
-
-##Recommendations for Future Improvements
+## Recommendations for Future Improvements
 Based on what we have experienced working on the project and our analysis of code metrics, we recommend that the following areas be revisited to either fix flawed design or address code metrics hot spots:
 
-##Validate
+## Validate
 One of the other designs that we considered for this class was to create an interface called RuleBook and then have our current Validate class implement said interface. This would allow us to extend our system further down the road to include additional rule sets. While this would not necessarily fix hot spots identified by the metrics, it was something that we had wanted to include, but was out of scope of the MVP. 
 
 In order to address the high complexity highlighted by the metrics, we would most likely need to scrap the entire Validate class and instead utilize inheritance within the Piece class so that its children classes can validate their own movements based on their color and type. That way the checks within the child classes are more specific to that Pieces status. However, we are unsure if this would reduce complexity or if it would simply shift the code smell to the Piece class.
 
-##CurrentGames
+## CurrentGames
 While we feel that CurrentGames certainly solved our initial need to track ongoing Games, we have since realized that one of our previously considered approaches would be more suited to the task. We can remove the dependencies between classes which rely on CurrentGames by having Players track the Games which they are a part of. We were initially worried that doing this would break single responsibility and force unrelated tasks on the Player and PlayerLobby classes. However, since there is no need in our current implementation for the system to check the information of a Game that the current Player is not a part of, storing a Player's ongoing Games would have been a better solution. Additionally this would drastically lower the coupling as any time a route needed to know about CurrentGames, it already had knowledge of the current Player and could use that component to gain the same functionality. We still feel that it is not the responsibility of the Player to track Games they are a part of, however we would accept that drawback for a system with far less coupling now that we have seen the metrics.
 
-##GetGameRoute
+## GetGameRoute
 GetGameRoute has been revisited numerous times across these 4 sprints, each time, we have tried to condense the amount of logic within the class that is needed to create the proper view. While we have been working to reduce the amount of work that a UI tier route is doing, it is still cluttered and could be revisited. This class serves as the one place in our entire project where we choose to take on technical debt. Rebuilding the way we match the current Player with their opponent would have been more work in the short term; however it would have solved the issue once and for all in the long term. Also, if the project were to expand in functionality, the route would only get more and more complex with each different case. Thus, finding a more generalized way of connecting Player and building the GameView would make additional features easier to implement.
